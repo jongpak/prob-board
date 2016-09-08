@@ -63,6 +63,11 @@ class Post
         return $this->subject;
     }
 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
     public function getAuthor()
     {
         return $this->author;
