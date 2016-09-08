@@ -1,0 +1,31 @@
+{
+  "name": "prob/board",
+  "description": "A simple web board on prob-framework",
+  "homepage": "https://github.com/jongpak/prob-board",
+  "keyworks": ["bbs", "board"],
+  "type": "project",
+  "license": "MIT",
+
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+
+  "require": {
+    "twig/twig": "*",
+    "doctrine/orm": "*",
+    "jbzoo/event": "*",
+    "psr/http-message": "*",
+    "prob/router": "dev-master",
+    "jongpak/array-key-glue": "dev-master",
+    "zendframework/zend-diactoros": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "App\\Controller\\": "app/",
+      "Core\\": "core/"
+    }
+  }
+}

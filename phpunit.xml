@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+    colors="true"
+    syntaxCheck="false"
+    bootstrap="./vendor/autoload.php">
+
+    <testsuites>
+        <testsuite name="default">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./core</directory>
+            <exclude>
+                <directory suffix=".php">./app/Auth/config</directory>
+                <directory suffix=".php">./app/EventListener/Auth/config</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>

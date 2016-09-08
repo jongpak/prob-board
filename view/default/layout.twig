@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Prob{% endblock %}</title>
+    {{ css(asset('welcome.css')) }}
+</head>
+<body>
+
+<div class="welcome">
+    <div class="title">Prob welcome page</div>
+    <div class="body">{% block body %}{% endblock %}</div>
+</div>
+
+</body>
+</html>
