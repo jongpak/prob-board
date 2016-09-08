@@ -2,19 +2,20 @@
 
 {% block body %}
 <h2>Posts</h2>
-<table>
+<table class="list">
+    <caption>{{ board.getTitle() }}</caption>
     <tr>
-        <th>No.</th>
-        <th>Subject</th>
-        <th>Author</th>
-        <th>Time</th>
+        <th class="no">No.</th>
+        <th class="subject">Subject</th>
+        <th class="author">Author</th>
+        <th class="time">Time</th>
     </tr>
     {% for post in posts %}
     <tr>
-        <td>{{ post.getId() }}</td>
-        <td>{{ post.getSubject() }}</td>
-        <td>{{ post.getAuthor() }}</td>
-        <td>{{ post.getCreatedAt() | date('Y-M-d') }}</td>
+        <td class="no">{{ post.getId() }}</td>
+        <td class="subject">{{ post.getSubject() }}</td>
+        <td class="author">{{ post.getAuthor() }}</td>
+        <td class="time">{{ post.getCreatedAt() | date('Y-M-d') }}</td>
     </tr>
     {% endfor %}
 </table>

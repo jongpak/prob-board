@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: rgb(50, 50, 50);
+}
+
+header {
+    padding: 10px;
+    background: rgb(50, 50, 50);
+    font-size: 10pt;
+    color: white;
+}
+
+h1 {
+    margin: 0 auto;
+    padding: 0;
+    width: 1000px;
+}
+
+body > section {
+    margin: 0 auto;
+    width: 1000px;
+    font-size: 14pt;
+}
+
+table.list {
+    width: 100%;
+}
+table.list caption {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+table.list th,
+table.list td {
+    padding: 0.5em;
+}
+table.list th {
+    background: rgb(200, 200, 200);
+}
+table.list tr:nth-child(2n+1) {
+    background: rgb(240, 240, 240);
+}
+
+table.list .no {
+    width: 3em;
+    text-align: center;
+}
+table.list .author {
+    width: 7em;
+    text-align: center;
+}
+table.list .time {
+    width: 7em;
+    text-align: center;
+}
