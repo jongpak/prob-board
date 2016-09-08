@@ -1,0 +1,12 @@
+{% extends 'default/layout.twig' %}
+
+{% block body %}
+<h2>{{ post.getSubject() }}</h2>
+<ul>
+    <li>Author: {{ post.getAuthor() }}</li>
+    <li>Time: {{ post.getCreatedAt() | date('Y-M-d') }}</li>
+</ul>
+<section>
+{{ post.getContent | escape | nl2br }}
+</section>
+{% endblock %}
