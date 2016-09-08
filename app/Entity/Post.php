@@ -10,8 +10,6 @@ use \JsonSerializable;
  */
 class Post
 {
-
-
     /**
      * @Id
      * @Column(type="integer")
@@ -27,7 +25,7 @@ class Post
     /**
      * @Column(type="string")
      */
-    protected $title;
+    protected $subject;
 
     /**
      * @Column(type="text", length=65535)
@@ -53,4 +51,25 @@ class Post
      * @Column(type="datetime")
      */
     protected $updated_at;
+
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
 }

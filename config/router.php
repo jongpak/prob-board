@@ -4,4 +4,6 @@ return [
     'namespace' => 'App\\Controller',
 
     '/' => 'Welcome.index',
+
+    '/{name:string}' => 'Board.viewPostList',
 ];
