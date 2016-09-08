@@ -57,3 +57,25 @@ table.list .time {
     width: 7em;
     text-align: center;
 }
+
+
+section.post h2 {
+    border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+section.post ul.postInfo {
+    margin: 0;
+    padding: 10px 20px;
+    float: right;
+    background: rgb(240, 240, 240);
+}
+
+section.post ul.postInfo li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+section.post ul.postInfo li span {
+    font-weight: bold;
+}
