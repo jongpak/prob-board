@@ -4,7 +4,7 @@
 <h2>Boards</h2>
 <ul>
     {% for board in boards %}
-    <li>{{ board }}</li>
+    <li>{{ board.getTitle() }}</li>
     {% endfor %}
 </ul>
 {% endblock %}

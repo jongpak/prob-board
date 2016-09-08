@@ -3,18 +3,20 @@
 namespace App\Controller;
 
 use Core\ViewModel;
+use Core\Application;
 use App\Auth\AuthManager;
+use App\Entity\Board;
+use Doctrine\ORM\EntityManager;
 
 class Welcome
 {
     public function index(ViewModel $viewModel)
     {
-        $accountManager = AuthManager::getInstance()->getDefaultAccountManager();
-        $loginManager = AuthManager::getInstance()->getDefaultLoginManager();
+        /** @var EntityManager */
+        $entityManager = Application::getInstance()->getEntityManager();
+        $boards = $entityManager->getRepository(Board::class)->findAll();
 
-        $loggedAccountId = $loginManager->getLoggedAccountId();
-
-        $viewModel->set('boards', ['free', 'qna', 'etc']);
+        $viewModel->set('boards', $boards);
 
         return 'default/welcome';
     }
