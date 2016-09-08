@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use \JsonSerializable;
-
 /**
  * @Entity
  * @Table(name="posts")
