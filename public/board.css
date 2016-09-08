@@ -25,3 +25,35 @@ body > section {
     width: 1000px;
     font-size: 14pt;
 }
+
+table.list {
+    width: 100%;
+}
+table.list caption {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+table.list th,
+table.list td {
+    padding: 0.5em;
+}
+table.list th {
+    background: rgb(200, 200, 200);
+}
+table.list tr:nth-child(2n+1) {
+    background: rgb(240, 240, 240);
+}
+
+table.list .no {
+    width: 3em;
+    text-align: center;
+}
+table.list .author {
+    width: 7em;
+    text-align: center;
+}
+table.list .time {
+    width: 7em;
+    text-align: center;
+}
