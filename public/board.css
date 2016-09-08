@@ -3,6 +3,10 @@ body {
     padding: 0;
 }
 
+a {
+    color: rgb(50, 50, 50);
+}
+
 header {
     padding: 10px;
     background: rgb(50, 50, 50);
