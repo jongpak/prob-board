@@ -11,13 +11,5 @@ return [
                 $validator->validate($proc);
             }
         ],
-        'Test.event' => [
-            'before' => function () {
-                echo '<p>before Hook!</p>';
-            },
-            'after' => function () {
-                echo '<p>after Hook!</p>';
-            }
-        ]
     ]
 ];
