@@ -11,8 +11,7 @@ use Doctrine\ORM\EntityManager;
 
 class Board
 {
-
-    public function viewPostList($name, ViewModel $viewModel)
+    public function index($name, ViewModel $viewModel)
     {
         /** @var EntityManager */
         $entityManager = Application::getInstance()->getEntityManager();

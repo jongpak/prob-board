@@ -5,5 +5,5 @@ return [
 
     '/' => 'Welcome.index',
 
-    '/{name:string}' => 'Board.viewPostList',
+    '/{name:string}' => 'Board.index',
 ];
