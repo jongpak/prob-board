@@ -2,15 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>{% block title %}Prob{% endblock %}</title>
+    <title>{% block title %}Prob-board{% endblock %}</title>
     {{ css(asset('welcome.css')) }}
 </head>
 <body>
 
-<div class="welcome">
-    <div class="title">Prob welcome page</div>
-    <div class="body">{% block body %}{% endblock %}</div>
-</div>
+<header>
+    <h1>Prob-board</h1>
+</header>
+
+<section>
+{% block body %}
+{% endblock %}
+</section>
 
 </body>
 </html>

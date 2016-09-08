@@ -8,6 +8,7 @@ use App\Auth\AuthManager;
 class Welcome
 {
 
+
     public function index(ViewModel $viewModel)
     {
         $accountManager = AuthManager::getInstance()->getDefaultAccountManager();
@@ -15,9 +16,7 @@ class Welcome
 
         $loggedAccountId = $loginManager->getLoggedAccountId();
 
-        $viewModel->set('time', date('r'));
-        $viewModel->set('accountId', $loggedAccountId);
-        $viewModel->set('accountRole', $accountManager->getRole($loggedAccountId));
+        $viewModel->set('boards', ['free', 'qna', 'etc']);
 
         return 'default/welcome';
     }
