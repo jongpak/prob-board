@@ -25,6 +25,17 @@ class Board
      */
     protected $title;
 
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
     public function getTitle()
     {
         return $this->title;

@@ -4,7 +4,11 @@
 <h2>Boards</h2>
 <ul>
     {% for board in boards %}
-    <li>{{ board.getTitle() }}</li>
+    <li>
+        <a href="{{ url(board.getName()) }}">
+            {{ board.getTitle() }}
+        </a>
+    </li>
     {% endfor %}
 </ul>
 {% endblock %}
