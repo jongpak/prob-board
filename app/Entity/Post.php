@@ -8,8 +8,9 @@ use \JsonSerializable;
  * @Entity
  * @Table(name="posts")
  */
-class Post implements JsonSerializable
+class Post
 {
+
 
     /**
      * @Id
@@ -17,6 +18,11 @@ class Post implements JsonSerializable
      * @GeneratedValue
      */
     protected $id;
+
+    /**
+     * @Column(type="integer")
+     */
+    protected $board;
 
     /**
      * @Column(type="string")
@@ -28,13 +34,23 @@ class Post implements JsonSerializable
      */
     protected $content;
 
+    /**
+     * @Column(type="text", length=32)
+     */
+    protected $author;
 
-    public function jsonSerialize()
-    {
-        return [
-            'id' => $this->id,
-            'title' => $this->title,
-            'content' => $this->content,
-        ];
-    }
+    /**
+     * @Column(type="text", length=128)
+     */
+    protected $password;
+
+    /**
+     * @Column(type="datetime")
+     */
+    protected $created_at;
+
+    /**
+     * @Column(type="datetime")
+     */
+    protected $updated_at;
 }

@@ -8,8 +8,6 @@ namespace App\Entity;
  */
 class Board
 {
-
-
     /**
      * @Id
      * @Column(type="integer")
@@ -26,4 +24,9 @@ class Board
      * @Column(type="text", length=255)
      */
     protected $title;
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }
