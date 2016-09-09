@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Core\ViewModel;
 use Core\DatabaseManager;
-use App\Auth\AuthManager;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use Doctrine\ORM\EntityManager;

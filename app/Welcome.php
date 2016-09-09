@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Core\ViewModel;
 use Core\DatabaseManager;
-use App\Auth\AuthManager;
 use App\Entity\Board;
 use Doctrine\ORM\EntityManager;
 
