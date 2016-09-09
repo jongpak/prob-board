@@ -30,12 +30,8 @@ class ApplicationTest extends TestCase
         $inc++;
 
         $application->setSiteConfig($this->getSiteConfig());
-        $application->setErrorReporterConfig($this->getErrorReporterConfig());
         $application->setViewEngineConfig($this->getViewEngineConfig());
         $application->setViewResolver($this->getViewResolvers());
-
-        $application->setEventListener($this->getEventListener());
-        $application->registerEventListener();
 
         $application->setRouterConfig($this->getRouteMap());
     }
@@ -44,22 +40,6 @@ class ApplicationTest extends TestCase
     {
         return [
             'url' => 'http://test.com/',
-            'displayErrors' => true,
-            'errorReporters' => [ 'Html' ]
-        ];
-    }
-
-    private function getErrorReporterConfig()
-    {
-        return [
-            'Html' => [
-                'class' => 'App\\ErrorReporter\\Html',
-                'view' => 'App\\ViewEngine\\Twig',
-                'path' => __DIR__ . '/mock',
-                'file' => 'error',
-                'postfix' => '.twig',
-                'settings' => []
-            ]
         ];
     }
 
@@ -153,24 +133,6 @@ class ApplicationTest extends TestCase
                 echo 'Closure!';
             }
         ];
-    }
-
-    public function testSettingDisplayErrors()
-    {
-        $isDisplayErrors = true;
-
-        // clean
-        $prev = ini_get('display_errors');
-        ini_set('display_errors', !$isDisplayErrors);
-
-        // test set
-        $this->application->setDisplayError($isDisplayErrors);
-        $curr = ini_get('display_errors');
-
-        // restore
-        ini_set('display_errors', $prev);
-
-        $this->assertEquals($isDisplayErrors, $curr);
     }
 
 

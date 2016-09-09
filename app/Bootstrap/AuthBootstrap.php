@@ -2,23 +2,21 @@
 
 namespace App\Bootstrap;
 
-use Core\Application;
 use Core\Bootstrap\BootstrapInterface;
 use App\Auth\AuthManager;
 
 class AuthBootstrap implements BootstrapInterface
 {
-
-    public function boot(Application $app)
+    public function boot()
     {
         $auth = AuthManager::getInstance();
 
-        $auth->setConfig($this->getAuthConfig());
+        $auth->setConfig($this->getConfig());
         $auth->setAccountManagerConfig($this->getAccountManagerConfig());
         $auth->setLoginManagerConfig($this->getLoginManagerConfig());
     }
 
-    private function getAuthConfig()
+    private function getConfig()
     {
         return require __DIR__ . '/../Auth/config/config.php';
     }

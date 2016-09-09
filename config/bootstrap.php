@@ -2,5 +2,9 @@
 
 return [
     'App\\Bootstrap\\ApplicationBootstrap',
-    'App\\Bootstrap\\AuthBootstrap'
+    'App\\Bootstrap\\DatabaseBootstrap',
+    'App\\Bootstrap\\ErrorReporterBootstrap',
+    'App\\Bootstrap\\EventListenerBootstrap',
+    'App\\Bootstrap\\AuthBootstrap',
+    'App\\Bootstrap\\DispatcherBootstrap'
 ];

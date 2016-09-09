@@ -10,9 +10,6 @@ use \Twig_SimpleFunction;
 
 class Twig implements ViewEngineInterface
 {
-
-    private $PUBLIC_PATH = 'public/';
-
     /**
      * @var Twig_Environment
      */
@@ -105,7 +102,7 @@ class Twig implements ViewEngineInterface
 
     public function assetFunction($file)
     {
-        return Application::getInstance()->url($this->PUBLIC_PATH . $file);
+        return Application::getInstance()->getPublicUrl($file);
     }
 
     public function urlFunction($url = '')
