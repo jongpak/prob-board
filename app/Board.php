@@ -10,13 +10,20 @@ use Doctrine\ORM\EntityManager;
 
 class Board
 {
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    public function __construct()
+    {
+        $this->entityManager = DatabaseManager::getInstance()->getEntityManager();
+    }
+
     public function index($name, ViewModel $viewModel)
     {
-        /** @var EntityManager */
-        $entityManager = DatabaseManager::getInstance()->getEntityManager();
-
-        $board = $entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
-        $posts = $entityManager->getRepository(PostModel::class)->findBy(['board' => $board->getId()]);
+        $board = $this->entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
+        $posts = $this->entityManager->getRepository(PostModel::class)->findBy(['board' => $board->getId()]);
 
         $viewModel->set('board', $board);
         $viewModel->set('posts', $posts);

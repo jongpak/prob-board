@@ -10,11 +10,19 @@ use Doctrine\ORM\EntityManager;
 
 class Post
 {
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    public function __construct()
+    {
+        $this->entityManager = DatabaseManager::getInstance()->getEntityManager();
+    }
+
     public function index($id, ViewModel $viewModel)
     {
-        /** @var EntityManager */
-        $entityManager = DatabaseManager::getInstance()->getEntityManager();
-        $post = $entityManager->getRepository(PostModel::class)->find($id);
+        $post = $this->entityManager->getRepository(PostModel::class)->find($id);
 
         $viewModel->set('post', $post);
 
