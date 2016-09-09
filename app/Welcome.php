@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Core\ViewModel;
-use Core\Application;
+use Core\DatabaseManager;
 use App\Auth\AuthManager;
 use App\Entity\Board;
 use Doctrine\ORM\EntityManager;
@@ -13,7 +13,7 @@ class Welcome
     public function index(ViewModel $viewModel)
     {
         /** @var EntityManager */
-        $entityManager = Application::getInstance()->getEntityManager();
+        $entityManager = DatabaseManager::getInstance()->getEntityManager();
         $boards = $entityManager->getRepository(Board::class)->findAll();
 
         $viewModel->set('boards', $boards);

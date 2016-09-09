@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use Core\ViewModel;
-use Core\Application;
+use Core\DatabaseManager;
 use App\Auth\AuthManager;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
@@ -14,7 +14,7 @@ class Board
     public function index($name, ViewModel $viewModel)
     {
         /** @var EntityManager */
-        $entityManager = Application::getInstance()->getEntityManager();
+        $entityManager = DatabaseManager::getInstance()->getEntityManager();
 
         $board = $entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
         $posts = $entityManager->getRepository(PostModel::class)->findBy(['board' => $board->getId()]);
