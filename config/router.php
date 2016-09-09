@@ -6,6 +6,7 @@ return [
     '/' => 'Welcome.index',
 
     '/{name:string}' => 'Board.index',
+    '/{name:string}/post' => 'Board.writeForm',
 
     '/post/{id:int}' => 'Post.index',
 ];

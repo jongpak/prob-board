@@ -19,4 +19,8 @@
     </tr>
     {% endfor %}
 </table>
+
+<div class="action">
+    <a href="{{ url(board.getName() ~ '/post') }}">Write</a>
+</div>
 {% endblock %}

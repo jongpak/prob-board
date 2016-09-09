@@ -30,4 +30,12 @@ class Board
 
         return 'default/postList';
     }
+
+    public function writeForm($name, ViewModel $viewModel)
+    {
+        $board = $this->entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
+        $viewModel->set('board', $board);
+
+        return 'default/postWriteForm';
+    }
 }
