@@ -2,13 +2,13 @@
 
 namespace App\ViewEngine;
 
-use Core\ViewEngineInterface;
+use Core\View\ViewEngineInterface;
 use Core\Application;
 use \Twig_Loader_Filesystem;
 use \Twig_Environment;
 use \Twig_SimpleFunction;
 
-class Twig implements ViewEngineInterface
+class TwigView implements ViewEngineInterface
 {
     /**
      * @var Twig_Environment

@@ -9,7 +9,7 @@ use Prob\Router\Dispatcher as RouterDispatcher;
 use Prob\Router\Matcher;
 use Prob\Router\Map;
 use Core\ViewModel;
-use Core\EventManager;
+use Core\Event\EventManager;
 use Core\ViewEngineInterface;
 use Core\ViewResolverInterface;
 
@@ -135,7 +135,7 @@ class Dispatcher
 
         $parameterMap = $parameterMapper->getParameterMap();
 
-        EventManager::getInstance()->getEventManager()->trigger($eventName, [$parameterMap]);
+        EventManager::getEventManager()->trigger($eventName, [$parameterMap]);
     }
 
     private function renderView($controllerResult, ViewModel $viewModel)

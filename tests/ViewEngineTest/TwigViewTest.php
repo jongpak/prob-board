@@ -3,14 +3,13 @@
 namespace Core;
 
 use PHPUnit\Framework\TestCase;
-use App\ViewEngine\Twig;
+use App\ViewEngine\TwigView;
 
 class TwigViewTest extends TestCase
 {
     public function getTwigSetting()
     {
         return [
-            'class' => 'App\\ViewEngine\\Twig',
             'path' => __DIR__ . '/mock',
             'postfix' => '.twig',
             'settings' => []
@@ -19,7 +18,7 @@ class TwigViewTest extends TestCase
 
     public function testStringView()
     {
-        $view = new Twig($this->getTwigSetting());
+        $view = new TwigView($this->getTwigSetting());
         $view->file('test');
         $view->set('key', 'ok');
 
@@ -33,17 +32,17 @@ class TwigViewTest extends TestCase
     {
         $application = Application::getInstance();
         $application->setSiteConfig([
-            'url' => 'http://test.com/',
-            'viewEngine' => 'Twig',
+            'url' => '/',
+            'publicPath' => '/public/',
         ]);
 
-        $view = new Twig($this->getTwigSetting());
+        $view = new TwigView($this->getTwigSetting());
         $view->file('testCustomFunction');
 
         $this->expectOutputString(
             "<link rel=\"stylesheet\" type=\"text/css\" href=\"css_test\">\n" .
-            "http://test.com/public/asset_test\n" .
-            "http://test.com/url_test"
+            "/public/asset_test\n" .
+            "/url_test"
         );
         $view->render();
     }

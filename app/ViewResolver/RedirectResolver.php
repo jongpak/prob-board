@@ -2,8 +2,8 @@
 
 namespace App\ViewResolver;
 
-use Core\ViewResolverInterface;
-use App\ViewEngine\Redirect;
+use Core\View\ViewResolverInterface;
+use App\ViewEngine\RedirectView;
 
 class RedirectResolver implements ViewResolverInterface
 {
@@ -20,11 +20,11 @@ class RedirectResolver implements ViewResolverInterface
             return;
         }
 
-        if (preg_match('/redirect:(.*)/', $viewData, $url) === 0) {
+        if (preg_match('/^redirect:(.*)/', $viewData, $url) === 0) {
             return;
         }
 
-        $view = new Redirect($this->settings);
+        $view = new RedirectView($this->settings);
         $view->file(trim($url[1]));
 
         return $view;
