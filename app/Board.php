@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 
 class Board
 {
+
     /**
      * @var EntityManager
      */
@@ -31,7 +32,7 @@ class Board
         return 'default/postList';
     }
 
-    public function writeForm($name, ViewModel $viewModel)
+    public function showPostingForm($name, ViewModel $viewModel)
     {
         $board = $this->entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
         $viewModel->set('board', $board);
