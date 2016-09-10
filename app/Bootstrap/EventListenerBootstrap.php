@@ -3,17 +3,12 @@
 namespace App\Bootstrap;
 
 use Core\Bootstrap\BootstrapInterface;
-use Core\EventManager;
+use Core\Event\EventManager;
 
 class EventListenerBootstrap implements BootstrapInterface
 {
-    public function boot()
+    public function boot(array $env)
     {
-        EventManager::getInstance()->registerListener($this->getListeners());
-    }
-
-    private function getListeners()
-    {
-        return require __DIR__ . '/../../config/event.php';
+        EventManager::registerListener($env['event']);
     }
 }

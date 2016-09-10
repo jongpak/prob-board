@@ -2,33 +2,24 @@
 
 namespace Core\Bootstrap;
 
-use Core\Application;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Uri;
 
 class Bootstrap
 {
-    /**
-     * @var Application
-     */
-    private $app;
-
     private $bootstraps = [];
 
-    public function __construct()
+    public function __construct(array $bootstraps)
     {
-        $this->app = Application::getInstance();
-        $this->bootstraps = require __DIR__ . '/../../config/bootstrap.php';
+        $this->bootstraps = $bootstraps;
     }
 
-    public function boot()
+    public function boot(array $env)
     {
         foreach ($this->bootstraps as $bootstrapClassName) {
-            /**
-             * @var BootstrapInterface
-             */
+            /** @var BootstrapInterface */
             $bootstrap = new $bootstrapClassName();
-            $bootstrap->boot($this->app);
+            $bootstrap->boot($env);
         }
     }
 }

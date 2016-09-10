@@ -1,6 +1,6 @@
 <?php
 
-namespace Core;
+namespace Core\Event;
 
 use PHPUnit\Framework\TestCase;
 use Prob\Handler\ParameterMap;
@@ -28,7 +28,7 @@ class EventListenerRegisterTest extends TestCase
         $param->bindBy(new Named('str2'), 'test2');
 
         $this->expectOutputString('test1test2');
-        Application::getInstance()->getEventManager()->trigger('event.one', [$param]);
-        Application::getInstance()->getEventManager()->trigger('event.two', [$param]);
+        EventManager::getEventManager()->trigger('event.one', [$param]);
+        EventManager::getEventManager()->trigger('event.two', [$param]);
     }
 }
