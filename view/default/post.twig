@@ -4,9 +4,9 @@
 
 
 {% block body %}
-<h2>{{ post.getSubject() }}</h2>
+<h2 class="page-header">{{ post.getSubject() }}</h2>
 
-<ul class="postInfo">
+<ul class="postInfo well list-unstyled">
     <li><span>Author:</span> {{ post.getAuthor() }}</li>
     <li><span>Time:</span> {{ post.getCreatedAt() | date('Y-M-d') }}</li>
 </ul>

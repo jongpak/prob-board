@@ -1,23 +1,17 @@
 body {
-    margin: 0;
-    padding: 0;
-}
-
-a {
-    color: rgb(50, 50, 50);
+    font-family: sans-serif;
 }
 
 header {
     padding: 10px;
     background: rgb(50, 50, 50);
-    font-size: 10pt;
     color: white;
 }
 
 h1 {
     margin: 0 auto;
-    padding: 0;
     width: 1000px;
+    font-size: 20pt;
 }
 
 body > section {
@@ -26,56 +20,25 @@ body > section {
     font-size: 14pt;
 }
 
-table.list {
-    width: 100%;
-}
-table.list caption {
-    font-weight: bold;
-    margin-bottom: 0.5em;
-}
-
-table.list th,
-table.list td {
-    padding: 0.5em;
-}
-table.list th {
-    background: rgb(220, 220, 220);
-}
-table.list tr:nth-child(2n+1) {
-    background: rgb(245, 245, 245);
-}
-
-table.list .no {
+.table .no {
     width: 3em;
     text-align: center;
 }
-table.list .author {
-    width: 7em;
+.table .author {
+    width: 8em;
     text-align: center;
 }
-table.list .time {
-    width: 7em;
+.table .time {
+    width: 8em;
     text-align: center;
 }
 
 
-section.post h2 {
-    border-bottom: 1px solid rgb(200, 200, 200);
-}
-
-section.post ul.postInfo {
-    margin: 0;
+ul.postInfo {
     padding: 10px 20px;
     float: right;
-    background: rgb(240, 240, 240);
 }
 
-section.post ul.postInfo li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-section.post ul.postInfo li span {
+ul.postInfo li span {
     font-weight: bold;
 }

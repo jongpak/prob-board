@@ -1,16 +1,18 @@
 {% extends 'default/layout.twig' %}
 
 {% block body %}
-<h2>Posts</h2>
+<h2 class="page-header">Posts <small> / {{ board.getTitle() }}</small></h2>
 
-<table class="list">
-    <caption>{{ board.getTitle() }}</caption>
+<table class="table table-hover">
+    <thead>
     <tr>
         <th class="no">No.</th>
         <th class="subject">Subject</th>
         <th class="author">Author</th>
         <th class="time">Time</th>
     </tr>
+    </thead>
+    <tbody>
     {% for post in posts %}
     <tr>
         <td class="no">{{ post.getId() }}</td>
@@ -19,9 +21,8 @@
         <td class="time">{{ post.getCreatedAt() | date('Y-M-d') }}</td>
     </tr>
     {% endfor %}
+    </tobdy>
 </table>
 
-<div class="action">
-    <a href="{{ url(board.getName() ~ '/post') }}">Write</a>
-</div>
+<a href="{{ url(board.getName() ~ '/post') }}" class="btn btn-default">Write</a>
 {% endblock %}
