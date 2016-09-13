@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use Core\ViewModel;
+use Core\Application;
 use Core\DatabaseManager;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use Doctrine\ORM\EntityManager;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Board
 {
@@ -37,5 +39,23 @@ class Board
         $viewModel->set('board', $board);
 
         return 'default/postWriteForm';
+    }
+
+    public function writePost($name, ServerRequestInterface $request)
+    {
+        /** @var BoardModel */
+        $board = $this->entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
+
+        $post = new PostModel();
+        $post->setBoard($board->getId());
+        $post->setSubject($request->getParsedBody()['subject']);
+        $post->setContent($request->getParsedBody()['content']);
+        $post->setAuthor($request->getParsedBody()['author']);
+        $post->setPassword($request->getParsedBody()['password']);
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
+
+        return 'redirect: ' . Application::getInstance()->url('/post/' . $post->getId());
     }
 }

@@ -6,7 +6,10 @@ return [
     '/' => 'Welcome.index',
 
     '/{name:string}' => 'Board.index',
-    '/{name:string}/post' => 'Board.showPostingForm',
+    '/{name:string}/post' => [
+        'GET' => 'Board.showPostingForm',
+        'POST' => 'Board.writePost',
+    ],
 
     '/post/{id:int}' => 'Post.index',
 ];
