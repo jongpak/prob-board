@@ -11,9 +11,7 @@ class Welcome
 {
     public function index(ViewModel $viewModel)
     {
-        /** @var EntityManager */
-        $entityManager = DatabaseManager::getDefaultEntityManager();
-        $boards = $entityManager->getRepository(Board::class)->findAll();
+        $boards = DatabaseManager::getEntityManager()->getRepository(Board::class)->findAll();
 
         $viewModel->set('boards', $boards);
 

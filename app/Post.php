@@ -17,7 +17,7 @@ class Post
 
     public function __construct()
     {
-        $this->entityManager = DatabaseManager::getDefaultEntityManager();
+        $this->entityManager = DatabaseManager::getEntityManager();
     }
 
     public function index($id, ViewModel $viewModel)

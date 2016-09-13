@@ -5,42 +5,38 @@ namespace Core;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
+use \Exception;
+use \RuntimeException;
+
 class DatabaseManager
 {
-    private $config = [];
-    private static $defaultConfig = [];
+    protected static $config = [];
 
-    public function setConfig(array $config)
+    public static function setConfig(array $config)
     {
-        $this->config = $config;
-    }
-
-    public static function setDefaultConfig(array $config)
-    {
-        self::$defaultConfig = $config;
+        self::$config = $config;
     }
 
     /**
      * @return EntityManager
      */
-    public function getEntityManager()
+    public static function getEntityManager($connectionName = null)
     {
-        $config = Setup::createAnnotationMetadataConfiguration(
-                    $this->config['entityPath'],
-                    $this->config['devMode']
-                    );
-        return EntityManager::create($this->config['connections'][$this->config['defaultConnection']], $config);
-    }
+        $connectionName = $connectionName ?: self::$config['defaultConnection'];
 
-    /**
-     * @return EntityManager
-     */
-    public static function getDefaultEntityManager()
-    {
-        $config = Setup::createAnnotationMetadataConfiguration(
-                    self::$defaultConfig['entityPath'],
-                    self::$defaultConfig['devMode']
-                    );
-        return EntityManager::create(self::$defaultConfig['connections'][self::$defaultConfig['defaultConnection']], $config);
+        try {
+            $config = Setup::createAnnotationMetadataConfiguration(
+                self::$config['entityPath'],
+                self::$config['devMode']
+            );
+            $entityManager = EntityManager::create(self::$config['connections'][$connectionName], $config);
+            $entityManager->getConnection()->connect();
+
+            return $entityManager;
+        } catch (Exception $e) {
+            throw self::$config['devMode']
+                ? new RuntimeException('Error raised when trying to connect database')
+                : $e;
+        }
     }
 }

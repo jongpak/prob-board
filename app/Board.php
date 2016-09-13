@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManager;
 
 class Board
 {
-
     /**
      * @var EntityManager
      */
@@ -18,7 +17,7 @@ class Board
 
     public function __construct()
     {
-        $this->entityManager = DatabaseManager::getDefaultEntityManager();
+        $this->entityManager = DatabaseManager::getEntityManager();
     }
 
     public function index($name, ViewModel $viewModel)

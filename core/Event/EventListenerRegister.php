@@ -18,19 +18,29 @@ class EventListenerRegister
     public function register()
     {
         foreach ($this->getEventNames() as $eventName => $handler) {
-            $proc = $this->getEventListenerProc($handler);
-            EventManager::getEventManager()->on($eventName, $proc);
+            if (is_array($handler) === false) {
+                $handler = [$handler];
+            }
+
+            foreach ($handler as $handlerItem) {
+                $this->registerHandler($eventName, $handlerItem);
+            }
         }
+    }
+
+    private function registerHandler($eventName, $handler)
+    {
+        $proc = $this->getEventListenerProc($handler);
+        EventManager::getEventManager()->on($eventName, $proc);
     }
 
     private function getEventNames()
     {
         $glue = new KeyGlue();
         $glue->setArray($this->eventListeners);
-        $glue->setWithValue(true);
         $glue->setGlueCharacter('.');
 
-        return $glue->glue();
+        return $glue->glueKeyAndContainValue();
     }
 
     private function getEventListenerProc($handler)
