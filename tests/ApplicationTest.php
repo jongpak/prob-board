@@ -6,20 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class ApplicationTest extends TestCase
 {
-    /**
-     * @var Application
-     */
-    private $application;
-
-    public function setUp()
-    {
-        $application = Application::getInstance();
-        $application->setSiteConfig($this->getSiteConfig());
-
-        $this->application = $application;
-    }
-
-    private function getSiteConfig()
+    private function getConfig1()
     {
         return [
             'url' => '/prob/',
@@ -27,19 +14,44 @@ class ApplicationTest extends TestCase
         ];
     }
 
+    private function getConfig2()
+    {
+        return [
+            'url' => '/prob',
+            'publicPath' => '/prob/public',
+        ];
+    }
+
     public function testRootUrl()
     {
-        $this->assertEquals('/prob/', $this->application->url());
-        $this->assertEquals('/prob/', $this->application->url('/'));
+        Application::setConfig($this->getConfig1());
+        $this->assertEquals('/prob/', Application::getUrl());
+        $this->assertEquals('/prob/', Application::getUrl('/'));
+
+        Application::setConfig($this->getConfig2());
+        $this->assertEquals('/prob/', Application::getUrl());
+        $this->assertEquals('/prob/', Application::getUrl('/'));
     }
 
     public function testUrl()
     {
-        $this->assertEquals('/prob/test/ok', $this->application->url('test/ok'));
+        Application::setConfig($this->getConfig1());
+        $this->assertEquals('/prob/test/ok', Application::getUrl('test/ok'));
+        $this->assertEquals('/prob/test/ok', Application::getUrl('/test/ok'));
+
+        Application::setConfig($this->getConfig2());
+        $this->assertEquals('/prob/test/ok', Application::getUrl('test/ok'));
+        $this->assertEquals('/prob/test/ok', Application::getUrl('/test/ok'));
     }
 
     public function testPublicUrl()
     {
-        $this->assertEquals('/prob/public/style.css', $this->application->getPublicUrl('style.css'));
+        Application::setConfig($this->getConfig1());
+        $this->assertEquals('/prob/public/style.css', Application::getPublicUrl('style.css'));
+        $this->assertEquals('/prob/public/style.css', Application::getPublicUrl('/style.css'));
+
+        Application::setConfig($this->getConfig2());
+        $this->assertEquals('/prob/public/style.css', Application::getPublicUrl('style.css'));
+        $this->assertEquals('/prob/public/style.css', Application::getPublicUrl('/style.css'));
     }
 }

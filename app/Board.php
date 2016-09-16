@@ -4,22 +4,20 @@ namespace App\Controller;
 
 use Core\ViewModel;
 use Core\Application;
-use Core\DatabaseManager;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
-use Doctrine\ORM\EntityManager;
-use Psr\Http\Message\ServerRequestInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Board
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = DatabaseManager::getEntityManager();
+        $this->entityManager = $entityManager;
     }
 
     public function index($name, ViewModel $viewModel)
@@ -41,21 +39,21 @@ class Board
         return 'default/postWriteForm';
     }
 
-    public function writePost($name, ServerRequestInterface $request)
+    public function writePost($name, $parsedBody)
     {
         $board = $this->getBoard($name);
 
         $post = new PostModel();
         $post->setBoard($board->getId());
-        $post->setSubject($request->getParsedBody()['subject']);
-        $post->setContent($request->getParsedBody()['content']);
-        $post->setAuthor($request->getParsedBody()['author']);
-        $post->setPassword($request->getParsedBody()['password']);
+        $post->setSubject($parsedBody['subject']);
+        $post->setContent($parsedBody['content']);
+        $post->setAuthor($parsedBody['author']);
+        $post->setPassword($parsedBody['password']);
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();
 
-        return 'redirect: ' . Application::getInstance()->url('/post/' . $post->getId());
+        return 'redirect: ' . Application::getUrl('/post/' . $post->getId());
     }
 
     /**

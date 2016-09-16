@@ -3,21 +3,20 @@
 namespace App\Controller;
 
 use Core\ViewModel;
-use Core\DatabaseManager;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Post
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->entityManager = DatabaseManager::getEntityManager();
+        $this->entityManager = $entityManager;
     }
 
     public function index($id, ViewModel $viewModel)
