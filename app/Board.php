@@ -36,7 +36,7 @@ class Board
         $board = $this->getBoard($name);
         $viewModel->set('board', $board);
 
-        return 'default/postWriteForm';
+        return 'default/postingForm';
     }
 
     public function writePost($name, $parsedBody)

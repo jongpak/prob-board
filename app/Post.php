@@ -45,6 +45,6 @@ class Post
         $viewModel->set('post', $this->post);
         $viewModel->set('board', $this->board);
 
-        return 'default/postWriteForm';
+        return 'default/postingForm';
     }
 }
