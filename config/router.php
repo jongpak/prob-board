@@ -8,12 +8,12 @@ return [
     '/{name:string}' => 'Board.index',
     '/{name:string}/post' => [
         'GET' => 'Board.showPostingForm',
-        'POST' => 'Board.writePost',
+        'POST' => 'Board.write',
     ],
 
     '/post/{id:int}' => 'Post.index',
     '/post/{id:int}/edit' => [
         'GET' => 'Post.showEditForm',
-        'POST' => 'Post.editPost'
+        'POST' => 'Post.edit'
     ],
 ];

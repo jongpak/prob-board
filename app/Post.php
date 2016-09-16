@@ -50,7 +50,7 @@ class Post
         return 'default/postingForm';
     }
 
-    public function editPost($id, $parsedBody)
+    public function edit($id, $parsedBody)
     {
         $this->post->setSubject($parsedBody['subject']);
         $this->post->setContent($parsedBody['content']);

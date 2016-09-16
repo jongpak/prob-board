@@ -39,7 +39,7 @@ class Board
         return 'default/postingForm';
     }
 
-    public function writePost($name, $parsedBody)
+    public function write($name, $parsedBody)
     {
         $board = $this->getBoard($name);
 
