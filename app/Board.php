@@ -15,17 +15,22 @@ class Board
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var BoardModel
+     */
+    private $board;
+
+    public function __construct($name, EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+        $this->board = $entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
     }
 
     public function index($name, ViewModel $viewModel)
     {
-        $board = $this->getBoard($name);
-        $posts = $this->getPosts($board);
+        $posts = $this->getPosts();
 
-        $viewModel->set('board', $board);
+        $viewModel->set('board', $this->board);
         $viewModel->set('posts', $posts);
 
         return 'default/postList';
@@ -33,18 +38,15 @@ class Board
 
     public function showPostingForm($name, ViewModel $viewModel)
     {
-        $board = $this->getBoard($name);
-        $viewModel->set('board', $board);
+        $viewModel->set('board', $this->board);
 
         return 'default/postingForm';
     }
 
     public function write($name, $parsedBody)
     {
-        $board = $this->getBoard($name);
-
         $post = new PostModel();
-        $post->setBoard($board->getId());
+        $post->setBoard($this->board->getId());
         $post->setSubject($parsedBody['subject']);
         $post->setContent($parsedBody['content']);
         $post->setAuthor($parsedBody['author']);
@@ -57,19 +59,11 @@ class Board
     }
 
     /**
-     * @param  string $name name of board
-     * @return BoardModel
-     */
-    private function getBoard($name)
-    {
-        return $this->entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
-    }
-
-    /**
      * @return array
      */
-    private function getPosts(BoardModel $board)
+    private function getPosts()
     {
-        return $this->entityManager->getRepository(PostModel::class)->findBy(['board' => $board->getId()], ['id' => 'DESC']);
+        return $this->entityManager->getRepository(PostModel::class)
+                ->findBy(['board' => $this->board->getId()], ['id' => 'DESC']);
     }
 }
