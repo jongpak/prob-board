@@ -70,6 +70,6 @@ class Board
      */
     private function getPosts(BoardModel $board)
     {
-        return $this->entityManager->getRepository(PostModel::class)->findBy(['board' => $board->getId()]);
+        return $this->entityManager->getRepository(PostModel::class)->findBy(['board' => $board->getId()], ['id' => 'DESC']);
     }
 }
