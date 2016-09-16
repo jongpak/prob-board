@@ -8,6 +8,12 @@ header {
     color: white;
 }
 
+body > section, header > div {
+    margin: 0 auto;
+    width: 1000px;
+    font-size: 14pt;
+}
+
 header:after {
     content: ' ';
     display: block;
@@ -22,12 +28,6 @@ h1 {
 
 header form {
     float: right;
-}
-
-body > section, header > div {
-    margin: 0 auto;
-    width: 1000px;
-    font-size: 14pt;
 }
 
 .table .no {
