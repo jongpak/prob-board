@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class Post
 {
+
     /**
      * @var EntityManagerInterface
      */
@@ -21,9 +22,13 @@ class Post
 
     public function index($id, ViewModel $viewModel)
     {
+        /** @var PostModel */
         $post = $this->entityManager->getRepository(PostModel::class)->find($id);
+        /** @var BoardModel */
+        $board = $this->entityManager->getRepository(BoardModel::class)->find($post->getBoard());
 
         $viewModel->set('post', $post);
+        $viewModel->set('board', $board);
 
         return 'default/post';
     }

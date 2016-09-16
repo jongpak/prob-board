@@ -42,3 +42,8 @@ ul.postInfo {
 ul.postInfo li span {
     font-weight: bold;
 }
+
+
+nav.action {
+    margin-top: 50px;
+}
