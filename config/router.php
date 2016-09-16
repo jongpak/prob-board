@@ -12,4 +12,5 @@ return [
     ],
 
     '/post/{id:int}' => 'Post.index',
+    '/post/{id:int}/edit' => 'Post.showEditForm',
 ];
