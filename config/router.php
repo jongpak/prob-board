@@ -12,5 +12,8 @@ return [
     ],
 
     '/post/{id:int}' => 'Post.index',
-    '/post/{id:int}/edit' => 'Post.showEditForm',
+    '/post/{id:int}/edit' => [
+        'GET' => 'Post.showEditForm',
+        'POST' => 'Post.editPost'
+    ],
 ];

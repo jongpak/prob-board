@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use Core\ViewModel;
+use Core\Application;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use Doctrine\ORM\EntityManagerInterface;
+use \DateTime;
 
 class Post
 {
@@ -46,5 +48,17 @@ class Post
         $viewModel->set('board', $this->board);
 
         return 'default/postingForm';
+    }
+
+    public function editPost($id, $parsedBody)
+    {
+        $this->post->setSubject($parsedBody['subject']);
+        $this->post->setContent($parsedBody['content']);
+        $this->post->setAuthor($parsedBody['author']);
+        $this->post->setUpdatedAt(new DateTime());
+
+        $this->entityManager->flush();
+
+        return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
     }
 }

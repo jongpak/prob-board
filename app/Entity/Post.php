@@ -118,4 +118,9 @@ class Post
     {
         return $this->created_at;
     }
+
+    public function setUpdatedAt(DateTime $datetime)
+    {
+        $this->updated_at = $datetime;
+    }
 }
