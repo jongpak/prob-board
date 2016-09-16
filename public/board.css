@@ -8,13 +8,23 @@ header {
     color: white;
 }
 
-h1 {
-    margin: 0 auto;
-    width: 1000px;
-    font-size: 20pt;
+header:after {
+    content: ' ';
+    display: block;
+    clear: both;
 }
 
-body > section {
+h1 {
+    margin: 0 auto;
+    font-size: 20pt;
+    float: left;
+}
+
+header form {
+    float: right;
+}
+
+body > section, header > div {
     margin: 0 auto;
     width: 1000px;
     font-size: 14pt;
