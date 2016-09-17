@@ -1,8 +1,5 @@
 {% extends 'default/layout.twig' %}
 
-{% block sectionClassName %}post{% endblock %}
-
-
 {% block body %}
 <article>
 <h2 class="page-header">{{ post.getSubject() }}</h2>
@@ -31,8 +28,7 @@
     {% for comment in comments %}
     <div class="well">
         <p>
-            <label>Author:</label> {{ comment.getAuthor() }}
-            /
+            <label>Author:</label> {{ comment.getAuthor() }} /
             <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time>
         </p>
         {{ comment.getContent() }}
