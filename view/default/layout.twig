@@ -11,7 +11,7 @@
 <header>
     <div>
     <h1>Prob-board</h1>
-    <form class="form-inline">
+    <form method="POST" action="{{ url('/auth/login') }}" class="form-inline">
         <div class="form-group">
             <label class="sr-only">ID</label>
             <input type="text" name="account_id" value="" placeholder="ID" class="form-control input-sm" />

@@ -5,6 +5,12 @@ return [
 
     '/' => 'Welcome.index',
 
+    '/auth/login' => [
+        'GET' => 'Auth.viewLoginForm',
+        'POST' => 'Auth.doLogin'
+    ],
+    '/auth/logout' => 'Auth.doLogout',
+
     '/{name:string}' => 'Board.index',
     '/{name:string}/post' => [
         'GET' => 'Board.showPostingForm',
