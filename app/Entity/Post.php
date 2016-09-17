@@ -18,7 +18,8 @@ class Post
     protected $id;
 
     /**
-     * @Column(type="integer")
+     * @ManyToOne(targetEntity="Board")
+     * @JoinColumn(name="board", referencedColumnName="id")
      */
     protected $board;
 
