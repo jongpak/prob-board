@@ -2,8 +2,9 @@
 
 return [
     'defaultAllow' => true,
-    'defaultAccountManager' => 'FileBaseAccountManager',
+    'defaultAccountManager' => 'DatabaseAccountManager',
     'defaultLoginManager' => 'SessionLoginManager',
+    'defaultPermissionManager' => 'DatabasePermissionManager',
 
     'accountManagers' => [
         'FileBaseAccountManager' => [
@@ -11,12 +12,29 @@ return [
             'settings' => [
                 'accounts' => require 'accounts.php'
             ]
+        ],
+        'DatabaseAccountManager' => [
+            'class' => 'App\\Auth\\AccountManager\\DatabaseAccountManager',
+            'settings' => []
         ]
     ],
 
     'loginManagers' => [
         'SessionLoginManager' => [
             'class' => 'App\\Auth\\LoginManager\\SessionLoginManager',
+            'settings' => []
+        ]
+    ],
+
+    'permissionManagers' => [
+        'FileBasePermissionManager' => [
+            'class' => 'App\\Auth\\PermissionManager\\FileBasePermissionManager',
+            'settings' => [
+                'permissions' => require 'permission.php'
+            ]
+        ],
+        'DatabasePermissionManager' => [
+            'class' => 'App\\Auth\\PermissionManager\\DatabasePermissionManager',
             'settings' => []
         ]
     ]
