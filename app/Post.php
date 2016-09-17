@@ -72,7 +72,7 @@ class Post
 
     public function writeComment($id, $parsedBody)
     {
-        $comment = new Comment();
+        $comment = new CommentModel();
         $comment->setPost($this->post);
         $comment->setAuthor($parsedBody['author']);
         $comment->setPassword($parsedBody['password']);
