@@ -23,11 +23,6 @@ class Post
     private $post;
 
     /**
-     * @var BoardModel
-     */
-    private $board;
-
-    /**
      * @var CommentModel
      */
     private $comment;
@@ -37,14 +32,12 @@ class Post
         $this->entityManager = $entityManager;
 
         $this->post = $this->entityManager->getRepository(PostModel::class)->find($id);
-        $this->board = $this->entityManager->getRepository(BoardModel::class)->find($this->post->getBoard());
         $this->comment = $this->entityManager->getRepository(CommentModel::class)->findBy(['post' => $this->post->getId()]);
     }
 
     public function index(ViewModel $viewModel)
     {
         $viewModel->set('post', $this->post);
-        $viewModel->set('board', $this->board);
         $viewModel->set('comments', $this->comment);
 
         return 'default/post';
@@ -53,7 +46,6 @@ class Post
     public function showEditForm(ViewModel $viewModel)
     {
         $viewModel->set('post', $this->post);
-        $viewModel->set('board', $this->board);
 
         return 'default/postingForm';
     }
