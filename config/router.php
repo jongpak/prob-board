@@ -25,4 +25,9 @@ return [
     '/post/{id:int}/comment' => [
         'POST' => 'Post.writeComment'
     ],
+
+    '/comment/{id:int}/edit' => [
+        'GET' => 'Comment.showEditForm',
+        'POST' => 'Comment.edit'
+    ]
 ];

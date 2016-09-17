@@ -1,6 +1,17 @@
-<form method="POST" action="{{ url('/post/' ~ post.getId() ~ '/comment') }}">
+{% extends comment.getId() ? 'default/layout.twig' : 'default/empty.twig' %}
+
+{% block body %}
+
+{% if comment.getId() %}
+<h2 class="page-header">Editing commeent</h2>
+{% endif %}
+
+<form method="POST" action="{{ comment.getId() ? '' : url('/post/' ~ post.getId() ~ '/comment') }}">
 <fieldset>
+    {% if not comment.getId() %}
     <legend>Writing comment</legend>
+    {% endif %}
+
     <div class="row">
     <div class="form-group col-sm-6">
         <label>Author</label>
@@ -20,3 +31,4 @@
     </div>
 </fieldset>
 </form>
+{% endblock %}
