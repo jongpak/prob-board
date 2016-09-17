@@ -19,6 +19,32 @@
 }}
 </section>
 
+<section class="comment">
+<h3>Comments</h3>
+
+{% if comments is empty %}
+    <p>No comment.</p>
+{% else %}
+
+    {% for comment in comments %}
+    <div class="well">
+        <p>
+            <label>Author:</label> {{ comment.getAuthor() }}
+            /
+            <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time>
+        </p>
+        {{ comment.getContent() }}
+    </div>
+    <hr />
+    {% endfor %}
+
+{% endif %}
+
+<div class="well">
+{{ include ('default/commentForm.twig') }}
+</div>
+</section>
+
 <nav class="action">
     <a class="btn btn-default" href="{{ url(board.getName() ) }}">List</a>
     <a class="btn btn-default" href="{{ url('/post/' ~ post.getId() ~ '/edit' ) }}">Edit</a>
