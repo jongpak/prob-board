@@ -8,18 +8,6 @@ header {
     color: white;
 }
 
-body > section, header > div {
-    margin: 0 auto;
-    width: 1000px;
-    font-size: 14pt;
-}
-
-header:after {
-    content: ' ';
-    display: block;
-    clear: both;
-}
-
 h1 {
     margin: 0 auto;
     font-size: 20pt;
@@ -57,6 +45,9 @@ ul.postInfo li span {
     font-weight: bold;
 }
 
+section.comment {
+    margin-top: 75px;
+}
 
 nav.action {
     margin-top: 50px;
