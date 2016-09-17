@@ -11,6 +11,8 @@
 <header>
     <div>
     <h1>Prob-board</h1>
+    <div class="loginPanel">
+    {% if not loggedAccountId %}
     <form method="POST" action="{{ url('/auth/login') }}" class="form-inline">
         <div class="form-group">
             <label class="sr-only">ID</label>
@@ -24,6 +26,13 @@
             <input type="submit" value="Login" class="btn btn-primary btn-sm" />
         </div>
     </form>
+    {% else %}
+    <p>
+        User: {{ loggedAccountId }}
+        <a class="btn btn-warning btn-sm" href="{{ url('/auth/logout') }}">Logout</a>
+    </p>
+    {% endif %}
+    </div>
     </div>
 </header>
 
