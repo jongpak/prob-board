@@ -46,7 +46,7 @@ class Board
     public function write($name, $parsedBody)
     {
         $post = new PostModel();
-        $post->setBoard($this->board->getId());
+        $post->setBoard($this->board);
         $post->setSubject($parsedBody['subject']);
         $post->setContent($parsedBody['content']);
         $post->setAuthor($parsedBody['author']);
