@@ -4,6 +4,7 @@
 
 
 {% block body %}
+<article>
 <h2 class="page-header">{{ post.getSubject() }}</h2>
 
 <ul class="postInfo well list-unstyled">
@@ -11,13 +12,14 @@
     <li><span>Time:</span> {{ post.getCreatedAt() | date('Y-M-d') }}</li>
 </ul>
 
-<section class="content">
+<div class="content">
 {{
     post.getContent
     | escape
     | nl2br
 }}
-</section>
+</div>
+</article>
 
 <section class="comment">
 <h3>Comments</h3>
@@ -35,7 +37,7 @@
         </p>
         {{ comment.getContent() }}
     </div>
-    <hr />
+    <hr class="hidden" />
     {% endfor %}
 
 {% endif %}
