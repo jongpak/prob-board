@@ -1,5 +1,6 @@
 body {
     font-family: sans-serif;
+    margin-bottom: 50px;
 }
 
 header {
@@ -46,7 +47,7 @@ ul.postInfo li span {
 }
 
 section.comment {
-    margin-top: 75px;
+    margin-top: 40px;
 }
 
 nav.action {

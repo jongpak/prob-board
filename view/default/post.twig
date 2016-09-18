@@ -18,6 +18,11 @@
 </div>
 </article>
 
+<nav class="action">
+    <a class="btn btn-default" href="{{ url(post.getBoard().getName() ) }}">List</a>
+    <a class="btn btn-default" href="{{ url('/post/' ~ post.getId() ~ '/edit' ) }}">Edit</a>
+</nav>
+
 <section class="comment">
 <h3>Comments</h3>
 
