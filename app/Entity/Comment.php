@@ -10,7 +10,6 @@ use \DateTime;
  */
 class Comment
 {
-
     /**
      * @Id
      * @Column(type="integer")
@@ -97,6 +96,9 @@ class Comment
 
     public function getAuthor()
     {
+        if ($this->user) {
+            return $this->user->getNickname();
+        }
         return $this->author;
     }
 
@@ -107,6 +109,9 @@ class Comment
 
     public function getPassword()
     {
+        if ($this->user) {
+            return $this->user->getPassword();
+        }
         return $this->password;
     }
 

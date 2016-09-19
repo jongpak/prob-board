@@ -111,6 +111,9 @@ class Post
 
     public function getAuthor()
     {
+        if ($this->user) {
+            return $this->user->getNickname();
+        }
         return $this->author;
     }
 
@@ -121,6 +124,9 @@ class Post
 
     public function getPassword()
     {
+        if ($this->user) {
+            return $this->user->getPassword();
+        }
         return $this->password;
     }
 
