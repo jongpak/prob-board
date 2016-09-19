@@ -34,6 +34,11 @@ class Post
     protected $content;
 
     /**
+     * @OneToOne(targetEntity="User")
+     */
+    protected $user;
+
+    /**
      * @Column(type="string", length=32)
      */
     protected $author;
