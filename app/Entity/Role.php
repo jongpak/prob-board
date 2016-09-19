@@ -23,6 +23,7 @@ class Role
     protected $name;
 
     /**
+     * @var ArrayCollection
      * @ManyToMany(targetEntity="User", mappedBy="roles")
      */
     protected $users;

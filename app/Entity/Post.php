@@ -18,6 +18,7 @@ class Post
     protected $id;
 
     /**
+     * @var Board
      * @ManyToOne(targetEntity="Board")
      * @JoinColumn(name="board", referencedColumnName="id")
      */
@@ -34,6 +35,7 @@ class Post
     protected $content;
 
     /**
+     * @var User
      * @OneToOne(targetEntity="User")
      */
     protected $user;
@@ -49,11 +51,13 @@ class Post
     protected $password;
 
     /**
+     * @var DateTime
      * @Column(type="datetime")
      */
     protected $created_at;
 
     /**
+     * @var DateTime
      * @Column(type="datetime")
      */
     protected $updated_at;

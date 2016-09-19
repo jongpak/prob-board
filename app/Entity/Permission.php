@@ -23,6 +23,7 @@ class Permission
     protected $operation;
 
     /**
+     * @var Role
      * @ManyToMany(targetEntity="Role")
      * @JoinTable(name="role_permissions")
      */

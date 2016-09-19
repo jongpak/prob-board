@@ -19,6 +19,7 @@ class Comment
     protected $id;
 
     /**
+     * @var Post
      * @ManyToOne(targetEntity="Post")
      * @JoinColumn(name="post", referencedColumnName="id")
      */
@@ -30,6 +31,7 @@ class Comment
     protected $content;
 
     /**
+     * @var User
      * @OneToOne(targetEntity="User")
      */
     protected $user;
@@ -45,11 +47,13 @@ class Comment
     protected $password;
 
     /**
+     * @var DateTime
      * @Column(type="datetime")
      */
     protected $created_at;
 
     /**
+     * @var DateTime
      * @Column(type="datetime")
      */
     protected $updated_at;

@@ -38,6 +38,7 @@ class User
     protected $email;
 
     /**
+     * @var ArrayCollection
      * @ManyToMany(targetEntity="Role", inversedBy="users")
      * @JoinTable(name="user_roles")
      */
