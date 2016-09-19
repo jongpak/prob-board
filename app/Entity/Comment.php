@@ -31,7 +31,7 @@ class Comment
 
     /**
      * @var User
-     * @OneToOne(targetEntity="User")
+     * @ManyToOne(targetEntity="User")
      */
     protected $user;
 
