@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use \DateTime;
+use App\Entity\User;
 
 /**
  * @Entity
@@ -102,6 +103,16 @@ class Post
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+    }
+
+    public function getUset()
+    {
+        return $this->user;
     }
 
     public function setAuthor($author)
