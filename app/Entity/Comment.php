@@ -95,7 +95,7 @@ class Comment
         $this->user = $user;
     }
 
-    public function getUset()
+    public function getUser()
     {
         return $this->user;
     }
