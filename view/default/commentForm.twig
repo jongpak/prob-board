@@ -12,6 +12,7 @@
     <legend>Writing comment</legend>
     {% endif %}
 
+    {% if loggedAccountId is empty %}
     <div class="row">
     <div class="form-group col-sm-6">
         <label>Author</label>
@@ -22,6 +23,8 @@
         <input type="password" name="password" value="" class="form-control" />
     </div>
     </div>
+    {% endif %}
+
     <div class="form-group">
         <label>Content</label>
         <textarea name="content" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>

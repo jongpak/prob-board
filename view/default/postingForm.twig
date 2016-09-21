@@ -9,6 +9,8 @@
         <label>Subject</label>
         <input type="text" name="subject" value="{{ post.getSubject() | escape }}" class="form-control" />
     </div>
+
+    {% if loggedAccountId is empty %}
     <div class="form-group">
         <label>Author</label>
         <input type="text" name="author" value="{{ post.getAuthor() | escape }}" class="form-control" />
@@ -17,6 +19,8 @@
         <label>Password</label>
         <input type="password" name="password" value="" class="form-control" />
     </div>
+    {% endif %}
+
     <div class="form-group">
         <label>Content</label>
         <textarea name="content" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
