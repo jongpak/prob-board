@@ -5,7 +5,9 @@ namespace App\Controller;
 use Core\ViewModel;
 use Core\Application;
 use App\Entity\Post as PostModel;
+use App\Entity\User as UserModel;
 use App\Entity\Board as BoardModel;
+use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Board
@@ -43,14 +45,25 @@ class Board
         return 'default/postingForm';
     }
 
-    public function write($name, $parsedBody)
+    public function write($name, $parsedBody, LoginManagerInterface $loginManager)
     {
         $post = new PostModel();
         $post->setBoard($this->board);
         $post->setSubject($parsedBody['subject']);
         $post->setContent($parsedBody['content']);
-        $post->setAuthor($parsedBody['author']);
-        $post->setPassword($parsedBody['password']);
+
+        if ($loginManager->getLoggedAccountId()) {
+            /** @var UserModel */
+            $user = $this->entityManager->getRepository(UserModel::class)
+                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
+
+            $post->setUser($user);
+            $post->setAuthor($user->getNickname());
+            $post->setPassword($user->getPassword());
+        } else {
+            $post->setAuthor($parsedBody['author']);
+            $post->setPassword($parsedBody['password']);
+        }
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();

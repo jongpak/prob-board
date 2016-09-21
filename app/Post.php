@@ -7,6 +7,8 @@ use Core\Application;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use App\Entity\Comment as CommentModel;
+use App\Entity\User as UserModel;
+use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use \DateTime;
 
@@ -62,13 +64,24 @@ class Post
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
     }
 
-    public function writeComment($id, $parsedBody)
+    public function writeComment($id, $parsedBody, LoginManagerInterface $loginManager)
     {
         $comment = new CommentModel();
         $comment->setPost($this->post);
-        $comment->setAuthor($parsedBody['author']);
-        $comment->setPassword($parsedBody['password']);
         $comment->setContent($parsedBody['content']);
+
+        if ($loginManager->getLoggedAccountId()) {
+            /** @var UserModel */
+            $user = $this->entityManager->getRepository(UserModel::class)
+                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
+
+            $comment->setUser($user);
+            $comment->setAuthor($user->getNickname());
+            $comment->setPassword($user->getPassword());
+        } else {
+            $comment->setAuthor($parsedBody['author']);
+            $comment->setPassword($parsedBody['password']);
+        }
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
