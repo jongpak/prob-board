@@ -52,12 +52,12 @@ class Post
         return 'default/postingForm';
     }
 
-    public function edit($id, $parsedBody)
+    public function edit($id, $parsedBody, LoginManagerInterface $loginManager)
     {
         $this->post->setSubject($parsedBody['subject']);
         $this->post->setContent($parsedBody['content']);
-        $this->post->setAuthor($parsedBody['author']);
         $this->post->setUpdatedAt(new DateTime());
+        $this->fillUserInfomanionByLoginAccount($this->post, $parsedBody, $loginManager);
 
         $this->entityManager->flush();
 
@@ -69,23 +69,27 @@ class Post
         $comment = new CommentModel();
         $comment->setPost($this->post);
         $comment->setContent($parsedBody['content']);
-
-        if ($loginManager->getLoggedAccountId()) {
-            /** @var UserModel */
-            $user = $this->entityManager->getRepository(UserModel::class)
-                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
-
-            $comment->setUser($user);
-            $comment->setAuthor($user->getNickname());
-            $comment->setPassword($user->getPassword());
-        } else {
-            $comment->setAuthor($parsedBody['author']);
-            $comment->setPassword($parsedBody['password']);
-        }
+        $this->fillUserInfomanionByLoginAccount($comment, $parsedBody, $loginManager);
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
 
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
+    }
+
+    private function fillUserInfomanionByLoginAccount($userContent, $parsedBody, LoginManagerInterface $loginManager)
+    {
+        if ($loginManager->getLoggedAccountId()) {
+            /** @var UserModel */
+            $user = $this->entityManager->getRepository(UserModel::class)
+                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
+
+            $userContent->setUser($user);
+            $userContent->setAuthor($user->getNickname());
+            $userContent->setPassword($user->getPassword());
+        } else {
+            $userContent->setAuthor($parsedBody['author']);
+            $userContent->setPassword($parsedBody['password']);
+        }
     }
 }
