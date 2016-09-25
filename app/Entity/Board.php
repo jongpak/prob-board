@@ -8,6 +8,7 @@ namespace App\Entity;
  */
 class Board
 {
+
     /**
      * @Id
      * @Column(type="integer")
@@ -25,6 +26,11 @@ class Board
      */
     protected $title;
 
+    /**
+     * @Column(type="integer", options={"default": 10})
+     */
+    protected $listPerPage = 10;
+
 
     public function getId()
     {
@@ -39,5 +45,10 @@ class Board
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function getListPerPage()
+    {
+        return $this->listPerPage;
     }
 }

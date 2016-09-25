@@ -16,7 +16,8 @@
     "psr/http-message": "*",
     "prob/router": "dev-master",
     "jongpak/array-key-glue": "dev-master",
-    "zendframework/zend-diactoros": "*"
+    "zendframework/zend-diactoros": "*",
+    "pagerfanta/pagerfanta": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "*"

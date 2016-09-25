@@ -9,6 +9,10 @@ use App\Entity\User as UserModel;
 use App\Entity\Board as BoardModel;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Pagerfanta;
+use Pagerfanta\View\TwitterBootstrap3View;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Board
 {
@@ -28,12 +32,13 @@ class Board
         $this->board = $entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
     }
 
-    public function index($name, ViewModel $viewModel)
+    public function index($name, ServerRequestInterface $req, ViewModel $viewModel)
     {
-        $posts = $this->getPosts();
+        $page = $req->getQueryParams()['page'] ?: 1;
 
         $viewModel->set('board', $this->board);
-        $viewModel->set('posts', $posts);
+        $viewModel->set('posts', $this->getPosts($page));
+        $viewModel->set('pager', $this->getPagerRender($page));
 
         return 'default/postList';
     }
@@ -74,9 +79,29 @@ class Board
     /**
      * @return array
      */
-    private function getPosts()
+    private function getPosts($page)
     {
         return $this->entityManager->getRepository(PostModel::class)
-                ->findBy(['board' => $this->board->getId()], ['id' => 'DESC']);
+                ->findBy(
+                    ['board' => $this->board->getId()], ['id' => 'DESC'],
+                    $this->board->getListPerPage(),
+                    $this->board->getListPerPage() * ($page - 1)
+                );
+    }
+
+    private function getPagerRender($page)
+    {
+        $pagerAdapter = new DoctrineORMAdapter($this->entityManager->createQueryBuilder()
+            ->select('post')
+            ->from(PostModel::class, 'post')
+        );
+        $pager = new Pagerfanta($pagerAdapter);
+        $pager->setMaxPerPage($this->board->getListPerPage());
+        $pager->setCurrentPage($page);
+
+        $pagerView = new TwitterBootstrap3View();
+        return $pagerView->render($pager, function ($page) {
+            return Application::getUrl('/' . $this->board->getName() . '?page=' . $page);
+        });
     }
 }

@@ -24,5 +24,9 @@
     </tobdy>
 </table>
 
+<div class="pager">
+    {{ pager|raw }}
+</div>
+
 <a href="{{ url(board.getName() ~ '/post') }}" class="btn btn-default">Write</a>
 {% endblock %}

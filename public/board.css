@@ -36,6 +36,10 @@ header .loginPanel p {
     text-align: center;
 }
 
+.pager li span, .pager li a {
+    margin: 0 5px;
+}
+
 
 ul.postInfo {
     padding: 10px 20px;
