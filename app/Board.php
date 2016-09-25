@@ -32,7 +32,7 @@ class Board
         $this->board = $entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
     }
 
-    public function index($name, ServerRequestInterface $req, ViewModel $viewModel)
+    public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
         $page = $req->getQueryParams()['page'] ?: 1;
 
@@ -43,14 +43,14 @@ class Board
         return 'default/postList';
     }
 
-    public function showPostingForm($name, ViewModel $viewModel)
+    public function showPostingForm(ViewModel $viewModel)
     {
         $viewModel->set('board', $this->board);
 
         return 'default/postingForm';
     }
 
-    public function write($name, $parsedBody, LoginManagerInterface $loginManager)
+    public function write($parsedBody, LoginManagerInterface $loginManager)
     {
         $post = new PostModel();
         $post->setBoard($this->board);
