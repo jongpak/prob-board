@@ -50,25 +50,13 @@ class Board
         return 'default/postingForm';
     }
 
-    public function write($parsedBody, LoginManagerInterface $loginManager)
+    public function write($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $post = new PostModel();
         $post->setBoard($this->board);
         $post->setSubject($parsedBody['subject']);
         $post->setContent($parsedBody['content']);
-
-        if ($loginManager->getLoggedAccountId()) {
-            /** @var UserModel */
-            $user = $this->entityManager->getRepository(UserModel::class)
-                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
-
-            $post->setUser($user);
-            $post->setAuthor($user->getNickname());
-            $post->setPassword($user->getPassword());
-        } else {
-            $post->setAuthor($parsedBody['author']);
-            $post->setPassword($parsedBody['password']);
-        }
+        $this->fillUserInfomanionByLoginAccount($post, $parsedBody, $loginManager, $this->entityManager);
 
         $this->entityManager->persist($post);
         $this->entityManager->flush();
@@ -87,6 +75,22 @@ class Board
                     $this->board->getListPerPage(),
                     $this->board->getListPerPage() * ($page - 1)
                 );
+    }
+
+    private function fillUserInfomanionByLoginAccount($userContent, $parsedBody, LoginManagerInterface $loginManager, EntityManagerInterface $entityManager)
+    {
+        if ($loginManager->getLoggedAccountId()) {
+            /** @var UserModel */
+            $user = $entityManager->getRepository(UserModel::class)
+                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
+
+            $userContent->setUser($user);
+            $userContent->setAuthor($user->getNickname());
+            $userContent->setPassword($user->getPassword());
+        } else {
+            $userContent->setAuthor($parsedBody['author']);
+            $userContent->setPassword($parsedBody['password']);
+        }
     }
 
     private function getPagerRender($page)
