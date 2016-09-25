@@ -34,7 +34,7 @@ class Board
 
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
-        $page = $req->getQueryParams()['page'] ?: 1;
+        $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
 
         $viewModel->set('board', $this->board);
         $viewModel->set('posts', $this->getPosts($page));
@@ -101,6 +101,9 @@ class Board
 
         $pagerView = new TwitterBootstrap3View();
         return $pagerView->render($pager, function ($page) {
+            if ($page == 1) {
+                return Application::getUrl('/' . $this->board->getName());
+            }
             return Application::getUrl('/' . $this->board->getName() . '?page=' . $page);
         });
     }
