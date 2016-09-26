@@ -7,14 +7,13 @@ use Core\Application;
 use App\Entity\Post as PostModel;
 use App\Entity\User as UserModel;
 use App\Entity\Board as BoardModel;
-use App\Entity\AttachmentFile;
+use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\View\TwitterBootstrap3View;
-use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Board
@@ -61,7 +60,7 @@ class Board
         $post->setContent($parsedBody['content']);
         ContentUserInfoSetter::fillUserInfo($post, $parsedBody, $loginManager);
 
-        $files = $this->uploadFiles($req->getUploadedFiles()['file']);
+        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
         foreach ($files as $file) {
             $post->addAttachmentFile($file);
         }
@@ -83,31 +82,6 @@ class Board
                     $this->board->getListPerPage(),
                     $this->board->getListPerPage() * ($page - 1)
                 );
-    }
-
-    private function uploadFiles(array $uploadFiles)
-    {
-        $result = [];
-
-        /** @var UploadedFileInterface $uploadFile */
-        foreach ($uploadFiles as $uploadFile) {
-            if ($uploadFile->getError() !== UPLOAD_ERR_OK) {
-                continue;
-            }
-
-            $attachmentFile = new AttachmentFile();
-            $attachmentFile->setName($uploadFile->getClientFilename());
-
-            $this->entityManager->persist($attachmentFile);
-            $this->entityManager->flush();
-
-            // TODO 설정으로 빼야함!!!
-            $uploadFile->moveTo(__DIR__ . '/../data/attachment/' . $attachmentFile->getId());
-
-            $result[] = $attachmentFile;
-        }
-
-        return $result;
     }
 
     private function getPagerRender($page)
