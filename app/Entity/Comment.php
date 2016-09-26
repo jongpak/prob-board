@@ -70,7 +70,7 @@ class Comment
         $this->created_at = new DateTime();
         $this->updated_at = $this->created_at;
 
-        $this->attachmentFiles = new ns\ArrayCollection();
+        $this->attachmentFiles = new ArrayCollection();
     }
 
     public function getId()
