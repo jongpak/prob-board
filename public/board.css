@@ -50,10 +50,14 @@ ul.postInfo li span {
     font-weight: bold;
 }
 
+div.file {
+    margin-top: 50px;
+}
+
 section.comment {
     margin-top: 40px;
 }
 
 nav.action {
-    margin-top: 50px;
+    margin-top: 25px;
 }

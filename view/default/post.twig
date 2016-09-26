@@ -16,6 +16,13 @@
     | nl2br
 }}
 </div>
+
+<div class="file">
+{% for file in post.getAttachemntFile() %}
+    <a href="{{ url('/file/' ~ file.getId()) }}" class="btn btn-default btn-sm">{{ file.getName() }}</a>
+{% endfor %}
+</div>
+
 </article>
 
 <nav class="action">
