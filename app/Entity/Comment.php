@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use \DateTime;
-use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Entity
@@ -58,11 +58,19 @@ class Comment
      */
     protected $updated_at;
 
+    /**
+     * @var ArrayCollection
+     * @ManyToMany(targetEntity="AttachmentFile")
+     */
+    protected $attachmentFiles;
+
 
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->updated_at = $this->created_at;
+
+        $this->attachmentFiles = new ns\ArrayCollection();
     }
 
     public function getId()
@@ -134,5 +142,15 @@ class Comment
     public function setUpdatedAt(DateTime $datetime)
     {
         $this->updated_at = $datetime;
+    }
+
+    public function addAttachmentFile(AttachmentFile $file)
+    {
+        $this->attachmentFiles[] = $file;
+    }
+
+    public function getAttachemntFile()
+    {
+        return $this->attachmentFiles;
     }
 }
