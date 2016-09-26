@@ -29,5 +29,7 @@ return [
     '/comment/{id:int}/edit' => [
         'GET' => 'Comment.showEditForm',
         'POST' => 'Comment.edit'
-    ]
+    ],
+
+    '/file/{id:int}' => 'Attachment.index'
 ];
