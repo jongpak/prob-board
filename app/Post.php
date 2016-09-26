@@ -8,6 +8,7 @@ use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use App\Entity\Comment as CommentModel;
 use App\Entity\User as UserModel;
+use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use \DateTime;
@@ -57,7 +58,7 @@ class Post
         $this->post->setSubject($parsedBody['subject']);
         $this->post->setContent($parsedBody['content']);
         $this->post->setUpdatedAt(new DateTime());
-        $this->fillUserInfomanionByLoginAccount($this->post, $parsedBody, $loginManager);
+        ContentUserInfoSetter::fillUserInfo($this->post, $parsedBody, $loginManager);
 
         $this->entityManager->flush();
 
@@ -69,27 +70,11 @@ class Post
         $comment = new CommentModel();
         $comment->setPost($this->post);
         $comment->setContent($parsedBody['content']);
-        $this->fillUserInfomanionByLoginAccount($comment, $parsedBody, $loginManager);
+        ContentUserInfoSetter::fillUserInfo($comment, $parsedBody, $loginManager);
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
 
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
-    }
-
-    private function fillUserInfomanionByLoginAccount($userContent, $parsedBody, LoginManagerInterface $loginManager)
-    {
-        if ($loginManager->getLoggedAccountId()) {
-            /** @var UserModel */
-            $user = $this->entityManager->getRepository(UserModel::class)
-                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
-
-            $userContent->setUser($user);
-            $userContent->setAuthor($user->getNickname());
-            $userContent->setPassword($user->getPassword());
-        } else {
-            $userContent->setAuthor($parsedBody['author']);
-            $userContent->setPassword($parsedBody['password']);
-        }
     }
 }

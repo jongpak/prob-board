@@ -8,6 +8,7 @@ use App\Entity\Post as PostModel;
 use App\Entity\User as UserModel;
 use App\Entity\Board as BoardModel;
 use App\Entity\AttachmentFile;
+use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -58,7 +59,7 @@ class Board
         $post->setBoard($this->board);
         $post->setSubject($parsedBody['subject']);
         $post->setContent($parsedBody['content']);
-        $this->fillUserInfomanionByLoginAccount($post, $parsedBody, $loginManager, $this->entityManager);
+        ContentUserInfoSetter::fillUserInfo($post, $parsedBody, $loginManager);
 
         $files = $this->uploadFiles($req->getUploadedFiles()['file']);
         foreach ($files as $file) {
@@ -107,22 +108,6 @@ class Board
         }
 
         return $result;
-    }
-
-    private function fillUserInfomanionByLoginAccount($userContent, $parsedBody, LoginManagerInterface $loginManager, EntityManagerInterface $entityManager)
-    {
-        if ($loginManager->getLoggedAccountId()) {
-            /** @var UserModel */
-            $user = $entityManager->getRepository(UserModel::class)
-                        ->findOneBy(['accountId' => $loginManager->getLoggedAccountId()]);
-
-            $userContent->setUser($user);
-            $userContent->setAuthor($user->getNickname());
-            $userContent->setPassword($user->getPassword());
-        } else {
-            $userContent->setAuthor($parsedBody['author']);
-            $userContent->setPassword($parsedBody['password']);
-        }
     }
 
     private function getPagerRender($page)
