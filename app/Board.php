@@ -7,13 +7,11 @@ use Core\Application;
 use App\Entity\Post as PostModel;
 use App\Entity\User as UserModel;
 use App\Entity\Board as BoardModel;
+use App\Utils\Pager;
 use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\View\TwitterBootstrap3View;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Board
@@ -40,7 +38,12 @@ class Board
 
         $viewModel->set('board', $this->board);
         $viewModel->set('posts', $this->getPosts($page));
-        $viewModel->set('pager', $this->getPagerRender($page));
+        $viewModel->set('pager', (new Pager())
+            ->setCurrentPage($page)
+            ->setListPerPage($this->board->getListPerPage())
+            ->setLinkFactoryFunction($this->getLinkFactory())
+            ->getPageNavigation(PostModel::class)
+        );
 
         return 'default/postList';
     }
@@ -84,22 +87,12 @@ class Board
                 );
     }
 
-    private function getPagerRender($page)
+    private function getLinkFactory()
     {
-        $pagerAdapter = new DoctrineORMAdapter($this->entityManager->createQueryBuilder()
-            ->select('post')
-            ->from(PostModel::class, 'post')
-        );
-        $pager = new Pagerfanta($pagerAdapter);
-        $pager->setMaxPerPage($this->board->getListPerPage());
-        $pager->setCurrentPage($page);
-
-        $pagerView = new TwitterBootstrap3View();
-        return $pagerView->render($pager, function ($page) {
-            if ($page == 1) {
-                return Application::getUrl('/' . $this->board->getName());
-            }
-            return Application::getUrl('/' . $this->board->getName() . '?page=' . $page);
-        });
+        return function ($page) {
+            return $page == 1
+                ? Application::getUrl('/' . $this->board->getName())
+                : Application::getUrl('/' . $this->board->getName() . '?page=' . $page);
+        };
     }
 }
