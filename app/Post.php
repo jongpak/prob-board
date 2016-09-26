@@ -8,6 +8,7 @@ use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use App\Entity\Comment as CommentModel;
 use App\Entity\User as UserModel;
+use App\Utils\FileDeleter;
 use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,6 +63,8 @@ class Post
 
         $this->entityManager->flush();
 
+        FileDeleter::deleteFiles($this->getDeleteFileIdList($parsedBody));
+
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
     }
 
@@ -76,5 +79,22 @@ class Post
         $this->entityManager->flush();
 
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
+    }
+
+    private function getDeleteFileIdList($parsedBody)
+    {
+        $fileIdList = isset($parsedBody['delete-file'])
+                        ? $parsedBody['delete-file']
+                        : [];
+
+        $deleteFileIdList = [];
+
+        foreach ($fileIdList as $k => $v) {
+            if ($v === 'on') {
+                $deleteFileIdList[] = $k;
+            }
+        }
+
+        return $deleteFileIdList;
     }
 }

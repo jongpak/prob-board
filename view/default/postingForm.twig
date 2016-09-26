@@ -27,6 +27,12 @@
     </div>
     <div class="form-group well">
         <label>Attachment</label>
+        <ul>
+            {% for file in post.getAttachemntFile() %}
+            <li><label class="btn btn-xs btn-danger"><input type="checkbox" name="delete-file[{{ file.getId() }}]" /> Delete: {{ file.getName() }}</label></li>
+            {% endfor %}
+        </ul>
+
         <input type="file" name="file[]" />
         <input type="file" name="file[]" />
     </div>
