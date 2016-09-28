@@ -4,6 +4,8 @@ return [
     'Twig' => [
         'path' => __DIR__ . '/../view/',
         'postfix' => '.twig',
-        'settings' => []
+        'settings' => [
+            'cache' => __DIR__ . '/../data/twig/cache/'
+        ]
     ]
 ];
