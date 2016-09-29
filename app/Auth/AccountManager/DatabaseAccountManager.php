@@ -4,7 +4,7 @@ namespace App\Auth\AccountManager;
 
 use App\Auth\AccountManagerInterface;
 use App\Entity\User;
-use Core\DatabaseManager;
+use Core\Utils\EntityFinder;
 
 class DatabaseAccountManager implements AccountManagerInterface
 {
@@ -14,9 +14,7 @@ class DatabaseAccountManager implements AccountManagerInterface
 
     public function isExistAccountId($accountId)
     {
-        return DatabaseManager::getEntityManager()
-                ->getRepository(User::class)
-                ->findOneBy(['accountId' => $accountId]) !== null;
+        return $this->getUserEntity($accountId) !== null;
     }
 
     public function isEqualPassword($accountId, $password)
@@ -25,10 +23,7 @@ class DatabaseAccountManager implements AccountManagerInterface
             return false;
         }
 
-        return DatabaseManager::getEntityManager()
-                ->getRepository(User::class)
-                ->findOneBy(['accountId' => $accountId])
-                ->getPassword() === $password;
+        return $this->getUserEntity($accountId)->getPassword() === $password;
     }
 
     public function getRole($accountId)
@@ -37,17 +32,22 @@ class DatabaseAccountManager implements AccountManagerInterface
             return null;
         }
 
-        $roles = DatabaseManager::getEntityManager()
-                    ->getRepository(User::class)
-                    ->findOneBy(['accountId' => $accountId])
-                    ->getRoles();
-
-        $roleArray = [];
+        $roles = $this->getUserEntity($accountId)->getRoles();
+        $accountRole = [];
 
         foreach ($roles as $item) {
-            $roleArray[] = $item->getName();
+            $accountRole[] = $item->getName();
         }
 
-        return $roleArray;
+        return $accountRole;
+    }
+
+    /**
+     * @param  string $accountId
+     * @return User
+     */
+    public function getUserEntity($accountId)
+    {
+        return EntityFinder::findOneBy(User::class, ['accountId' => $accountId]);
     }
 }
