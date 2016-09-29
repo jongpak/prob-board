@@ -5,7 +5,8 @@ return [
         'path' => __DIR__ . '/../view/',
         'postfix' => '.twig',
         'settings' => [
-            'cache' => __DIR__ . '/../data/twig/cache/'
+            'cache' => __DIR__ . '/../data/twig/cache/',
+            'auto_reload' => true
         ]
     ]
 ];
