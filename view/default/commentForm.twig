@@ -3,7 +3,7 @@
 {% block body %}
 
 {% if comment.getId() %}
-<h2 class="page-header">Editing commeent</h2>
+<h2 class="page-header">Editing comment</h2>
 {% endif %}
 
 <form method="POST" action="{{ comment.getId() ? '' : url('/post/' ~ post.getId() ~ '/comment') }}" enctype="multipart/form-data">
@@ -30,9 +30,9 @@
         <textarea name="content" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>
     </div>
 
-    <div class="form-group">
+    <div class="form-group {{ comment ? 'well' : '' }}">
         <label>Attachment</label>
-        <div class="panel panel-default panel-body">
+        <div class="{{ comment ? '' : 'panel panel-default panel-body' }}">
         <ul>
             {% for file in comment.getAttachemntFile() %}
             <li><label class="btn btn-xs btn-danger"><input type="checkbox" name="delete-file[{{ file.getId() }}]" /> Delete: {{ file.getName() }}</label></li>
