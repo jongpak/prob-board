@@ -56,7 +56,7 @@ class Post
         return 'default/postingForm';
     }
 
-    public function edit($id, $parsedBody, LoginManagerInterface $loginManager)
+    public function edit($id, $parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $this->post->setSubject($parsedBody['subject']);
         $this->post->setContent($parsedBody['content']);
@@ -64,6 +64,11 @@ class Post
         ContentUserInfoSetter::fillUserInfo($this->post, $parsedBody, $loginManager);
 
         $this->entityManager->flush();
+
+        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
+        foreach ($files as $file) {
+            $this->post->addAttachmentFile($file);
+        }
 
         FileDeleter::deleteFiles($this->getDeleteFileIdList($parsedBody));
 
@@ -90,18 +95,8 @@ class Post
 
     private function getDeleteFileIdList($parsedBody)
     {
-        $fileIdList = isset($parsedBody['delete-file'])
-                        ? $parsedBody['delete-file']
-                        : [];
-
-        $deleteFileIdList = [];
-
-        foreach ($fileIdList as $k => $v) {
-            if ($v === 'on') {
-                $deleteFileIdList[] = $k;
-            }
-        }
-
-        return $deleteFileIdList;
+        return isset($parsedBody['delete-file'])
+                ? array_keys(array_filter($parsedBody['delete-file'], function ($e) { return $e === 'on'; }))
+                : [];
     }
 }

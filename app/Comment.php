@@ -7,9 +7,11 @@ use Core\Application;
 use App\Entity\Comment as CommentModel;
 use App\Entity\User as UserModel;
 use App\Utils\FileDeleter;
+use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use \DateTime;
 
 class Comment
@@ -21,7 +23,7 @@ class Comment
         return 'default/commentForm';
     }
 
-    public function edit($id, $parsedBody, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
+    public function edit($id, $parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
         /** @var CommentModel */
         $comment = $entityManager->getRepository(CommentModel::class)->find($id);
@@ -30,6 +32,11 @@ class Comment
         ContentUserInfoSetter::fillUserInfo($comment, $parsedBody, $loginManager);
 
         $entityManager->flush();
+
+        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
+        foreach ($files as $file) {
+            $comment->addAttachmentFile($file);
+        }
 
         FileDeleter::deleteFiles($this->getDeleteFileIdList($parsedBody));
 
