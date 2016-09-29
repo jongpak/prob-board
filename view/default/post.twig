@@ -45,6 +45,12 @@
             <a href="{{ url('/comment/' ~ comment.getId() ~ '/edit') }}">Edit</a>
         </p>
         {{ comment.getContent() }}
+
+        <div class="file">
+        {% for file in comment.getAttachemntFile() %}
+            <a href="{{ url('/file/' ~ file.getId()) }}" class="btn btn-default btn-sm">{{ file.getName() }}</a>
+        {% endfor %}
+        </div>
     </div>
     <hr class="hidden" />
     {% endfor %}

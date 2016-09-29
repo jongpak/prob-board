@@ -54,6 +54,10 @@ div.file {
     margin-top: 50px;
 }
 
+section.comment div.file {
+    margin-top: 20px;
+}
+
 section.comment {
     margin-top: 40px;
 }

@@ -6,7 +6,7 @@
 <h2 class="page-header">Editing commeent</h2>
 {% endif %}
 
-<form method="POST" action="{{ comment.getId() ? '' : url('/post/' ~ post.getId() ~ '/comment') }}">
+<form method="POST" action="{{ comment.getId() ? '' : url('/post/' ~ post.getId() ~ '/comment') }}" enctype="multipart/form-data">
 <fieldset>
     {% if not comment.getId() %}
     <legend>Writing comment</legend>
@@ -29,6 +29,21 @@
         <label>Content</label>
         <textarea name="content" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>
     </div>
+
+    <div class="form-group">
+        <label>Attachment</label>
+        <div class="panel panel-default panel-body">
+        <ul>
+            {% for file in comment.getAttachemntFile() %}
+            <li><label class="btn btn-xs btn-danger"><input type="checkbox" name="delete-file[{{ file.getId() }}]" /> Delete: {{ file.getName() }}</label></li>
+            {% endfor %}
+        </ul>
+
+        <input type="file" name="file[]" />
+        <input type="file" name="file[]" />
+        </div>
+    </div>
+
     <div class="form-group">
         <input type="submit" value="Submit" class="btn btn-primary" />
         {% if comment %}

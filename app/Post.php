@@ -9,10 +9,12 @@ use App\Entity\Board as BoardModel;
 use App\Entity\Comment as CommentModel;
 use App\Entity\User as UserModel;
 use App\Utils\FileDeleter;
+use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use \DateTime;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Post
 {
@@ -68,12 +70,17 @@ class Post
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
     }
 
-    public function writeComment($id, $parsedBody, LoginManagerInterface $loginManager)
+    public function writeComment($id, $parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $comment = new CommentModel();
         $comment->setPost($this->post);
         $comment->setContent($parsedBody['content']);
         ContentUserInfoSetter::fillUserInfo($comment, $parsedBody, $loginManager);
+
+        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
+        foreach ($files as $file) {
+            $comment->addAttachmentFile($file);
+        }
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
