@@ -36,25 +36,7 @@
 {% if comments is empty %}
     <p>No comment.</p>
 {% else %}
-
-    {% for comment in comments %}
-    <div class="well">
-        <p>
-            <label>Author:</label> {{ comment.getAuthor() }} /
-            <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time> /
-            <a href="{{ url('/comment/' ~ comment.getId() ~ '/edit') }}">Edit</a>
-        </p>
-        {{ comment.getContent() }}
-
-        <div class="file">
-        {% for file in comment.getAttachemntFile() %}
-            <a href="{{ url('/file/' ~ file.getId()) }}" class="btn btn-default btn-sm">{{ file.getName() }}</a>
-        {% endfor %}
-        </div>
-    </div>
-    <hr class="hidden" />
-    {% endfor %}
-
+    {% include 'default/comment.twig' %}
 {% endif %}
 
 <div class="well">
