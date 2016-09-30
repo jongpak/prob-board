@@ -57,4 +57,16 @@ trait UserContentable
         }
         return $this->password;
     }
+
+    /**
+     * @PrePersist
+     * @PreUpdate
+     */
+    public function updateUserInfo()
+    {
+        if ($this->user) {
+            $this->setAuthor($this->user->getNickname());
+            $this->setPassword($this->user->getPassword());
+        }
+    }
 }

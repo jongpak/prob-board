@@ -12,6 +12,7 @@ use App\Entity\Traits\FileAttachable;
 /**
  * @Entity
  * @Table(name="comments")
+ * @HasLifecycleCallbacks
  */
 class Comment
 {
