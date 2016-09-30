@@ -2,19 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Identifiable;
+
 /**
  * @Entity
  * @Table(name="boards")
  */
 class Board
 {
-
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue
-     */
-    protected $id;
+    use Identifiable;
 
     /**
      * @Column(type="text", length=255)
@@ -31,11 +27,6 @@ class Board
      */
     protected $listPerPage = 10;
 
-
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function getName()
     {

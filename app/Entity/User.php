@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Traits\Identifiable;
 
 /**
  * @Entity
@@ -10,12 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class User
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue
-     */
-    protected $id;
+    use Identifiable;
 
     /**
      * @Column(type="string", length=128)

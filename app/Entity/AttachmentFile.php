@@ -2,18 +2,15 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\Identifiable;
+
 /**
  * @Entity
  * @Table(name="attachment_files")
  */
 class AttachmentFile
 {
-    /**
-     * @Id
-     * @Column(type="integer")
-     * @GeneratedValue
-     */
-    protected $id;
+    use Identifiable;
 
     /**
      * @Column(type="text", length=255)
