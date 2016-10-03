@@ -8,6 +8,7 @@ use App\Entity\Comment as CommentModel;
 use App\Entity\User as UserModel;
 use App\Utils\FileDeleter;
 use App\Utils\FileUploader;
+use App\Utils\FormUtility;
 use App\Utils\ContentUserInfoSetter;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,15 +39,8 @@ class Comment
             $comment->addAttachmentFile($file);
         }
 
-        FileDeleter::deleteFiles($this->getDeleteFileIdList($parsedBody));
+        FileDeleter::deleteFiles(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
 
         return 'redirect: ' . Application::getUrl('/post/' . $comment->getPost()->getId());
-    }
-
-    private function getDeleteFileIdList($parsedBody)
-    {
-        return isset($parsedBody['delete-file'])
-                ? array_keys(array_filter($parsedBody['delete-file'], function ($e) { return $e === 'on'; }))
-                : [];
     }
 }
