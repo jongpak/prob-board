@@ -31,7 +31,6 @@ class Post
     public function __construct($id, EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-
         $this->post = $this->entityManager->getRepository(PostModel::class)->find($id);
     }
 
@@ -47,7 +46,6 @@ class Post
     public function showEditForm(ViewModel $viewModel)
     {
         $viewModel->set('post', $this->post);
-
         return 'default/postingForm';
     }
 
@@ -68,6 +66,22 @@ class Post
         FileDeleter::deleteFiles($this->getDeleteFileIdList($parsedBody));
 
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
+    }
+
+    public function showDeleteForm(ViewModel $viewModel)
+    {
+        $viewModel->set('post', $this->post);
+        return 'default/delete';
+    }
+
+    public function delete()
+    {
+        $boardName = $this->post->getBoard()->getName();
+
+        $this->post->setBoard(null);
+        $this->entityManager->flush();
+
+        return 'redirect:' . Application::getUrl($boardName);
     }
 
     public function writeComment($id, $parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)

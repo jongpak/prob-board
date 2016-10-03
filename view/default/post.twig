@@ -28,6 +28,7 @@
 <nav class="action">
     <a class="btn btn-default" href="{{ url(post.getBoard().getName()) }}">List</a>
     <a class="btn btn-default" href="{{ url('/post/' ~ post.getId() ~ '/edit' )}}">Edit</a>
+    <a class="btn btn-default" href="{{ url('/post/' ~ post.getId() ~ '/delete' )}}">Delete</a>
 </nav>
 
 <section class="comment">

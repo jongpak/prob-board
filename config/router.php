@@ -22,6 +22,10 @@ return [
         'GET' => 'Post.showEditForm',
         'POST' => 'Post.edit'
     ],
+    '/post/{id:int}/delete' => [
+        'GET' => 'Post.showDeleteForm',
+        'POST' => 'Post.delete'
+    ],
     '/post/{id:int}/comment' => [
         'POST' => 'Post.writeComment'
     ],
