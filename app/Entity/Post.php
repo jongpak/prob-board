@@ -38,12 +38,19 @@ class Post
      */
     protected $content;
 
+    /**
+     * @var ArrayCollection
+     * @OneToMany(targetEntity="Comment", mappedBy="post")
+     */
+    protected $comments;
+
 
     public function __construct()
     {
         $this->created_at = new DateTime();
         $this->updated_at = $this->created_at;
 
+        $this->comments = new ArrayCollection();
         $this->attachmentFiles = new ArrayCollection();
     }
 
@@ -75,5 +82,10 @@ class Post
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

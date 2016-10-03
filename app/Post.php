@@ -39,7 +39,7 @@ class Post
     {
         $comments = $this->entityManager->getRepository(CommentModel::class)->findBy(['post' => $this->post->getId()]);
         $viewModel->set('post', $this->post);
-        $viewModel->set('comments', $comments);
+        $viewModel->set('comments', $this->post->getComments());
 
         return 'default/post';
     }
