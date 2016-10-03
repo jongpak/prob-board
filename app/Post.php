@@ -47,7 +47,7 @@ class Post
         return 'default/postingForm';
     }
 
-    public function edit($id, $parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
+    public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $this->post->setSubject($parsedBody['subject']);
         $this->post->setContent($parsedBody['content']);
@@ -82,7 +82,7 @@ class Post
         return 'redirect:' . Application::getUrl($boardName);
     }
 
-    public function writeComment($id, $parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
+    public function writeComment($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $comment = new CommentModel();
         $comment->setPost($this->post);
