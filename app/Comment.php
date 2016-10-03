@@ -45,18 +45,8 @@ class Comment
 
     private function getDeleteFileIdList($parsedBody)
     {
-        $fileIdList = isset($parsedBody['delete-file'])
-                        ? $parsedBody['delete-file']
-                        : [];
-
-        $deleteFileIdList = [];
-
-        foreach ($fileIdList as $k => $v) {
-            if ($v === 'on') {
-                $deleteFileIdList[] = $k;
-            }
-        }
-
-        return $deleteFileIdList;
+        return isset($parsedBody['delete-file'])
+                ? array_keys(array_filter($parsedBody['delete-file'], function ($e) { return $e === 'on'; }))
+                : [];
     }
 }
