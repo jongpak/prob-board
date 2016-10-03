@@ -56,14 +56,14 @@ class Post
         $this->post->setUpdatedAt(new DateTime());
         ContentUserInfoSetter::fillUserInfo($this->post, $parsedBody, $loginManager);
 
-        $this->entityManager->flush();
-
         $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
         foreach ($files as $file) {
             $this->post->addAttachmentFile($file);
         }
 
         FileDeleter::deleteFiles($this->getDeleteFileIdList($parsedBody));
+
+        $this->entityManager->flush();
 
         return 'redirect: ' . Application::getUrl('/post/' . $this->post->getId());
     }
