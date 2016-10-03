@@ -10,6 +10,7 @@ use App\Entity\Board as BoardModel;
 use App\Utils\Pager;
 use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
+use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +30,7 @@ class Board
     public function __construct($name, EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->board = $entityManager->getRepository(BoardModel::class)->findOneBy(['name' => $name]);
+        $this->board = EntityFinder::findOneBy(BoardModel::class, ['name' => $name]);
     }
 
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
@@ -51,7 +52,6 @@ class Board
     public function showPostingForm(ViewModel $viewModel)
     {
         $viewModel->set('board', $this->board);
-
         return 'default/postingForm';
     }
 

@@ -5,17 +5,16 @@ namespace App\Controller;
 use Core\ViewModel;
 use Core\Application;
 use App\Entity\Post as PostModel;
-use App\Entity\Board as BoardModel;
 use App\Entity\Comment as CommentModel;
-use App\Entity\User as UserModel;
 use App\Utils\FileDeleter;
 use App\Utils\FileUploader;
 use App\Utils\FormUtility;
 use App\Utils\ContentUserInfoSetter;
+use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use \DateTime;
 use Psr\Http\Message\ServerRequestInterface;
+use \DateTime;
 
 class Post
 {
@@ -32,15 +31,13 @@ class Post
     public function __construct($id, EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->post = $this->entityManager->getRepository(PostModel::class)->find($id);
+        $this->post = EntityFinder::findById(PostModel::class, $id);
     }
 
     public function index(ViewModel $viewModel)
     {
-        $comments = $this->entityManager->getRepository(CommentModel::class)->findBy(['post' => $this->post->getId()]);
         $viewModel->set('post', $this->post);
         $viewModel->set('comments', $this->post->getComments());
-
         return 'default/post';
     }
 

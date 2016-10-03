@@ -3,18 +3,15 @@
 namespace App\Controller;
 
 use Core\ViewModel;
+use Core\Utils\EntityFinder;
 use App\Entity\Board;
-use Doctrine\ORM\EntityManagerInterface;
 
 class Welcome
 {
 
-    public function index(EntityManagerInterface $entityManager, ViewModel $viewModel)
+    public function index(ViewModel $viewModel)
     {
-        $boards = $entityManager->getRepository(Board::class)->findAll();
-
-        $viewModel->set('boards', $boards);
-
+        $viewModel->set('boards', EntityFinder::findAll(Board::class));
         return 'default/welcome';
     }
 }

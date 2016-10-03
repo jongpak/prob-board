@@ -8,8 +8,9 @@ use App\Entity\Comment as CommentModel;
 use App\Entity\User as UserModel;
 use App\Utils\FileDeleter;
 use App\Utils\FileUploader;
-use App\Utils\FormUtility;
 use App\Utils\ContentUserInfoSetter;
+use App\Utils\FormUtility;
+use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,30 +18,37 @@ use \DateTime;
 
 class Comment
 {
-    public function showEditForm($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
-    {
-        $viewModel->set('comment', $entityManager->getRepository(CommentModel::class)->find($id));
+    /**
+     * @var CommentModel;
+     */
+    private $comment;
 
+    public function __construct($id)
+    {
+        $this->comment = EntityFinder::findById(CommentModel::class, $id);
+    }
+
+    public function showEditForm(ViewModel $viewModel)
+    {
+        $viewModel->set('comment', $this->comment);
         return 'default/commentForm';
     }
 
     public function edit($id, $parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
-        /** @var CommentModel */
-        $comment = $entityManager->getRepository(CommentModel::class)->find($id);
-        $comment->setContent($parsedBody['content']);
-        $comment->setUpdatedAt(new DateTime());
-        ContentUserInfoSetter::fillUserInfo($comment, $parsedBody, $loginManager);
-
-        $entityManager->flush();
+        $this->comment->setContent($parsedBody['content']);
+        $this->comment->setUpdatedAt(new DateTime());
+        ContentUserInfoSetter::fillUserInfo($this->comment, $parsedBody, $loginManager);
 
         $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
         foreach ($files as $file) {
-            $comment->addAttachmentFile($file);
+            $this->comment->addAttachmentFile($file);
         }
 
         FileDeleter::deleteFiles(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
 
-        return 'redirect: ' . Application::getUrl('/post/' . $comment->getPost()->getId());
+        $entityManager->flush();
+
+        return 'redirect: ' . Application::getUrl('/post/' . $this->comment->getPost()->getId());
     }
 }

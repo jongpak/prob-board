@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\AttachmentFile;
+use Core\Utils\EntityFinder;
 
 class Attachment
 {
-    public function index($id, EntityManagerInterface $entityManage)
+    public function index($id)
     {
         /** @var AttachmentFile */
-        $attachment = $entityManage->getRepository(AttachmentFile::class)->find($id);
+        $attachment = EntityFinder::findById(AttachmentFile::class, $id);
 
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . $attachment->getName() . '"');
