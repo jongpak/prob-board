@@ -28,23 +28,18 @@ class Post
      */
     private $post;
 
-    /**
-     * @var CommentModel
-     */
-    private $comment;
-
     public function __construct($id, EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
 
         $this->post = $this->entityManager->getRepository(PostModel::class)->find($id);
-        $this->comment = $this->entityManager->getRepository(CommentModel::class)->findBy(['post' => $this->post->getId()]);
     }
 
     public function index(ViewModel $viewModel)
     {
+        $comments = $this->entityManager->getRepository(CommentModel::class)->findBy(['post' => $this->post->getId()]);
         $viewModel->set('post', $this->post);
-        $viewModel->set('comments', $this->comment);
+        $viewModel->set('comments', $comments);
 
         return 'default/post';
     }
