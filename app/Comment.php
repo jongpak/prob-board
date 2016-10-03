@@ -19,7 +19,7 @@ use \DateTime;
 class Comment
 {
     /**
-     * @var CommentModel;
+     * @var CommentModel
      */
     private $comment;
 
