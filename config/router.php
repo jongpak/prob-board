@@ -34,6 +34,10 @@ return [
         'GET' => 'Comment.showEditForm',
         'POST' => 'Comment.edit'
     ],
+    '/comment/{id:int}/delete' => [
+        'GET' => 'Comment.showDeleteForm',
+        'POST' => 'Comment.delete'
+    ],
 
     '/file/{id:int}' => 'Attachment.index'
 ];

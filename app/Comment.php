@@ -19,12 +19,18 @@ use \DateTime;
 class Comment
 {
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
      * @var CommentModel
      */
     private $comment;
 
-    public function __construct($id)
+    public function __construct($id, EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         $this->comment = EntityFinder::findById(CommentModel::class, $id);
     }
 
@@ -34,7 +40,7 @@ class Comment
         return 'default/commentForm';
     }
 
-    public function edit($id, $parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
+    public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $this->comment->setContent($parsedBody['content']);
         $this->comment->setUpdatedAt(new DateTime());
@@ -47,8 +53,24 @@ class Comment
 
         FileDeleter::deleteFiles(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         return 'redirect: ' . Application::getUrl('/post/' . $this->comment->getPost()->getId());
+    }
+
+    public function showDeleteForm(ViewModel $viewModel)
+    {
+        $viewModel->set('comment', $this->comment);
+        return 'default/delete';
+    }
+
+    public function delete()
+    {
+        $postId = $this->comment->getPost()->getId();
+
+        $this->comment->setPost(null);
+        $this->entityManager->flush();
+
+        return 'redirect:' . Application::getUrl('/post/' . $postId);
     }
 }

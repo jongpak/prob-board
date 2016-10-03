@@ -4,6 +4,7 @@
         <label>Author:</label> {{ comment.getAuthor() }} /
         <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time> /
         <a href="{{ url('/comment/' ~ comment.getId() ~ '/edit') }}">Edit</a>
+        <a href="{{ url('/comment/' ~ comment.getId() ~ '/delete') }}">Delete</a>
     </p>
     {{ comment.getContent() }}
 
