@@ -7,6 +7,12 @@
 
 <form action="" method="POST">
 <div class="form-group">
+    {% if loggedAccountId is empty %}
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" value="" class="form-control" />
+    </div>
+    {% endif %}
     <input type="submit" value="Delete" class="btn btn-danger" />
 </div>
 </form>

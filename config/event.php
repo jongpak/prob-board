@@ -9,10 +9,14 @@ return [
             ]
         ],
 
-        'Post.showEditForm.before' => 'App\\EventListener\\ControllerAuth.validatePostEdit',
-        'Post.edit.before' => 'App\\EventListener\\ControllerAuth.validatePostEdit',
+        'Post.showEditForm.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
+        'Post.edit.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
+        'Post.showDeleteForm.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
+        'Post.delete.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
 
-        'Comment.showEditForm.before' => 'App\\EventListener\\ControllerAuth.validateCommentEdit',
-        'Comment.edit.before' => 'App\\EventListener\\ControllerAuth.validateCommentEdit',
+        'Comment.showEditForm.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
+        'Comment.edit.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
+        'Comment.showDeleteForm.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
+        'Comment.delete.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
     ]
 ];
