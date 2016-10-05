@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AttachmentFile;
 use Core\Utils\EntityFinder;
+use \Exception;
 
 class Attachment
 {
@@ -11,6 +12,10 @@ class Attachment
     {
         /** @var AttachmentFile */
         $attachment = EntityFinder::findById(AttachmentFile::class, $id);
+
+        if ($attachment === null) {
+            throw new Exception('Attachment is not found!');
+        }
 
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . $attachment->getName() . '"');
