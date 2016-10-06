@@ -17,13 +17,19 @@ class Attachment
             throw new Exception('Attachment is not found!');
         }
 
+        $fileFullPath = __DIR__ . '/../data/attachment/' . $attachment->getId();
+
+        if (file_exists($fileFullPath) === false) {
+            throw new Exception('Attachment file is not exists or deleted');
+        }
+
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="' . $attachment->getName() . '"');
         header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize(__DIR__ . '/../data/attachment/' . $attachment->getId()));
+        header('Content-Length: ' . filesize($fileFullPath));
 
         ob_clean();
         flush();
-        readfile(__DIR__ . '/../data/attachment/' . $attachment->getId());
+        readfile($fileFullPath);
     }
 }
