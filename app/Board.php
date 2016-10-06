@@ -14,6 +14,7 @@ use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use \Exception;
 
 class Board
 {
@@ -31,6 +32,10 @@ class Board
     {
         $this->entityManager = $entityManager;
         $this->board = EntityFinder::findOneBy(BoardModel::class, ['name' => $name]);
+
+        if ($this->board === null) {
+            throw new Exception('[' . $name . '] Board is not found');
+        }
     }
 
     public function index(ServerRequestInterface $req, ViewModel $viewModel)

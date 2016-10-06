@@ -35,6 +35,10 @@ class ControllerAuth
 
     private function validate($userContent, $parsedBody, ServerRequestInterface $request)
     {
+        if ($userContent === null) {
+            return;
+        }
+
         if ($userContent->getUser() !== $this->user) {
             throw new PermissionDenied('This operation is not allowed');
         }

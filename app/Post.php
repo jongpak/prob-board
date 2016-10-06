@@ -15,6 +15,7 @@ use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use \DateTime;
+use \Exception;
 
 class Post
 {
@@ -32,6 +33,10 @@ class Post
     {
         $this->entityManager = $entityManager;
         $this->post = EntityFinder::findById(PostModel::class, $id);
+
+        if ($this->post === null) {
+            throw new Exception('Post is not found');
+        }
     }
 
     public function index(ViewModel $viewModel)

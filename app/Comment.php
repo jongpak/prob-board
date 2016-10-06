@@ -15,6 +15,7 @@ use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use \DateTime;
+use \Exception;
 
 class Comment
 {
@@ -32,6 +33,10 @@ class Comment
     {
         $this->entityManager = $entityManager;
         $this->comment = EntityFinder::findById(CommentModel::class, $id);
+
+        if ($this->comment === null) {
+            throw new Exception('Comment is not found');
+        }
     }
 
     public function showEditForm(ViewModel $viewModel)
