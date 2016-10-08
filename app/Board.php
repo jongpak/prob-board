@@ -28,7 +28,7 @@ class Board
      */
     private $board;
 
-    public function __construct($name, EntityManagerInterface $entityManager)
+    public function __construct($name, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->entityManager = $entityManager;
         $this->board = EntityFinder::findOneBy(BoardModel::class, ['name' => $name]);
@@ -36,13 +36,14 @@ class Board
         if ($this->board === null) {
             throw new Exception('[' . $name . '] Board is not found');
         }
+
+        $viewModel->set('board', $this->board);
     }
 
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
 
-        $viewModel->set('board', $this->board);
         $viewModel->set('posts', $this->getPosts($page));
         $viewModel->set('pager', (new Pager())
             ->setCurrentPage($page)
@@ -56,7 +57,6 @@ class Board
 
     public function showPostingForm(ViewModel $viewModel)
     {
-        $viewModel->set('board', $this->board);
         return 'default/postingForm';
     }
 

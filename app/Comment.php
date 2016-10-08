@@ -29,7 +29,7 @@ class Comment
      */
     private $comment;
 
-    public function __construct($id, EntityManagerInterface $entityManager)
+    public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->entityManager = $entityManager;
         $this->comment = EntityFinder::findById(CommentModel::class, $id);
@@ -37,11 +37,12 @@ class Comment
         if ($this->comment === null) {
             throw new Exception('Comment is not found');
         }
+
+        $viewModel->set('comment', $this->comment);
     }
 
     public function showEditForm(ViewModel $viewModel)
     {
-        $viewModel->set('comment', $this->comment);
         return 'default/commentForm';
     }
 
@@ -65,7 +66,6 @@ class Comment
 
     public function showDeleteForm(ViewModel $viewModel)
     {
-        $viewModel->set('comment', $this->comment);
         return 'default/delete';
     }
 

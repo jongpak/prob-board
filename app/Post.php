@@ -29,7 +29,7 @@ class Post
      */
     private $post;
 
-    public function __construct($id, EntityManagerInterface $entityManager)
+    public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->entityManager = $entityManager;
         $this->post = EntityFinder::findById(PostModel::class, $id);
@@ -37,18 +37,18 @@ class Post
         if ($this->post === null) {
             throw new Exception('Post is not found');
         }
+
+        $viewModel->set('post', $this->post);
     }
 
     public function index(ViewModel $viewModel)
     {
-        $viewModel->set('post', $this->post);
         $viewModel->set('comments', $this->post->getComments());
         return 'default/post';
     }
 
     public function showEditForm(ViewModel $viewModel)
     {
-        $viewModel->set('post', $this->post);
         return 'default/postingForm';
     }
 
@@ -73,7 +73,6 @@ class Post
 
     public function showDeleteForm(ViewModel $viewModel)
     {
-        $viewModel->set('post', $this->post);
         return 'default/delete';
     }
 
