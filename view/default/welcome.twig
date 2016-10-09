@@ -5,7 +5,7 @@
 <ul>
     {% for board in boards %}
     <li>
-        <a href="{{ url(board.getName()) }}">
+        <a href="{{ readUri(board) }}">
             {{ board.getTitle() }}
         </a>
     </li>

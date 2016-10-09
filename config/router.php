@@ -11,8 +11,8 @@ return [
     ],
     '/auth/logout' => 'Auth.doLogout',
 
-    '/{name:string}' => 'Board.index',
-    '/{name:string}/post' => [
+    '/board/{name:string}' => 'Board.index',
+    '/board/{name:string}/create' => [
         'GET' => 'Board.showPostingForm',
         'POST' => 'Board.write',
     ],
@@ -26,7 +26,7 @@ return [
         'GET' => 'Post.showDeleteForm',
         'POST' => 'Post.delete'
     ],
-    '/post/{id:int}/comment' => [
+    '/post/{id:int}/create' => [
         'POST' => 'Post.writeComment'
     ],
 
@@ -39,5 +39,5 @@ return [
         'POST' => 'Comment.delete'
     ],
 
-    '/file/{id:int}' => 'Attachment.index'
+    '/attachmentfile/{id:int}' => 'Attachment.index'
 ];

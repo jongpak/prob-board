@@ -16,7 +16,7 @@
     {% for post in posts %}
     <tr>
         <td class="no">{{ post.getId() }}</td>
-        <td class="subject"><a href="{{ url('/post/' ~ post.getId()) }}">{{ post.getSubject() }}</a></td>
+        <td class="subject"><a href="{{ readUri(post) }}">{{ post.getSubject() }}</a></td>
         <td class="author">{{ post.getAuthor() }}</td>
         <td class="time">{{ post.getCreatedAt() | date('Y-M-d') }}</td>
     </tr>
@@ -28,5 +28,5 @@
     {{ pager|raw }}
 </div>
 
-<a href="{{ url(board.getName() ~ '/post') }}" class="btn btn-default">Write</a>
+<a href="{{ createUri(board) }}" class="btn btn-default">Write</a>
 {% endblock %}

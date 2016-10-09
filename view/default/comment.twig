@@ -3,14 +3,14 @@
     <p>
         <label>Author:</label> {{ comment.getAuthor() }} /
         <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time> /
-        <a href="{{ url('/comment/' ~ comment.getId() ~ '/edit') }}">Edit</a>
-        <a href="{{ url('/comment/' ~ comment.getId() ~ '/delete') }}">Delete</a>
+        <a href="{{ updateUri(comment) }}">Edit</a>
+        <a href="{{ deleteUri(comment) }}">Delete</a>
     </p>
     {{ comment.getContent() }}
 
     <div class="file">
     {% for file in comment.getAttachemntFile() %}
-        <a href="{{ url('/file/' ~ file.getId()) }}" class="btn btn-default btn-sm">{{ file.getName() }}</a>
+        <a href="{{ readUri(file) }}" class="btn btn-default btn-sm">{{ file.getName() }}</a>
     {% endfor %}
     </div>
 </div>
