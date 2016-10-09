@@ -13,6 +13,10 @@ class EntityUriFactory
     public static function getEntityUri($entity)
     {
         switch (get_class($entity)) {
+            case Board::class:
+                return new BoardEntityUri($entity);
+                break;
+
             default:
                 return new DefaultEntityUri($entity);
                 break;
