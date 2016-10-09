@@ -45,12 +45,7 @@ class Board
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
 
         $viewModel->set('posts', $this->getPosts($page));
-        $viewModel->set('pager', (new Pager())
-            ->setCurrentPage($page)
-            ->setListPerPage($this->board->getListPerPage())
-            ->setLinkFactoryFunction($this->getLinkFactory())
-            ->getPageNavigation(PostModel::class)
-        );
+        $viewModel->set('pager', $this->getPager($page));
 
         return 'default/postList';
     }
@@ -90,6 +85,16 @@ class Board
                     $this->board->getListPerPage(),
                     $this->board->getListPerPage() * ($page - 1)
                 );
+    }
+
+    private function getPager($page)
+    {
+        return (new Pager())
+            ->setCurrentPage($page)
+            ->setListPerPage($this->board->getListPerPage())
+            ->setLinkFactoryFunction($this->getLinkFactory())
+            ->getPageNavigation(PostModel::class)
+        ;
     }
 
     private function getLinkFactory()
