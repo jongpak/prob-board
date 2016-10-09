@@ -18,6 +18,19 @@ return [
             'cache' => __DIR__ . '/../data/twig/cache/',
             'auto_reload' => true
         ],
-        'functions' => []
+        'functions' => [
+            'createUri' => function ($entity, $parameters = []) {
+                return EntityUriFactory::getEntityUri($entity)->create($parameters);
+            },
+            'readUri' => function ($entity, $parameters = []) {
+                return EntityUriFactory::getEntityUri($entity)->read($parameters);
+            },
+            'updateUri' => function ($entity, $parameters = []) {
+                return EntityUriFactory::getEntityUri($entity)->update($parameters);
+            },
+            'deleteUri' => function ($entity, $parameters = []) {
+                return EntityUriFactory::getEntityUri($entity)->delete($parameters);
+            }
+        ]
     ]
 ];

@@ -3,6 +3,6 @@
 return [
     'App\ViewResolver\DummyResolver',
     'App\ViewResolver\RedirectResolver',
-    'Twig' => 'App\ViewResolver\TwigResolver',
+    'TwigEx' => 'App\ViewResolver\TwigExResolver',
     'App\ViewResolver\JsonResolver',
 ];
