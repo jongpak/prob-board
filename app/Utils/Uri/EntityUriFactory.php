@@ -12,7 +12,7 @@ class EntityUriFactory
      */
     public static function getEntityUri($entity)
     {
-        switch (get_class($entity)) {
+        switch (get_parent_class($entity) ?: get_class($entity)) {
             case Board::class:
                 return new BoardEntityUri($entity);
                 break;
