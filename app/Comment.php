@@ -10,6 +10,7 @@ use App\Utils\FileDeleter;
 use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
 use App\Utils\FormUtility;
+use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,7 +62,7 @@ class Comment
 
         $this->entityManager->flush();
 
-        return 'redirect: ' . Application::getUrl('/post/' . $this->comment->getPost()->getId());
+        return 'redirect: ' . EntityUriFactory::getEntityUri($this->comment->getPost())->read();
     }
 
     public function showDeleteForm(ViewModel $viewModel)
@@ -71,11 +72,9 @@ class Comment
 
     public function delete()
     {
-        $postId = $this->comment->getPost()->getId();
-
         $this->comment->setPost(null);
         $this->entityManager->flush();
 
-        return 'redirect:' . Application::getUrl('/post/' . $postId);
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->comment->getPost())->read();
     }
 }

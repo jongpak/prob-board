@@ -10,6 +10,7 @@ use App\Entity\Board as BoardModel;
 use App\Utils\Pager;
 use App\Utils\FileUploader;
 use App\Utils\ContentUserInfoSetter;
+use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,7 +72,7 @@ class Board
         $this->entityManager->persist($post);
         $this->entityManager->flush();
 
-        return 'redirect: ' . Application::getUrl('/post/' . $post->getId());
+        return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
 
     /**
@@ -100,9 +101,7 @@ class Board
     private function getLinkFactory()
     {
         return function ($page) {
-            return $page == 1
-                ? Application::getUrl('/' . $this->board->getName())
-                : Application::getUrl('/' . $this->board->getName() . '?page=' . $page);
+            return EntityUriFactory::getEntityUri($this->board)->read($page > 1 ? ['page' => $page] : []);
         };
     }
 }
