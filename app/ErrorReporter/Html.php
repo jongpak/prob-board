@@ -24,7 +24,7 @@ class Html implements ErrorReporterInterface
         $view->file($this->settings['file']);
         $this->setReportVariables($view, $exception);
 
-        echo $view->render();
+        return $view->render();
     }
 
     /**
