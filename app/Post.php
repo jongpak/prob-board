@@ -13,10 +13,10 @@ use App\Utils\ContentUserInfoSetter;
 use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
+use App\Exception\EntityNotFound;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use \DateTime;
-use \Exception;
 
 class Post
 {
@@ -36,7 +36,7 @@ class Post
         $this->post = EntityFinder::findById(PostModel::class, $id);
 
         if ($this->post === null) {
-            throw new Exception('Post is not found');
+            throw new EntityNotFound('Post is not found');
         }
 
         $viewModel->set('post', $this->post);

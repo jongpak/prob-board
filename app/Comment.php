@@ -13,10 +13,10 @@ use App\Utils\FormUtility;
 use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
+use App\Exception\EntityNotFound;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use \DateTime;
-use \Exception;
 
 class Comment
 {
@@ -36,7 +36,7 @@ class Comment
         $this->comment = EntityFinder::findById(CommentModel::class, $id);
 
         if ($this->comment === null) {
-            throw new Exception('Comment is not found');
+            throw new EntityNotFound('Comment is not found');
         }
 
         $viewModel->set('comment', $this->comment);

@@ -1,6 +1,7 @@
 <?php
 use App\Auth\Exception\AccountNotFound;
 use App\EventListener\Auth\Exception\PermissionDenied;
+use App\Exception\EntityNotFound;
 
 return [
     'displayErrors' => true,
@@ -20,5 +21,6 @@ return [
     'errorCodes' => [
         AccountNotFound::class => 403,
         PermissionDenied::class => 403,
+        EntityNotFound::class => 404
     ]
 ];

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AttachmentFile;
+use App\Exception\EntityNotFound;
 use Core\Utils\EntityFinder;
 use \Exception;
 use \SplFileObject;
@@ -15,13 +16,13 @@ class Attachment
         $attachment = EntityFinder::findById(AttachmentFile::class, $id);
 
         if ($attachment === null) {
-            throw new Exception('Attachment is not found!');
+            throw new EntityNotFound('Attachment is not found!');
         }
 
         try {
             $file = new SplFileObject(__DIR__ . '/../data/attachment/' . $attachment->getId());
         } catch (Exception $e) {
-            throw new Exception('Attachment file is not exists or deleted');
+            throw new EntityNotFound('Attachment file is not exists or deleted');
         }
 
         header('Content-Type: application/octet-stream');

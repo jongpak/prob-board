@@ -13,9 +13,9 @@ use App\Utils\ContentUserInfoSetter;
 use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
+use App\Exception\EntityNotFound;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use \Exception;
 
 class Board
 {
@@ -35,7 +35,7 @@ class Board
         $this->board = EntityFinder::findOneBy(BoardModel::class, ['name' => $name]);
 
         if ($this->board === null) {
-            throw new Exception('[' . $name . '] Board is not found');
+            throw new EntityNotFound('[' . $name . '] Board is not found');
         }
 
         $viewModel->set('board', $this->board);
