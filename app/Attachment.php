@@ -6,9 +6,9 @@ use App\Entity\AttachmentFile;
 use App\Exception\EntityNotFound;
 use Core\Utils\EntityFinder;
 use Core\Utils\ResponseProxy;
+use Zend\Diactoros\Response\EmptyResponse;
 use \Exception;
 use \SplFileObject;
-use Zend\Diactoros\Response\EmptyResponse;
 
 class Attachment
 {
@@ -31,8 +31,8 @@ class Attachment
             new EmptyResponse(
                 200,
                 [
-                    'Content-Type' => 'application/octet-stream',
-                    'Content-Disposition' => 'attachment; filename="' . $attachment->getName() . '"',
+                    'Content-Type' => mime_content_type($file->getPathname()),
+                    'Content-Disposition' => 'inline; filename="' . $attachment->getName() . '"',
                     'Content-Transfer-Encoding' => 'binary',
                     'Content-Length' => $file->getSize()
                 ]
