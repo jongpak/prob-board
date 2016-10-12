@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\AttachmentFile;
 use App\Exception\EntityNotFound;
 use Core\Utils\EntityFinder;
+use Core\Utils\ResponseProxy;
 use \Exception;
 use \SplFileObject;
+use Zend\Diactoros\Response\EmptyResponse;
 
 class Attachment
 {
-    public function index($id)
+    public function index($id, ResponseProxy $response)
     {
         /** @var AttachmentFile */
         $attachment = EntityFinder::findById(AttachmentFile::class, $id);
@@ -25,12 +27,19 @@ class Attachment
             throw new EntityNotFound('Attachment file is not exists or deleted');
         }
 
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . $attachment->getName() . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . $file->getSize());
+        $response->setResponse(
+            new EmptyResponse(
+                200,
+                [
+                    'Content-Type' => 'application/octet-stream',
+                    'Content-Disposition' => 'attachment; filename="' . $attachment->getName() . '"',
+                    'Content-Transfer-Encoding' => 'binary',
+                    'Content-Length' => $file->getSize()
+                ]
+            )
+        );
 
-        ob_clean();
+        ob_start();
         echo $file->openFile()->fread($file->getSize());
     }
 }
