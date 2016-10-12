@@ -6,6 +6,7 @@ use App\Entity\AttachmentFile;
 use App\Exception\EntityNotFound;
 use Core\Utils\EntityFinder;
 use Core\Utils\ResponseProxy;
+use Sinergi\BrowserDetector\Browser;
 use Zend\Diactoros\Response\EmptyResponse;
 use \Exception;
 use \SplFileObject;
@@ -27,12 +28,14 @@ class Attachment
             throw new EntityNotFound('Attachment file is not exists or deleted');
         }
 
+        $isIE = (new Browser())->getName() === Browser::IE;
+
         $response->setResponse(
             new EmptyResponse(
                 200,
                 [
                     'Content-Type' => mime_content_type($file->getPathname()),
-                    'Content-Disposition' => 'inline; filename="' . $attachment->getName() . '"',
+                    'Content-Disposition' => 'inline; filename="' . ($isIE ? rawurlencode($attachment->getName()) : $attachment->getName()) . '"',
                     'Content-Transfer-Encoding' => 'binary',
                     'Content-Length' => $file->getSize()
                 ]

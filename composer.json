@@ -17,7 +17,8 @@
     "prob/router": "dev-master",
     "jongpak/array-key-glue": "dev-master",
     "zendframework/zend-diactoros": "*",
-    "pagerfanta/pagerfanta": "*"
+    "pagerfanta/pagerfanta": "*",
+    "sinergi/browser-detector": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "*"
