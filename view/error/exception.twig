@@ -74,6 +74,8 @@
 
 <div class="error">
     <p class="message">{{ message }}</p>
+
+    {% if displayStackTrace == true %}
     <p class="file">File: {{ file }}:{{ line }}</p>
     <div class="trace">
     <table>
@@ -92,6 +94,8 @@
         {% set i = i + 1 %}
         {% endfor %}
     </table>
+    </div>
+    {% endif %}
 </div>
 
 </body>
