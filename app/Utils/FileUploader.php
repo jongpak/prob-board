@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use Core\DatabaseManager;
 use App\Entity\AttachmentFile;
+use Psr\Http\Message\UploadedFileInterface;
 
 class FileUploader
 {
