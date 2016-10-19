@@ -11,6 +11,11 @@ class EntityFinder
         return DatabaseManager::getEntityManager()->getRepository($entityName)->find($id);
     }
 
+    public static function findOrderedAndLimitedBy($entityName, $criteria, $order, $start, $end)
+    {
+        return DatabaseManager::getEntityManager()->getRepository($entityName)->findBy($criteria, $order, $start, $end);
+    }
+
     public static function findOneBy($entityName, $criteria, $orderBy = [])
     {
         return DatabaseManager::getEntityManager()->getRepository($entityName)->findOneBy($criteria, $orderBy);

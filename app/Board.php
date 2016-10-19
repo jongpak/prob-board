@@ -80,12 +80,13 @@ class Board
      */
     private function getPosts($page)
     {
-        return $this->entityManager->getRepository(PostModel::class)
-                ->findBy(
-                    ['board' => $this->board->getId()], ['id' => 'DESC'],
-                    $this->board->getListPerPage(),
-                    $this->board->getListPerPage() * ($page - 1)
-                );
+        return EntityFinder::findOrderedAndLimitedBy(
+            PostModel::class,
+            ['board' => $this->board->getId()],
+            ['id' => 'DESC'],
+            $this->board->getListPerPage(),
+            $this->board->getListPerPage() * ($page - 1)
+        );
     }
 
     private function getPager($page)
