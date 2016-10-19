@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\CommentService;
+use App\Utils\AttachmentFileUtil;
 use Core\ViewModel;
 use App\Entity\Comment as CommentModel;
 use App\Utils\FormUtility;
@@ -36,11 +37,11 @@ class Comment
         return 'default/commentForm';
     }
 
-    public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
+    public function edit($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
         $this->commentService->editComment($this->comment, $parsedBody, $loginManager);
-        $this->commentService->attachFile($this->comment, $req->getUploadedFiles()['file']);
-        $this->commentService->detachFile(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
+        AttachmentFileUtil::uploadFiles($this->comment, $req->getUploadedFiles()['file'], $entityManager);
+        AttachmentFileUtil::deleteFiles($this->comment, FormUtility::getCheckboxOnItem('delete-file', $parsedBody), $entityManager);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($this->comment->getPost())->read();
     }

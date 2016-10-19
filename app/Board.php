@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Service\BoardService;
 use App\Service\PostService;
+use App\Utils\AttachmentFileUtil;
 use Core\ViewModel;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use App\Utils\Pager;
-use App\Utils\FileUploader;
 use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
@@ -17,11 +17,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Board
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     /**
      * @var BoardService
      */
@@ -39,7 +34,6 @@ class Board
 
     public function __construct($name, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
-        $this->entityManager = $entityManager;
         $this->boardService = new BoardService($entityManager);
         $this->postService = new PostService($entityManager);
         $this->board = $this->boardService->getBoardEntity($name);
@@ -62,10 +56,10 @@ class Board
         return 'default/postingForm';
     }
 
-    public function write($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
+    public function write($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
         $post = $this->postService->writePost($this->board, $parsedBody, $loginManager);
-        $this->postService->attachFile($post, $req->getUploadedFiles()['file']);
+        AttachmentFileUtil::uploadFiles($post, $req->getUploadedFiles()['file'], $entityManager);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }

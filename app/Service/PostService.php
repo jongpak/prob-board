@@ -18,16 +18,9 @@ class PostService
      */
     private $entityManager;
 
-    /**
-     * @var AttachmentService
-     */
-    private $attachmentService;
-
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-
-        $this->attachmentService = new AttachmentService($entityManager);
     }
 
     public function getPostEntity($id)
@@ -69,19 +62,5 @@ class PostService
     {
         $post->setBoard(null);
         $this->entityManager->flush();
-    }
-
-    public function attachFile(Post $post, array $fileRequests)
-    {
-        $files = $this->attachmentService->uploadFile($fileRequests);
-        foreach ($files as $file) {
-            $post->addAttachmentFile($file);
-        }
-        $this->entityManager->flush();
-    }
-
-    public function detachFile(array $fileId)
-    {
-        $this->attachmentService->deleteFile($fileId);
     }
 }
