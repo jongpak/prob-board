@@ -7,8 +7,6 @@ use App\Entity\Post;
 use App\Entity\Comment;
 use App\Exception\EntityNotFound;
 use App\Utils\ContentUserInfoSetter;
-use App\Utils\FileDeleter;
-use App\Utils\FileUploader;
 use Core\Utils\EntityFinder;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,9 +18,16 @@ class CommentService
      */
     private $entityManager;
 
+    /**
+     * @var AttachmentService
+     */
+    private $attachmentService;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+
+        $this->attachmentService = new AttachmentService($entityManager);
     }
 
     public function getCommentEntity($id)
@@ -66,7 +71,7 @@ class CommentService
 
     public function attachFile(Comment $comment, array $fileRequests)
     {
-        $files = FileUploader::uploadFiles($fileRequests);
+        $files = $this->attachmentService->uploadFile($fileRequests);
         foreach ($files as $file) {
             $comment->addAttachmentFile($file);
         }
@@ -75,6 +80,6 @@ class CommentService
 
     public function detachFile(array $fileId)
     {
-        FileDeleter::deleteFiles($fileId);
+        $this->attachmentService->deleteFile($fileId);
     }
 }

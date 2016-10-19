@@ -7,8 +7,6 @@ use App\Entity\Board;
 use App\Entity\Post;
 use App\Exception\EntityNotFound;
 use App\Utils\ContentUserInfoSetter;
-use App\Utils\FileDeleter;
-use App\Utils\FileUploader;
 use Core\Utils\EntityFinder;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
@@ -20,9 +18,16 @@ class PostService
      */
     private $entityManager;
 
+    /**
+     * @var AttachmentService
+     */
+    private $attachmentService;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
+
+        $this->attachmentService = new AttachmentService($entityManager);
     }
 
     public function getPostEntity($id)
@@ -68,7 +73,7 @@ class PostService
 
     public function attachFile(Post $post, array $fileRequests)
     {
-        $files = FileUploader::uploadFiles($fileRequests);
+        $files = $this->attachmentService->uploadFile($fileRequests);
         foreach ($files as $file) {
             $post->addAttachmentFile($file);
         }
@@ -77,6 +82,6 @@ class PostService
 
     public function detachFile(array $fileId)
     {
-        FileDeleter::deleteFiles($fileId);
+        $this->attachmentService->deleteFile($fileId);
     }
 }
