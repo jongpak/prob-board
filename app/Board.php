@@ -9,11 +9,9 @@ use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use App\Utils\Pager;
 use App\Utils\FileUploader;
-use App\Utils\ContentUserInfoSetter;
 use App\Utils\Uri\EntityUriFactory;
 use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
-use App\Exception\EntityNotFound;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
