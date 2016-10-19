@@ -2,40 +2,38 @@
 
 namespace App\Controller;
 
-use App\Entity\AttachmentFile;
-use App\Exception\EntityNotFound;
-use Core\Utils\EntityFinder;
+use App\Service\AttachmentService;
 use Core\Utils\ResponseProxy;
+use Doctrine\ORM\EntityManagerInterface;
 use Sinergi\BrowserDetector\Browser;
 use Zend\Diactoros\Response\EmptyResponse;
-use \Exception;
-use \SplFileObject;
 
 class Attachment
 {
+    /**
+     * @var AttachmentService
+     */
+    private $attachmentService;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->attachmentService = new AttachmentService($entityManager);
+    }
+
     public function index($id, ResponseProxy $response)
     {
-        /** @var AttachmentFile */
-        $attachment = EntityFinder::findById(AttachmentFile::class, $id);
-
-        if ($attachment === null) {
-            throw new EntityNotFound('Attachment is not found!');
-        }
-
-        try {
-            $file = new SplFileObject(__DIR__ . '/../data/attachment/' . $attachment->getId());
-        } catch (Exception $e) {
-            throw new EntityNotFound('Attachment file is not exists or deleted');
-        }
+        $attachmentFile = $this->attachmentService->getAttachmentFileEntity($id);
+        $file = $this->attachmentService->getAttachmentFileInfo($attachmentFile);
 
         $isIE = (new Browser())->getName() === Browser::IE;
+        $fileNameHeader = ($isIE ? rawurlencode($attachmentFile->getName()) : $attachmentFile->getName());
 
         $response->setResponse(
             new EmptyResponse(
                 200,
                 [
                     'Content-Type' => mime_content_type($file->getPathname()),
-                    'Content-Disposition' => 'inline; filename="' . ($isIE ? rawurlencode($attachment->getName()) : $attachment->getName()) . '"',
+                    'Content-Disposition' => 'inline; filename="' . $fileNameHeader . '"',
                     'Content-Transfer-Encoding' => 'binary',
                     'Content-Length' => $file->getSize()
                 ]

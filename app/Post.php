@@ -3,27 +3,26 @@
 namespace App\Controller;
 
 use Core\ViewModel;
-use Core\Application;
+use App\Service\PostService;
+use App\Service\CommentService;
 use App\Entity\Post as PostModel;
-use App\Entity\Comment as CommentModel;
-use App\Utils\FileDeleter;
-use App\Utils\FileUploader;
 use App\Utils\FormUtility;
-use App\Utils\ContentUserInfoSetter;
 use App\Utils\Uri\EntityUriFactory;
-use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
-use App\Exception\EntityNotFound;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use \DateTime;
 
 class Post
 {
     /**
-     * @var EntityManagerInterface
+     * @var PostService
      */
-    private $entityManager;
+    private $postService;
+
+    /**
+     * @var CommentService
+     */
+    private $commentService;
 
     /**
      * @var PostModel
@@ -32,12 +31,10 @@ class Post
 
     public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
-        $this->entityManager = $entityManager;
-        $this->post = EntityFinder::findById(PostModel::class, $id);
+        $this->postService = new PostService($entityManager);
+        $this->commentService = new CommentService($entityManager);
 
-        if ($this->post === null) {
-            throw new EntityNotFound('Post is not found');
-        }
+        $this->post = $this->postService->getPostEntity($id);
 
         $viewModel->set('post', $this->post);
     }
@@ -55,19 +52,9 @@ class Post
 
     public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
-        $this->post->setSubject($parsedBody['subject']);
-        $this->post->setContent($parsedBody['content']);
-        $this->post->setUpdatedAt(new DateTime());
-        ContentUserInfoSetter::fillUserInfo($this->post, $parsedBody, $loginManager);
-
-        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
-        foreach ($files as $file) {
-            $this->post->addAttachmentFile($file);
-        }
-
-        FileDeleter::deleteFiles(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
-
-        $this->entityManager->flush();
+        $this->postService->editPost($this->post, $parsedBody, $loginManager);
+        $this->postService->attachFile($this->post, $req->getUploadedFiles()['file']);
+        $this->postService->detachFile(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($this->post)->read();
     }
@@ -79,26 +66,16 @@ class Post
 
     public function delete()
     {
-        $this->post->setBoard(null);
-        $this->entityManager->flush();
+        $board = $this->post->getBoard();
+        $this->postService->deletePost($this->post);
 
-        return 'redirect:' . EntityUriFactory::getEntityUri($this->post->getBoard())->read();
+        return 'redirect:' . EntityUriFactory::getEntityUri($board)->read();
     }
 
     public function writeComment($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
-        $comment = new CommentModel();
-        $comment->setPost($this->post);
-        $comment->setContent($parsedBody['content']);
-        ContentUserInfoSetter::fillUserInfo($comment, $parsedBody, $loginManager);
-
-        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
-        foreach ($files as $file) {
-            $comment->addAttachmentFile($file);
-        }
-
-        $this->entityManager->persist($comment);
-        $this->entityManager->flush();
+        $comment = $this->commentService->writeComment($this->post, $parsedBody, $loginManager);
+        $this->commentService->attachFile($comment, $req->getUploadedFiles()['file']);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($this->post)->read();
     }

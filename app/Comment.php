@@ -2,28 +2,21 @@
 
 namespace App\Controller;
 
+use App\Service\CommentService;
 use Core\ViewModel;
-use Core\Application;
 use App\Entity\Comment as CommentModel;
-use App\Entity\User as UserModel;
-use App\Utils\FileDeleter;
-use App\Utils\FileUploader;
-use App\Utils\ContentUserInfoSetter;
 use App\Utils\FormUtility;
 use App\Utils\Uri\EntityUriFactory;
-use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
-use App\Exception\EntityNotFound;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use \DateTime;
 
 class Comment
 {
     /**
-     * @var EntityManagerInterface
+     * @var CommentService
      */
-    private $entityManager;
+    private $commentService;
 
     /**
      * @var CommentModel
@@ -32,14 +25,10 @@ class Comment
 
     public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
-        $this->entityManager = $entityManager;
-        $this->comment = EntityFinder::findById(CommentModel::class, $id);
+        $this->commentService = new CommentService($entityManager);
+        $this->post = $this->commentService->getCommentEntity($id);
 
-        if ($this->comment === null) {
-            throw new EntityNotFound('Comment is not found');
-        }
-
-        $viewModel->set('comment', $this->comment);
+        $viewModel->set('post', $this->post);
     }
 
     public function showEditForm(ViewModel $viewModel)
@@ -49,18 +38,9 @@ class Comment
 
     public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
-        $this->comment->setContent($parsedBody['content']);
-        $this->comment->setUpdatedAt(new DateTime());
-        ContentUserInfoSetter::fillUserInfo($this->comment, $parsedBody, $loginManager);
-
-        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
-        foreach ($files as $file) {
-            $this->comment->addAttachmentFile($file);
-        }
-
-        FileDeleter::deleteFiles(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
-
-        $this->entityManager->flush();
+        $this->commentService->editComment($this->comment, $parsedBody, $loginManager);
+        $this->commentService->attachFile($this->comment, $req->getUploadedFiles()['file']);
+        $this->commentService->detachFile(FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($this->comment->getPost())->read();
     }
@@ -72,9 +52,9 @@ class Comment
 
     public function delete()
     {
-        $this->comment->setPost(null);
-        $this->entityManager->flush();
+        $post = $this->comment->getPost();
+        $this->commentService->deleteComment($this->comment);
 
-        return 'redirect:' . EntityUriFactory::getEntityUri($this->comment->getPost())->read();
+        return 'redirect:' . EntityUriFactory::getEntityUri($post)->read();
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Service\BoardService;
+use App\Service\PostService;
 use Core\ViewModel;
-use Core\Application;
 use App\Entity\Post as PostModel;
-use App\Entity\User as UserModel;
 use App\Entity\Board as BoardModel;
 use App\Utils\Pager;
 use App\Utils\FileUploader;
@@ -25,6 +25,16 @@ class Board
     private $entityManager;
 
     /**
+     * @var BoardService
+     */
+    private $boardService;
+
+    /**
+     * @var PostService
+     */
+    private $postService;
+
+    /**
      * @var BoardModel
      */
     private $board;
@@ -32,11 +42,9 @@ class Board
     public function __construct($name, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->entityManager = $entityManager;
-        $this->board = EntityFinder::findOneBy(BoardModel::class, ['name' => $name]);
-
-        if ($this->board === null) {
-            throw new EntityNotFound('[' . $name . '] Board is not found');
-        }
+        $this->boardService = new BoardService($entityManager);
+        $this->postService = new PostService($entityManager);
+        $this->board = $this->boardService->getBoardEntity($name);
 
         $viewModel->set('board', $this->board);
     }
@@ -58,19 +66,8 @@ class Board
 
     public function write($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
-        $post = new PostModel();
-        $post->setBoard($this->board);
-        $post->setSubject($parsedBody['subject']);
-        $post->setContent($parsedBody['content']);
-        ContentUserInfoSetter::fillUserInfo($post, $parsedBody, $loginManager);
-
-        $files = FileUploader::uploadFiles($req->getUploadedFiles()['file']);
-        foreach ($files as $file) {
-            $post->addAttachmentFile($file);
-        }
-
-        $this->entityManager->persist($post);
-        $this->entityManager->flush();
+        $post = $this->postService->writePost($this->board, $parsedBody, $loginManager);
+        $this->postService->attachFile($post, $req->getUploadedFiles()['file']);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
