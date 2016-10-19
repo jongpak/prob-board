@@ -26,9 +26,9 @@ class Comment
     public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->commentService = new CommentService($entityManager);
-        $this->post = $this->commentService->getCommentEntity($id);
+        $this->comment = $this->commentService->getCommentEntity($id);
 
-        $viewModel->set('post', $this->post);
+        $viewModel->set('comment', $this->comment);
     }
 
     public function showEditForm(ViewModel $viewModel)
