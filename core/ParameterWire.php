@@ -24,9 +24,9 @@ class ParameterWire
 
     public static function injectParameter(ParameterMap $map)
     {
-        $buildedParameters = self::makeParameter();
+        $buildParameters = self::makeParameter();
 
-        foreach ($buildedParameters as $v) {
+        foreach ($buildParameters as $v) {
             $value = $v['value'] instanceof LazyWiringParameter ? $v['value']->exec() : $v['value'];
             $map->bindBy($v['key'], $value);
         }
@@ -36,18 +36,18 @@ class ParameterWire
 
     private static function makeParameter()
     {
-        $buildedParameters = [];
+        $buildParameters = [];
 
         foreach (self::$parameters as $v) {
             if ($v instanceof LazyWiringParameterCallback) {
-                $buildedParameters = array_merge($buildedParameters, $v->exec());
+                $buildParameters = array_merge($buildParameters, $v->exec());
                 continue;
             }
 
-            $buildedParameters[] = $v;
+            $buildParameters[] = $v;
         }
 
-        return $buildedParameters;
+        return $buildParameters;
     }
 
     public static function postCallback(callable $func)
