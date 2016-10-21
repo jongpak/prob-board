@@ -32,21 +32,24 @@ class FormValidator
 
     public function validate()
     {
-        if(isset(self::$rule[$this->proc->getName()]) === false) {
-            return;
-        }
-
-        $rule = self::$rule[$this->proc->getName()];
+        $currentRule = $this->getRuleOfCurrentRequest();
 
         /**
          * @var $func callable
          */
-        foreach($rule as $key => $func) {
+        foreach($currentRule as $key => $func) {
             $value = $this->getRequestValue($key);
             $parameterMap = $this->buildParameterMap($value);
 
             ProcFactory::getProc($func)->execWithParameterMap($parameterMap);
         }
+    }
+
+    private function getRuleOfCurrentRequest()
+    {
+        return isset(self::$rule[$this->proc->getName()])
+            ? self::$rule[$this->proc->getName()]
+            : [];
     }
 
     private function getRequestValue($key)
