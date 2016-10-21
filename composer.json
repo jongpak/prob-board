@@ -18,7 +18,8 @@
     "jongpak/array-key-glue": "dev-master",
     "zendframework/zend-diactoros": "*",
     "pagerfanta/pagerfanta": "*",
-    "sinergi/browser-detector": "*"
+    "sinergi/browser-detector": "*",
+    "respect/validation": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "*"
