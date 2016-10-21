@@ -5,7 +5,8 @@ return [
         '*.*' => [
             'before' => [
                 'App\\EventListener\\Auth\\ValidatorListener.validate',
-                'App\\EventListener\\TemplateCommon.putVariable'
+                'App\\EventListener\\TemplateCommon.putVariable',
+                'App\\EventListener\\FormValidator.validate',
             ]
         ],
 

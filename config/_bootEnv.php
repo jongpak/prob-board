@@ -10,4 +10,5 @@ return [
     'error' => require 'error.php',
     'event' => require 'event.php',
     'parameter' => require 'parameter.php',
+    'formValidation' => require 'formValidation.php',
 ];

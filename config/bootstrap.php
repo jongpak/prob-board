@@ -7,5 +7,6 @@ return [
     'App\\Bootstrap\\EventListenerBootstrap',
     'App\\Bootstrap\\AuthBootstrap',
     'App\\Bootstrap\\ParameterWiringBootstrap',
-    'App\\Bootstrap\\DispatcherBootstrap'
+    'App\\Bootstrap\\FormValidatorBootstrap',
+    'App\\Bootstrap\\DispatcherBootstrap',
 ];
