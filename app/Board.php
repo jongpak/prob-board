@@ -56,7 +56,7 @@ class Board
         return 'default/postingForm';
     }
 
-    public function write($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
+    public function writePost($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
         $post = $this->postService->writePost($this->board, $parsedBody, $loginManager);
         AttachmentFileUtil::uploadFiles($post, $req->getUploadedFiles()['file'], $entityManager);

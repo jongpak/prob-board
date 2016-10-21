@@ -14,7 +14,7 @@ return [
     '/board/{name:string}' => 'Board.index',
     '/board/{name:string}/create' => [
         'GET' => 'Board.showPostingForm',
-        'POST' => 'Board.write',
+        'POST' => 'Board.writePost',
     ],
 
     '/post/{id:int}' => 'Post.index',

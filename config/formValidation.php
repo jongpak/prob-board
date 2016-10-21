@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Board.write' => [
+    'Board.writePost' => [
         'subject' => 'App\\Utils\\FormValidator\\ContentValidator.subjectValidate',
         'content' => 'App\\Utils\\FormValidator\\ContentValidator.contentValidate',
         'author' => 'App\\Utils\\FormValidator\\UserContentValidator.authorValidate',
