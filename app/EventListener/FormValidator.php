@@ -13,29 +13,60 @@ class FormValidator
 {
     private static $rule = [];
 
-    public function validate(ProcInterface $proc, ServerRequestInterface $request)
+    /**
+     * @var ProcInterface
+     */
+    private $proc;
+
+    /**
+     * @var ServerRequestInterface
+     */
+    private $request;
+
+
+    public function __construct(ProcInterface $proc, ServerRequestInterface $request)
     {
-        if(isset(self::$rule[$proc->getName()]) === false) {
+        $this->proc = $proc;
+        $this->request = $request;
+    }
+
+    public function validate()
+    {
+        if(isset(self::$rule[$this->proc->getName()]) === false) {
             return;
         }
 
-        $rule = self::$rule[$proc->getName()];
+        $rule = self::$rule[$this->proc->getName()];
 
         /**
          * @var $func callable
          */
         foreach($rule as $key => $func) {
-            $value = isset($request->getParsedBody()[$key]) ? $request->getParsedBody()[$key] : null;
-
-            $parameterMap = new ParameterMap();
-            $parameterMap->bindBy(new Named('value'), $value);
-            ParameterWire::injectParameter($parameterMap);
+            $value = $this->getRequestValue($key);
+            $parameterMap = $this->buildParameterMap($value);
 
             ProcFactory::getProc($func)->execWithParameterMap($parameterMap);
         }
     }
 
-    public static function setRule(array $rule) {
+    private function getRequestValue($key)
+    {
+        return isset($this->request->getParsedBody()[$key])
+                ? $this->request->getParsedBody()[$key]
+                : null;
+    }
+
+    private function buildParameterMap($value)
+    {
+        $parameterMap = new ParameterMap();
+        $parameterMap->bindBy(new Named('value'), $value);
+        ParameterWire::injectParameter($parameterMap);
+
+        return $parameterMap;
+    }
+
+    public static function setRule(array $rule)
+    {
         self::$rule = $rule;
     }
 }
