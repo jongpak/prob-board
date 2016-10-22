@@ -7,9 +7,9 @@ return [
 
     '/auth/login' => [
         'GET' => 'Auth.viewLoginForm',
-        'POST' => 'Auth.doLogin'
+        'POST' => 'Auth.login'
     ],
-    '/auth/logout' => 'Auth.doLogout',
+    '/auth/logout' => 'Auth.logout',
 
     '/board/{name:string}' => 'Board.index',
     '/board/{name:string}/create' => [

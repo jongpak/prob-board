@@ -12,13 +12,13 @@ class Auth
         return 'auth/login';
     }
 
-    public function doLogin(LoginManagerInterface $loginManager, $parsedBody)
+    public function login(LoginManagerInterface $loginManager, $parsedBody)
     {
         $loginManager->login($parsedBody['account_id'], $parsedBody['password']);
         return 'redirect: ' . Application::getUrl();
     }
 
-    public function doLogout(LoginManagerInterface $loginManager)
+    public function logout(LoginManagerInterface $loginManager)
     {
         $loginManager->logout();
         return 'redirect: ' . Application::getUrl();
