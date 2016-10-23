@@ -12,6 +12,11 @@ class Auth
         return 'auth/login';
     }
 
+    public function viewRegisterForm()
+    {
+        return 'auth/register';
+    }
+
     public function login(LoginManagerInterface $loginManager, $parsedBody)
     {
         $loginManager->login($parsedBody['account_id'], $parsedBody['password']);

@@ -10,6 +10,9 @@ return [
         'POST' => 'Auth.login'
     ],
     '/auth/logout' => 'Auth.logout',
+    '/auth/register' => [
+        'GET' => 'Auth.viewRegisterForm',
+    ],
 
     '/board/{name:string}' => 'Board.index',
     '/board/{name:string}/create' => [
