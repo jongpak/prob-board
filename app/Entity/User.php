@@ -50,9 +50,19 @@ class User
         return $this->accountId;
     }
 
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+    }
+
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
     }
 
     public function getNickname()
@@ -60,9 +70,19 @@ class User
         return $this->nickname;
     }
 
+    public function setNickname($nickname)
+    {
+        $this->nickname = $nickname;
+    }
+
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     public function getRoles()
