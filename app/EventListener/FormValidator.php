@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use Core\ParameterWire;
+use InvalidArgumentException;
 use Prob\Handler\Parameter\Named;
 use Prob\Handler\ParameterMap;
 use Prob\Handler\ProcFactory;
@@ -34,14 +35,11 @@ class FormValidator
     {
         $currentRule = $this->getRuleOfCurrentRequest();
 
-        /**
-         * @var $func callable
-         */
         foreach($currentRule as $key => $func) {
             $value = $this->getRequestValue($key);
             $parameterMap = $this->buildParameterMap($value);
 
-            ProcFactory::getProc($func)->execWithParameterMap($parameterMap);
+            $this->dispatchValidator($key, $func, $parameterMap);
         }
     }
 
@@ -66,6 +64,26 @@ class FormValidator
         ParameterWire::injectParameter($parameterMap);
 
         return $parameterMap;
+    }
+
+    private function dispatchValidator($key, $func, ParameterMap $parameterMap)
+    {
+        if(is_string($func) || is_callable($func)) {
+            $this->executeValidator($func, $parameterMap);
+        } else if(is_array($func)) {
+            foreach($func as $funcItem) {
+                $this->executeValidator($funcItem, $parameterMap);
+            }
+        } else {
+            throw new InvalidArgumentException(
+                sprintf('Invalid validator type on [%s] in [%s]', $key, $this->proc->getName())
+            );
+        }
+    }
+
+    private function executeValidator($func, ParameterMap $parameterMap)
+    {
+        ProcFactory::getProc($func)->execWithParameterMap($parameterMap);
     }
 
     public static function setRule(array $rule)
