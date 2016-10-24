@@ -2,8 +2,14 @@
 
 return [
     'Auth.login' => [
-        'id' => 'App\\Utils\\FormValidator\\LoginValidator.accountIdValidate',
+        'account_id' => 'App\\Utils\\FormValidator\\LoginValidator.accountIdValidate',
         'password' => 'App\\Utils\\FormValidator\\LoginValidator.passwordValidate',
+    ],
+    'Auth.register' => [
+        'account_id' => [
+            'App\\Utils\\FormValidator\\LoginValidator.accountIdValidate',
+            'App\\Utils\\FormValidator\\RegisterValidator.accountIdDuplicateValidate',
+        ],
     ],
     'Board.writePost' => [
         'subject' => 'App\\Utils\\FormValidator\\ContentValidator.subjectValidate',
