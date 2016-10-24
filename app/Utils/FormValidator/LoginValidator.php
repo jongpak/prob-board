@@ -9,14 +9,14 @@ class LoginValidator
 {
     public static function accountIdValidate($value)
     {
-        if(Validator::stringType()->length(6, 128)->validate($value)) {
+        if(Validator::stringType()->length(4, 128)->validate($value)) {
             throw new InvalidRequestException("Length of account id is 4 ~ 128");
         }
     }
 
     public static function passwordValidate($value)
     {
-        if(Validator::stringType()->length(6, 128)->validate($value)) {
+        if(Validator::stringType()->length(4, 128)->validate($value)) {
             throw new InvalidRequestException("Length of account password is 4 ~ 128");
         }
     }
