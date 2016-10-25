@@ -12,6 +12,7 @@ return [
     '/auth/logout' => 'Auth.logout',
     '/auth/register' => [
         'GET' => 'Auth.viewRegisterForm',
+        'POST' => 'Auth.register'
     ],
 
     '/board/{name:string}' => 'Board.index',

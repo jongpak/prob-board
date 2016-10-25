@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Core\Application;
 use App\Auth\LoginManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class Auth
 {
@@ -27,5 +29,19 @@ class Auth
     {
         $loginManager->logout();
         return 'redirect: ' . Application::getUrl();
+    }
+
+    public function register($parsedBody, EntityManagerInterface $entityManager)
+    {
+        $user = new User();
+        $user->setAccountId($parsedBody['account_id']);
+        $user->setPassword($parsedBody['password']);
+        $user->setNickname($parsedBody['nickname']);
+        $user->setEmail($parsedBody['email']);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return 'redirect:' . Application::getUrl();
     }
 }
