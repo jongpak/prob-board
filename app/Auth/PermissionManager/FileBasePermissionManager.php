@@ -2,13 +2,13 @@
 
 namespace App\Auth\PermissionManager;
 
-use App\Auth\PermissionManager;
+use App\Auth\PermissionManagerAbstract;
 
-class FileBasePermissionManager extends PermissionManager
+class FileBasePermissionManager extends PermissionManagerAbstract
 {
     private $permission;
 
-    public function __construct($settings = [])
+    public function __construct(array $settings = [])
     {
         $this->permission = $settings['permissions'];
     }

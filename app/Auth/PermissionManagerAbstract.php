@@ -2,11 +2,9 @@
 
 namespace App\Auth;
 
-use Prob\Handler\ProcInterface;
-
-abstract class PermissionManager
+abstract class PermissionManagerAbstract
 {
-    abstract public function __construct($settings = []);
+    abstract public function __construct(array $settings = []);
 
     /**
      * @return array|null
