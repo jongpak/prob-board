@@ -5,7 +5,6 @@ namespace App\Utils;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap3View;
-use Core\Application;
 use Core\DatabaseManager;
 
 class Pager
