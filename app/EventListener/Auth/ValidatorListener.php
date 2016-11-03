@@ -11,12 +11,15 @@ class ValidatorListener
 {
     public function validate(ProcInterface $proc, LoginManagerInterface $loginManager)
     {
-        if (AuthManager::getPermissionManager()
-                ->hasAllowedRole($loginManager->getLoggedAccountId(), $proc->getName()) === false
-        ) {
+        if ($this->isAllowedRole($proc, $loginManager) === false) {
             throw new PermissionDenied('This operation is not allowed');
         }
 
         return true;
+    }
+
+    private function isAllowedRole(ProcInterface $proc, LoginManagerInterface $loginManager) {
+        return AuthManager::getPermissionManager()
+            ->hasAllowedRole($loginManager->getLoggedAccountId(), $proc->getName());
     }
 }
