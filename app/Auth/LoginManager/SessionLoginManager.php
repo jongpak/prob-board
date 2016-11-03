@@ -25,16 +25,20 @@ class SessionLoginManager implements LoginManagerInterface
 
     public function login($accountId, $password)
     {
-        if (
-            $this->accountManager->isExistAccountId($accountId) === false
-            || $this->accountManager->isEqualPassword($accountId, $password) === false
-        ) {
+        if ($this->isValidAccountInfo($accountId, $password)) {
             throw new AccountNotFound('Invalid account id or password');
         }
 
         $_SESSION['account'] = [
             'id' => $accountId
         ];
+    }
+
+    private function isValidAccountInfo($accountId, $password)
+    {
+        return $this->accountManager->isExistAccountId($accountId)
+                && $this->accountManager->isEqualPassword($accountId, $password);
+
     }
 
     public function logout()
