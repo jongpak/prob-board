@@ -2,6 +2,8 @@
 
 namespace App\Utils;
 
+use App\Auth\AuthManager;
+use App\Auth\HashManager;
 use App\Auth\LoginManagerInterface;
 use App\Entity\User;
 use App\Entity\Traits\UserContentable;
@@ -28,7 +30,7 @@ class ContentUserInfoSetter
             $content->setUser($user);
         } else {
             $content->setAuthor($parsedBody['author']);
-            $content->setPassword($parsedBody['password']);
+            $content->setPassword(HashManager::getProvider()->make($parsedBody['password']));
         }
     }
 

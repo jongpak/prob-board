@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Auth\HashManager;
 use App\Entity\User;
 use Core\Application;
 use App\Auth\LoginManagerInterface;
@@ -35,7 +36,7 @@ class Auth
     {
         $user = new User();
         $user->setAccountId($parsedBody['account_id']);
-        $user->setPassword($parsedBody['password']);
+        $user->setPassword(HashManager::getProvider()->make($parsedBody['password']));
         $user->setNickname($parsedBody['nickname']);
         $user->setEmail($parsedBody['email']);
 

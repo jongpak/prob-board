@@ -2,6 +2,8 @@
 
 namespace App\EventListener;
 
+use App\Auth\HashManager;
+use App\Auth\HashProviderInterface;
 use App\Auth\LoginManagerInterface;
 use App\Entity\Post;
 use App\Entity\User;
@@ -18,30 +20,48 @@ class ControllerAuth
      */
     private $user;
 
-    public function __construct(LoginManagerInterface $loginManager)
+    /**
+     * @var LoginManagerInterface
+     */
+    private $loginManager;
+
+    /**
+     * @var ServerRequestInterface
+     */
+    private $request;
+
+    /**
+     * @var HashProviderInterface
+     */
+    private $hashProvider;
+
+    public function __construct(ServerRequestInterface $request, LoginManagerInterface $loginManager)
     {
         $this->user = EntitySelect::select(User::class)
             ->criteria(['accountId' => $loginManager->getLoggedAccountId()])
             ->findOne();
+
+        $this->loginManager = $loginManager;
+        $this->request = $request;
+        $this->hashProvider = HashManager::getProvider();
     }
 
-    public function validatePostAuth($id, $parsedBody, ServerRequestInterface $request)
+    public function validatePostAuth($id, $parsedBody)
     {
-        $this->validate(EntitySelect::select(Post::class)->findById($id), $parsedBody, $request);
+        $this->validate(EntitySelect::select(Post::class)->findById($id), $parsedBody);
     }
 
-    public function validateCommentAuth($id, $parsedBody, ServerRequestInterface $request)
+    public function validateCommentAuth($id, $parsedBody)
     {
-        $this->validate(EntitySelect::select(Comment::class)->findById($id), $parsedBody, $request);
+        $this->validate(EntitySelect::select(Comment::class)->findById($id), $parsedBody);
     }
 
     /**
      * @param UserContentable $userContent
      * @param $parsedBody
-     * @param ServerRequestInterface $request
      * @throws PermissionDenied
      */
-    private function validate($userContent, $parsedBody, ServerRequestInterface $request)
+    private function validate($userContent, $parsedBody)
     {
         if ($userContent === null) {
             return;
@@ -51,10 +71,18 @@ class ControllerAuth
             throw new PermissionDenied('This operation is not allowed');
         }
 
-        if ($request->getMethod() === 'POST') {
-            if ($this->user === null && $userContent->getPassword() !== $parsedBody['password']) {
+        if ($this->request->getMethod() === 'POST') {
+            if($this->user !== null) {
+                return;
+            }
+
+            if ($this->isValidGuestPassword($parsedBody['password'], $userContent->getPassword()) === false) {
                 throw new PermissionDenied('Password is invalid');
             }
         }
+    }
+
+    private function isValidGuestPassword($password, $hashedPassword) {
+        return $this->hashProvider->isEqualValueAndHash($password, $hashedPassword) === true;
     }
 }
