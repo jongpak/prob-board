@@ -53,8 +53,8 @@ class FormValidator
     private function getRequestValue($key)
     {
         return isset($this->request->getParsedBody()[$key])
-                ? $this->request->getParsedBody()[$key]
-                : null;
+            ? $this->request->getParsedBody()[$key]
+            : null;
     }
 
     private function buildParameterMap($value)
