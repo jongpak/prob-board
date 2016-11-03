@@ -8,8 +8,8 @@ use App\Entity\User;
 use App\Entity\Comment;
 use App\Entity\Traits\UserContentable;
 use App\EventListener\Auth\Exception\PermissionDenied;
+use Core\Utils\EntityUtils\EntitySelect;
 use Psr\Http\Message\ServerRequestInterface;
-use Core\Utils\EntityFinder;
 
 class ControllerAuth
 {
@@ -20,17 +20,19 @@ class ControllerAuth
 
     public function __construct(LoginManagerInterface $loginManager)
     {
-        $this->user = EntityFinder::findOneBy(User::class, ['accountId' => $loginManager->getLoggedAccountId()]);
+        $this->user = EntitySelect::select(User::class)
+            ->criteria(['accountId' => $loginManager->getLoggedAccountId()])
+            ->findOne();
     }
 
     public function validatePostAuth($id, $parsedBody, ServerRequestInterface $request)
     {
-        $this->validate(EntityFinder::findById(Post::class, $id), $parsedBody, $request);
+        $this->validate(EntitySelect::select(Post::class)->findById($id), $parsedBody, $request);
     }
 
     public function validateCommentAuth($id, $parsedBody, ServerRequestInterface $request)
     {
-        $this->validate(EntityFinder::findById(Comment::class, $id), $parsedBody, $request);
+        $this->validate(EntitySelect::select(Comment::class)->findById($id), $parsedBody, $request);
     }
 
     private function validate($userContent, $parsedBody, ServerRequestInterface $request)

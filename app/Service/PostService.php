@@ -7,25 +7,16 @@ use App\Entity\Board;
 use App\Entity\Post;
 use App\Exception\EntityNotFound;
 use App\Utils\ContentUserInfoSetter;
-use Core\Utils\EntityFinder;
-use Doctrine\ORM\EntityManagerInterface;
+use Core\Utils\EntityUtils\EntityInsert;
+use Core\Utils\EntityUtils\EntitySelect;
+use Core\Utils\EntityUtils\EntityUpdate;
 use DateTime;
 
 class PostService
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function getPostEntity($id)
     {
-        $post = EntityFinder::findById(Post::class, $id);
+        $post = EntitySelect::select(Post::class)->findById($id);
 
         if ($post === null) {
             throw new EntityNotFound('Post is not found');
@@ -42,8 +33,7 @@ class PostService
         $post->setContent($body['content']);
         ContentUserInfoSetter::fillUserInfo($post, $body, $loginManager);
 
-        $this->entityManager->persist($post);
-        $this->entityManager->flush();
+        EntityInsert::insert($post);
 
         return $post;
     }
@@ -55,12 +45,12 @@ class PostService
         $post->setUpdatedAt(new DateTime());
         ContentUserInfoSetter::fillUserInfo($post, $body, $loginManager);
 
-        $this->entityManager->flush();
+        EntityUpdate::update($post);
     }
 
     public function deletePost(Post $post)
     {
         $post->setBoard(null);
-        $this->entityManager->flush();
+        EntityUpdate::update($post);
     }
 }

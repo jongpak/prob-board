@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use Core\Application;
 use App\Auth\LoginManagerInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Core\Utils\EntityUtils\EntityInsert;
 
 class Auth
 {
@@ -31,7 +31,7 @@ class Auth
         return 'redirect: ' . Application::getUrl();
     }
 
-    public function register($parsedBody, EntityManagerInterface $entityManager)
+    public function register($parsedBody)
     {
         $user = new User();
         $user->setAccountId($parsedBody['account_id']);
@@ -39,8 +39,7 @@ class Auth
         $user->setNickname($parsedBody['nickname']);
         $user->setEmail($parsedBody['email']);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        EntityInsert::insert($user);
 
         return 'redirect:' . Application::getUrl();
     }

@@ -4,8 +4,9 @@ namespace App\Service;
 
 use App\Entity\AttachmentFile;
 use App\Exception\EntityNotFound;
-use Core\Utils\EntityFinder;
-use Doctrine\ORM\EntityManagerInterface;
+use Core\Utils\EntityUtils\EntityDelete;
+use Core\Utils\EntityUtils\EntityInsert;
+use Core\Utils\EntityUtils\EntitySelect;
 use Exception;
 use Psr\Http\Message\UploadedFileInterface;
 use SplFileObject;
@@ -13,19 +14,10 @@ use SplFileObject;
 class AttachmentService
 {
     const FILE_PATH = __DIR__ . '/../../data/attachment/';
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
 
     public function getAttachmentFileEntity($id)
     {
-        $attachment = EntityFinder::findById(AttachmentFile::class, $id);
+        $attachment = EntitySelect::select(AttachmentFile::class)->findById($id);
 
         if ($attachment === null) {
             throw new EntityNotFound('Attachment is not found!');
@@ -56,8 +48,7 @@ class AttachmentService
             $attachmentFile = new AttachmentFile();
             $attachmentFile->setName($uploadFile->getClientFilename());
 
-            $this->entityManager->persist($attachmentFile);
-            $this->entityManager->flush();
+            EntityInsert::insert($attachmentFile);
 
             $uploadFile->moveTo(self::FILE_PATH . $attachmentFile->getId());
 
@@ -71,12 +62,10 @@ class AttachmentService
     {
         foreach ($deleteFiles as $deleteFileId) {
             /** @var AttachmentFile */
-            $attachmentFile = $this->entityManager->getRepository(AttachmentFile::class)->find($deleteFileId);
+            $attachmentFile = EntitySelect::select(AttachmentFile::class)->findById($deleteFileId);
 
             unlink(self::FILE_PATH . $attachmentFile->getId());
-            $this->entityManager->remove($attachmentFile);
+            EntityDelete::delete($attachmentFile);
         }
-
-        $this->entityManager->flush();
     }
 }

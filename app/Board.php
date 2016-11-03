@@ -5,14 +5,13 @@ namespace App\Controller;
 use App\Service\BoardService;
 use App\Service\PostService;
 use App\Utils\AttachmentFileUtil;
+use Core\Utils\EntityUtils\EntitySelect;
 use Core\ViewModel;
 use App\Entity\Post as PostModel;
 use App\Entity\Board as BoardModel;
 use App\Utils\Pager;
 use App\Utils\Uri\EntityUriFactory;
-use Core\Utils\EntityFinder;
 use App\Auth\LoginManagerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Board
@@ -32,10 +31,10 @@ class Board
      */
     private $board;
 
-    public function __construct($name, EntityManagerInterface $entityManager, ViewModel $viewModel)
+    public function __construct($name, ViewModel $viewModel)
     {
-        $this->boardService = new BoardService($entityManager);
-        $this->postService = new PostService($entityManager);
+        $this->boardService = new BoardService();
+        $this->postService = new PostService();
         $this->board = $this->boardService->getBoardEntity($name);
 
         $viewModel->set('board', $this->board);
@@ -56,10 +55,10 @@ class Board
         return 'default/postingForm';
     }
 
-    public function writePost($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
+    public function writePost($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $post = $this->postService->writePost($this->board, $parsedBody, $loginManager);
-        AttachmentFileUtil::uploadFiles($post, $req->getUploadedFiles()['file'], $entityManager);
+        AttachmentFileUtil::uploadFiles($post, $req->getUploadedFiles()['file']);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
@@ -69,13 +68,12 @@ class Board
      */
     private function getPosts($page)
     {
-        return EntityFinder::findOrderedAndLimitedBy(
-            PostModel::class,
-            ['board' => $this->board->getId()],
-            ['id' => 'DESC'],
-            $this->board->getListPerPage(),
-            $this->board->getListPerPage() * ($page - 1)
-        );
+        return EntitySelect::select(PostModel::class)
+            ->criteria(['board' => $this->board->getId()])
+            ->orderBy(['id' => 'DESC'])
+            ->offsetStart($this->board->getListPerPage() * ($page - 1))
+            ->offsetLength($this->board->getListPerPage())
+            ->find();
     }
 
     private function getPager($page)

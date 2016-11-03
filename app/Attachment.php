@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Service\AttachmentService;
 use Core\Utils\ResponseProxy;
-use Doctrine\ORM\EntityManagerInterface;
 use Sinergi\BrowserDetector\Browser;
 use Zend\Diactoros\Response\EmptyResponse;
 
@@ -15,9 +14,9 @@ class Attachment
      */
     private $attachmentService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct()
     {
-        $this->attachmentService = new AttachmentService($entityManager);
+        $this->attachmentService = new AttachmentService();
     }
 
     public function index($id, ResponseProxy $response)

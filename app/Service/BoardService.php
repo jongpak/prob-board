@@ -4,24 +4,15 @@ namespace App\Service;
 
 use App\Entity\Board;
 use App\Exception\EntityNotFound;
-use Core\Utils\EntityFinder;
-use Doctrine\ORM\EntityManagerInterface;
+use Core\Utils\EntityUtils\EntitySelect;
 
 class BoardService
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function getBoardEntity($name)
     {
-        $board = EntityFinder::findOneBy(Board::class, ['name' => $name]);
+        $board = EntitySelect::select(Board::class)
+            ->criteria(['name' => $name])
+            ->findOne();
 
         if ($board === null) {
             throw new EntityNotFound('Board is not found');

@@ -7,25 +7,16 @@ use App\Entity\Post;
 use App\Entity\Comment;
 use App\Exception\EntityNotFound;
 use App\Utils\ContentUserInfoSetter;
-use Core\Utils\EntityFinder;
+use Core\Utils\EntityUtils\EntityInsert;
+use Core\Utils\EntityUtils\EntitySelect;
+use Core\Utils\EntityUtils\EntityUpdate;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 
 class CommentService
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function getCommentEntity($id)
     {
-        $comment = EntityFinder::findById(Comment::class, $id);
+        $comment = EntitySelect::select(Comment::class)->findById($id);
 
         if ($comment === null) {
             throw new EntityNotFound('Comment is not found');
@@ -41,8 +32,7 @@ class CommentService
         $comment->setContent($body['content']);
         ContentUserInfoSetter::fillUserInfo($comment, $body, $loginManager);
 
-        $this->entityManager->persist($comment);
-        $this->entityManager->flush();
+        EntityInsert::insert($comment);
 
         return $comment;
     }
@@ -53,12 +43,12 @@ class CommentService
         $comment->setUpdatedAt(new DateTime());
         ContentUserInfoSetter::fillUserInfo($comment, $body, $loginManager);
 
-        $this->entityManager->flush();
+        EntityUpdate::update($comment);
     }
 
     public function deleteComment(Comment $comment)
     {
         $comment->setPost(null);
-        $this->entityManager->flush();
+        EntityUpdate::update($comment);
     }
 }

@@ -4,25 +4,24 @@ namespace App\Utils;
 
 use App\Entity\Traits\FileAttachable;
 use App\Service\AttachmentService;
-use Doctrine\ORM\EntityManagerInterface;
+use Core\Utils\EntityUtils\EntityUpdate;
 
 class AttachmentFileUtil
 {
     /**
      * @param $content FileAttachable
      * @param array $files
-     * @param EntityManagerInterface $entityManager
      * @return array
      */
-    public static function uploadFiles($content, array $files, EntityManagerInterface $entityManager)
+    public static function uploadFiles($content, array $files)
     {
-        $attachmentService = new AttachmentService($entityManager);
+        $attachmentService = new AttachmentService();
         $files = $attachmentService->uploadFile($files);
 
         foreach ($files as $file) {
             $content->addAttachmentFile($file);
         }
-        $entityManager->flush();
+        EntityUpdate::update($content);
 
         return $files;
     }
@@ -30,11 +29,10 @@ class AttachmentFileUtil
     /**
      * @param $content FileAttachable
      * @param array $fileId
-     * @param EntityManagerInterface $entityManager
      */
-    public static function deleteFiles($content, array $fileId, EntityManagerInterface $entityManager)
+    public static function deleteFiles($content, array $fileId)
     {
-        $attachmentService = new AttachmentService($entityManager);
+        $attachmentService = new AttachmentService();
         $attachmentService->deleteFile($fileId);
     }
 }

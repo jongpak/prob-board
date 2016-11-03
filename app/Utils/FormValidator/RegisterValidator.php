@@ -4,14 +4,18 @@ namespace App\Utils\FormValidator;
 
 use App\Entity\User;
 use App\Exception\InvalidRequestException;
-use Core\Utils\EntityFinder;
+use Core\Utils\EntityUtils\EntitySelect;
 use Respect\Validation\Validator;
 
 class RegisterValidator
 {
     public static function accountIdDuplicateValidate($value)
     {
-        if(EntityFinder::findOneBy(User::class, ['accountId' => $value]) !== null) {
+        $user = EntitySelect::select(User::class)
+            ->criteria(['accountId' => $value])
+            ->findOne();
+
+        if($user !== null) {
             throw new InvalidRequestException(sprintf('The [%s] account ID already exists', $value));
         }
     }

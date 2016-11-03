@@ -10,7 +10,6 @@ use App\Entity\Post as PostModel;
 use App\Utils\FormUtility;
 use App\Utils\Uri\EntityUriFactory;
 use App\Auth\LoginManagerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Post
@@ -30,10 +29,10 @@ class Post
      */
     private $post;
 
-    public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
+    public function __construct($id, ViewModel $viewModel)
     {
-        $this->postService = new PostService($entityManager);
-        $this->commentService = new CommentService($entityManager);
+        $this->postService = new PostService();
+        $this->commentService = new CommentService();
 
         $this->post = $this->postService->getPostEntity($id);
 
@@ -51,11 +50,11 @@ class Post
         return 'default/postingForm';
     }
 
-    public function edit($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
+    public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $this->postService->editPost($this->post, $parsedBody, $loginManager);
-        AttachmentFileUtil::uploadFiles($this->post, $req->getUploadedFiles()['file'], $entityManager);
-        AttachmentFileUtil::deleteFiles($this->post, FormUtility::getCheckboxOnItem('delete-file', $parsedBody), $entityManager);
+        AttachmentFileUtil::uploadFiles($this->post, $req->getUploadedFiles()['file']);
+        AttachmentFileUtil::deleteFiles($this->post, FormUtility::getCheckboxOnItem('delete-file', $parsedBody));
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($this->post)->read();
     }
@@ -73,10 +72,10 @@ class Post
         return 'redirect:' . EntityUriFactory::getEntityUri($board)->read();
     }
 
-    public function writeComment($parsedBody, ServerRequestInterface $req, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
+    public function writeComment($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
     {
         $comment = $this->commentService->writeComment($this->post, $parsedBody, $loginManager);
-        AttachmentFileUtil::uploadFiles($comment, $req->getUploadedFiles()['file'], $entityManager);
+        AttachmentFileUtil::uploadFiles($comment, $req->getUploadedFiles()['file']);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($this->post)->read();
     }

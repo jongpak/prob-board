@@ -5,8 +5,7 @@ namespace App\Utils;
 use App\Auth\LoginManagerInterface;
 use App\Entity\User;
 use App\Entity\Traits\UserContentable;
-use Core\DatabaseManager;
-use Core\Utils\EntityFinder;
+use Core\Utils\EntityUtils\EntitySelect;
 use \InvalidArgumentException;
 
 class ContentUserInfoSetter
@@ -17,7 +16,10 @@ class ContentUserInfoSetter
 
         if ($loginManager->getLoggedAccountId()) {
             /** @var User */
-            $user = EntityFinder::findOneBy(User::class, ['accountId' => $loginManager->getLoggedAccountId()]);
+            $user = EntitySelect::select(User::class)
+                ->criteria(['accountId' => $loginManager->getLoggedAccountId()])
+                ->findOne();
+
             $content->setUser($user);
         } else {
             $content->setAuthor($parsedBody['author']);
