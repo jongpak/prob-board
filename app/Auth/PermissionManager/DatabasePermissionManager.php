@@ -4,6 +4,7 @@ namespace App\Auth\PermissionManager;
 
 use App\Auth\PermissionManagerAbstract;
 use App\Entity\Permission;
+use App\Entity\Role;
 use Core\Utils\EntityUtils\EntitySelect;
 
 class DatabasePermissionManager extends PermissionManagerAbstract
@@ -19,7 +20,7 @@ class DatabasePermissionManager extends PermissionManagerAbstract
     {
         $permissionRole = [];
 
-        /** @var Permission */
+        /** @var Permission $permission */
         $permission = EntitySelect::select(Permission::class)
             ->criteria(['operation' => $operation])
             ->findOne();
@@ -28,6 +29,7 @@ class DatabasePermissionManager extends PermissionManagerAbstract
             return null;
         }
 
+        /** @var Role $item */
         foreach ($permission->getRoles() as $item) {
             $permissionRole[] = $item->getName();
         }

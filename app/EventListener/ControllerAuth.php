@@ -35,6 +35,12 @@ class ControllerAuth
         $this->validate(EntitySelect::select(Comment::class)->findById($id), $parsedBody, $request);
     }
 
+    /**
+     * @param UserContentable $userContent
+     * @param $parsedBody
+     * @param ServerRequestInterface $request
+     * @throws PermissionDenied
+     */
     private function validate($userContent, $parsedBody, ServerRequestInterface $request)
     {
         if ($userContent === null) {

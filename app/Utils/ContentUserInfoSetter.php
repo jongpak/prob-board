@@ -10,6 +10,11 @@ use \InvalidArgumentException;
 
 class ContentUserInfoSetter
 {
+    /**
+     * @param $content UserContentable
+     * @param $parsedBody
+     * @param LoginManagerInterface $loginManager
+     */
     public static function fillUserInfo($content, $parsedBody, LoginManagerInterface $loginManager)
     {
         self::validateUsingUserContenable($content);
