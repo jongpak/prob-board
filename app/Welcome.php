@@ -11,6 +11,6 @@ class Welcome
     public function index(ViewModel $viewModel)
     {
         $viewModel->set('boards', EntitySelect::select(Board::class)->findAll());
-        return 'default/welcome';
+        return 'welcome';
     }
 }

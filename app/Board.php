@@ -47,12 +47,12 @@ class Board
         $viewModel->set('posts', $this->getPosts($page));
         $viewModel->set('pager', $this->getPager($page));
 
-        return 'default/postList';
+        return 'postList';
     }
 
     public function showPostingForm(ViewModel $viewModel)
     {
-        return 'default/postingForm';
+        return 'postingForm';
     }
 
     public function writePost($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)

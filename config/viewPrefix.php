@@ -2,7 +2,7 @@
 
 return [
     'applyView' => [
-        'App\\ViewEngine\\TwigView',
+        'App\\ViewEngine\\TwigViewEx',
     ],
 
     'default' => 'default/',

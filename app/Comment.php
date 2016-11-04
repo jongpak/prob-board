@@ -33,7 +33,7 @@ class Comment
 
     public function showEditForm(ViewModel $viewModel)
     {
-        return 'default/commentForm';
+        return 'commentForm';
     }
 
     public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
@@ -47,7 +47,7 @@ class Comment
 
     public function showDeleteForm(ViewModel $viewModel)
     {
-        return 'default/delete';
+        return 'delete';
     }
 
     public function delete()

@@ -17,7 +17,7 @@ class Auth
 
     public function viewRegisterForm()
     {
-        return 'auth/register';
+        return 'register';
     }
 
     public function login(LoginManagerInterface $loginManager, $parsedBody)

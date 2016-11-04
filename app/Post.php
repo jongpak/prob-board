@@ -42,12 +42,12 @@ class Post
     public function index(ViewModel $viewModel)
     {
         $viewModel->set('comments', $this->post->getComments());
-        return 'default/post';
+        return 'post';
     }
 
     public function showEditForm(ViewModel $viewModel)
     {
-        return 'default/postingForm';
+        return 'postingForm';
     }
 
     public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
@@ -61,7 +61,7 @@ class Post
 
     public function showDeleteForm(ViewModel $viewModel)
     {
-        return 'default/delete';
+        return 'delete';
     }
 
     public function delete()
