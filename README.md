@@ -6,7 +6,7 @@
 ```
 > cp .htaccess.example .htaccess
 > cp config/site.php.example config/site.php
-> cp config/db.php config/db.php
+> cp config/db.php.example config/db.php
 > cp app/Auth/config/accounts.php.example app/Auth/config/accounts.php
 ```
 
@@ -32,7 +32,7 @@ config/db.php
 'charset'   => 'utf8'
 ```
 
-accounts.php
+app/Auth/config/accounts.php
 ```php
 return [
     // ...
