@@ -1,4 +1,4 @@
-{% extends 'default/layout.twig' %}
+{% extends file('layout') %}
 
 {% block body %}
 <h2 class="page-header">Posts <small> / {{ board.getTitle() }}</small></h2>
@@ -21,7 +21,7 @@
         <td class="time">{{ post.getCreatedAt() | date('Y-M-d') }}</td>
     </tr>
     {% endfor %}
-    </tobdy>
+    </tbody>
 </table>
 
 <div class="pager">

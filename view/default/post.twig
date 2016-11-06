@@ -1,4 +1,4 @@
-{% extends 'default/layout.twig' %}
+{% extends file('layout') %}
 
 {% block body %}
 <article>
@@ -37,11 +37,11 @@
 {% if comments is empty %}
     <p>No comment.</p>
 {% else %}
-    {% include 'default/comment.twig' %}
+    {% include file('comment') %}
 {% endif %}
 
 <div class="well">
-{{ include ('default/commentForm.twig') }}
+{% include file('commentForm') %}
 </div>
 </section>
 

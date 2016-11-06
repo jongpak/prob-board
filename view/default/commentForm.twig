@@ -1,4 +1,4 @@
-{% extends comment.getId() ? 'default/layout.twig' : 'default/empty.twig' %}
+{% extends file(comment.getId() ? 'layout' : 'empty') %}
 
 {% block body %}
 
