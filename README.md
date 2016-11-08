@@ -49,8 +49,8 @@ return [
 ### Making directories
 ```
 > mkdir data
+> mkdir data/attachment
 ```
-
 
 ### Dependency package update (use Composer)
 ```
