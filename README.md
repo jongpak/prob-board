@@ -13,7 +13,7 @@
 ### Setting configuration for your environment
 .htaccess
 ```
-RewriteBase ** YOUR_WEB_SITE_URL **
+RewriteBase ** YOUR_WEB_SITE_URL_PATH (ex: / or /prob) **
 ```
 
 config/site.php
@@ -46,15 +46,16 @@ return [
 ];
 ```
 
+
 ### Making directories
 ```
 > mkdir data
 > mkdir data/attachment
 ```
 
-### Dependency package update (use Composer)
+### Dependency package update (use [Composer](https://getcomposer.org/))
 ```
-> ./composer.phar update
+> composer update
 ```
 
 ### Creating table schema
