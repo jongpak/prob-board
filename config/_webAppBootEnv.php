@@ -13,4 +13,5 @@ return [
     'event' => require 'event.php',
     'parameter' => require 'parameter.php',
     'formValidation' => require 'formValidation.php',
+    'dispatcher' => require 'dispatcher.php',
 ];

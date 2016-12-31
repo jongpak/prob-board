@@ -2,11 +2,14 @@
 
 namespace Core\ErrorReporter;
 
+use Error;
 use \ErrorException;
 use App\ViewResolver\ResponseResolver;
+use Exception;
+use Throwable;
 use Zend\Diactoros\Response\EmptyResponse;
 
-class ErrorReporterRegister
+class ErrorReporterService
 {
     private $config = [];
     private $errorReporterInstances = [];
@@ -16,10 +19,40 @@ class ErrorReporterRegister
         $this->config = $config;
     }
 
-    public function register()
+    public function registerReport()
     {
         $this->constructErrorReporters();
         $this->registerErrorReporters();
+    }
+
+    /**
+     * @param $exception Exception|Error|Throwable $exception
+     * @return array
+     */
+    public static function getErrorCodeLine($exception)
+    {
+        return FileUtils::getLines($exception->getFile(), $exception->getLine() - 3, 5);
+    }
+
+    private function constructErrorReporters()
+    {
+        $errorReporterInstances = [];
+
+        foreach ($this->config['enableReporters'] as $reporterName) {
+            $errorReporterInstances[] = $this->getErrorReporterInstance($reporterName);
+        }
+
+        $this->errorReporterInstances = $errorReporterInstances;
+    }
+
+    /**
+     * @param  string $reporterName
+     * @return ErrorReporterInterface
+     */
+    private function getErrorReporterInstance($reporterName)
+    {
+        $class = $this->config['reporters'][$reporterName]['class'];
+        return new $class($this->config['reporters'][$reporterName]);
     }
 
     private function registerErrorReporters()
@@ -33,7 +66,9 @@ class ErrorReporterRegister
 
                 $this->initHttpResponseHeader($exception);
 
-                echo $reportResult;
+                if ($this->config['displayErrors'] === true) {
+                    echo $reportResult;
+                }
             }
         });
 
@@ -59,34 +94,13 @@ class ErrorReporterRegister
     {
         $errorCode = 500;
 
-        foreach ($this->config['errorCodes'] as $registedException => $code) {
-            if ($registedException === get_class($exception)) {
+        foreach ($this->config['errorCodes'] as $registeredException => $code) {
+            if ($registeredException === get_class($exception)) {
                 $errorCode = $code;
                 break;
             }
         }
 
         return new EmptyResponse($errorCode);
-    }
-
-    private function constructErrorReporters()
-    {
-        $errorReporterInstances = [];
-
-        foreach ($this->config['enableReporters'] as $reporterName) {
-            $errorReporterInstances[] = $this->getErrorReporterInstance($reporterName);
-        }
-
-        $this->errorReporterInstances = $errorReporterInstances;
-    }
-
-    /**
-     * @param  string $reporterName
-     * @return ErrorReporterInterface
-     */
-    private function getErrorReporterInstance($reporterName)
-    {
-        $class = $this->config['reporters'][$reporterName]['class'];
-        return new $class($this->config['reporters'][$reporterName]);
     }
 }

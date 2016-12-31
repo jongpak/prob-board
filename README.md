@@ -4,10 +4,11 @@
 ## Installation
 ### Copy sample configuration
 ```
-> cp .htaccess.example .htaccess
-> cp config/site.php.example config/site.php
-> cp config/db.php.example config/db.php
-> cp app/Auth/config/accounts.php.example app/Auth/config/accounts.php
+$ cp .htaccess.example .htaccess
+$ cp config/site.php.example config/site.php
+$ cp config/db.php.example config/db.php
+$ cp app/Auth/config/config.php.example app/Auth/config/config.php
+$ cp app/Auth/config/accounts.php.example app/Auth/config/accounts.php
 ```
 
 ### Setting configuration for your environment
@@ -32,6 +33,15 @@ config/db.php
 'charset'   => 'utf8'
 ```
 
+app/Auth/config/config.php
+```php
+'defaultAllow' => true,
+'defaultAccountManager' => 'FileBaseAccountManager',
+'defaultLoginManager' => 'SessionLoginManager',
+'defaultPermissionManager' => 'FileBasePermissionManager',
+// ...
+```
+
 app/Auth/config/accounts.php
 ```php
 return [
@@ -49,16 +59,21 @@ return [
 
 ### Making directories
 ```
-> mkdir data
-> mkdir data/attachment
+$ mkdir data
+$ mkdir data/attachment
 ```
 
 ### Dependency package update (use [Composer](https://getcomposer.org/))
 ```
-> composer update
+$ composer update
 ```
 
 ### Creating table schema
 ```
-> php ./vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:create
+$ php ./vendor/doctrine/orm/bin/doctrine.php orm:schema-tool:create
 ```
+
+## Starting a web application (using PHP built-in server)
+ ```
+ $ php -S 127.0.0.1:8080 -t public/
+ ```

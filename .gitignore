@@ -1,9 +1,10 @@
 /.idea
 /.vscode
+/.htaccess
 /vendor
 /data
 /config/db.php
 /config/site.php
+/app/Auth/config/config.php
 /app/Auth/config/accounts.php
 composer.lock
-.htaccess

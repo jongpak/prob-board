@@ -24,8 +24,29 @@
         background: rgb(240, 240, 240);
     }
 
-    p.file {
+    div.error p.file,
+    div.error p.errorName {
         font-weight: bold;
+        padding-bottom: 0px;
+    }
+
+    table.code {
+        margin: 0 40px;
+        border-collapse: collapse;
+    }
+    table.code tr.active {
+        font-weight: bold;
+        background: yellow;
+    }
+    table.code tr.active th {
+        background: orange;
+    }
+    table.code th {
+        background: rgb(230, 230, 230);
+    }
+    table.code th, table.code td {
+        padding: 3px 0.75em;
+        white-space: pre;
     }
 
     div.trace {
@@ -36,6 +57,7 @@
 
     div.trace table {
         border-collapse: collapse;
+        margin-top: 20px;
         width: 100%;
     }
 
@@ -75,8 +97,27 @@
 <div class="error">
     <p class="message">{{ message }}</p>
 
+    {% if displayExceptionInfo == true %}
+        <p class="errorName">Exception: {{ errorName }}</p>
+    {% endif %}
+
+    {% if displayFileInfo == true %}
+        <p class="file">File: {{ file }}:{{ line }}</p>
+    {% endif %}
+
+    {% if displayErrorSourceLines == true %}
+        <p><strong>Code</strong></p>
+        <table class="code">
+        {% for codeLine, code in errorSourceLines %}
+            <tr class="{{ line == codeLine + 1 ? 'active' : '' }}">
+                <th>{{ codeLine + 1 }}</th>
+                <td>{{ code | escape }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+
     {% if displayStackTrace == true %}
-    <p class="file">File: {{ file }}:{{ line }}</p>
     <div class="trace">
     <table>
         <tr>

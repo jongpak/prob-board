@@ -15,7 +15,12 @@ return [
             'path' => __DIR__ . '/../view/error/',
             'file' => 'exception',
             'postfix' => '.twig',
+
+            'displayExceptionInfo' => true,
+            'displayFileInfo' => true,
             'displayStackTrace' => true,
+            'displayErrorSourceLines' => true,
+
             'settings' => []
         ]
     ],

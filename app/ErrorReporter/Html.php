@@ -2,6 +2,7 @@
 
 namespace App\ErrorReporter;
 
+use Core\ErrorReporter\ErrorReporterService;
 use Core\View\ViewEngineInterface;
 use Core\ErrorReporter\ErrorReporterInterface;
 
@@ -45,6 +46,14 @@ class Html implements ErrorReporterInterface
         $view->set('line', $exception->getLine());
         $view->set('traces', $exception->getTrace());
 
+        $className = get_class($exception);
+        $view->set('errorName', $className);
+        $view->set('errorNameWithoutNamespace', substr($className, strrpos($className, '\\') ? strrpos($className, '\\') + 1 : 0));
+
+        $view->set('displayExceptionInfo', $this->settings['displayExceptionInfo']);
+        $view->set('displayFileInfo', $this->settings['displayFileInfo']);
+        $view->set('displayErrorSourceLines', $this->settings['displayErrorSourceLines']);
+        $view->set('errorSourceLines', ErrorReporterService::getErrorCodeLine($exception));
         $view->set('displayStackTrace', $this->settings['displayStackTrace']);
     }
 }

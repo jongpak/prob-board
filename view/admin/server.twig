@@ -1,0 +1,35 @@
+{% extends file('layout') %}
+
+{% block body %}
+<h2>Site</h2>
+<table>
+    <tr>
+        <th>Site url</th>
+        <td>{{ siteUrl }}</td>
+    </tr>
+    <tr>
+        <th>Site public resource url</th>
+        <td>{{ sitePublicUrl }}</td>
+    </tr>
+</table>
+
+<h2>Server</h2>
+<table>
+    <tr>
+        <th>Absolute path</th>
+        <td>{{ absolutePath }}</td>
+    </tr>
+    <tr>
+        <th>PHP version</th>
+        <td>{{ phpVersion }}</td>
+    </tr>
+    <tr>
+        <th>Operating System</th>
+        <td>{{ os }}</td>
+    </tr>
+    <tr>
+        <th>SAPI</th>
+        <td>{{ sapi }}</td>
+    </tr>
+</table>
+{% endblock %}

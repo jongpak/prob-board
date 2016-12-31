@@ -30,6 +30,11 @@ class Permission
         $this->roles = new ArrayCollection();
     }
 
+    public function getOperation()
+    {
+        return $this->operation;
+    }
+
     public function getRoles()
     {
         return $this->roles;

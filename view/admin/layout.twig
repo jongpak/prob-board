@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Prob{% endblock %}</title>
+    {{ css(asset('admin/layout.css')) }}
+</head>
+<body>
+
+<header>
+    <div id="top">
+        <h1><a href="{{ url('admin') }}">Prob admin page</a></h1>
+    </div>
+
+    <nav>
+        <h2>Core configures</h2>
+        <ul>
+            <li class="{{ nav == '/admin' ? 'on' : '' }}"><a href="{{ url('/admin') }}">Site / Server</a></li>
+            <li class="{{ nav == '/admin/route' ? 'on' : '' }}"><a href="{{ url('/admin/route') }}">Route paths</a></li>
+            <li class="{{ nav == '/admin/event' ? 'on' : '' }}"><a href="{{ url('/admin/event') }}">Events</a></li>
+            <li class="{{ nav == '/admin/view' ? 'on' : '' }}"><a href="{{ url('/admin/view') }}">View engines</a></li>
+            <li class="{{ nav == '/admin/parameter' ? 'on' : '' }}"><a href="{{ url('/admin/parameter') }}">Parameter injections</a></li>
+        </ul>
+
+        <h2>Component configures</h2>
+    </nav>
+</header>
+
+<section id="body">
+{% block body %}{% endblock %}
+</section>
+
+</body>
+</html>

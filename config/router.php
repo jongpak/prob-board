@@ -43,5 +43,9 @@ return [
         'POST' => 'Comment.delete'
     ],
 
-    '/attachmentfile/{id:int}' => 'Attachment.index'
+    '/attachmentfile/{id:int}' => 'Attachment.index',
+
+    '/admin' => 'Admin\\Welcome.index',
+    '/admin/route' => 'Admin\\Welcome.viewRoutePaths',
+    '/admin/event' => 'Admin\\Welcome.viewEvents',
 ];

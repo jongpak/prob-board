@@ -4,7 +4,7 @@ return [
     'Controller' => [
         '*.*' => [
             'before' => [
-                'App\\EventListener\\Auth\\ValidatorListener.validate',
+                'App\\EventListener\\Auth\\PermissionVerificationListener.validate',
                 'App\\EventListener\\TemplateCommon.putVariable',
                 'App\\EventListener\\FormValidator.validate',
             ]
