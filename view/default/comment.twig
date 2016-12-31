@@ -9,7 +9,8 @@
         <a href="{{ deleteUri(comment) }}">Delete</a>
         {% endif %}
     </p>
-    {{ comment.getContent() }}
+
+    <div class="content">{{ comment.getContent() }}</div>
 
     <div class="file">
     {% for file in comment.getAttachemntFile() %}

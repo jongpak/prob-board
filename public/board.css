@@ -54,6 +54,10 @@ div.file {
     margin-top: 50px;
 }
 
+article .content, section.comment .content {
+    word-break: break-all;
+}
+
 section.comment div.file {
     margin-top: 20px;
 }
