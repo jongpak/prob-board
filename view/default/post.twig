@@ -27,8 +27,10 @@
 
 <nav class="action">
     <a class="btn btn-default" href="{{ readUri(post.getBoard()) }}">List</a>
+    {% if post.user.id == loggedAccountId %}
     <a class="btn btn-default" href="{{ updateUri(post) }}">Edit</a>
     <a class="btn btn-default" href="{{ deleteUri(post) }}">Delete</a>
+    {% endif %}
 </nav>
 
 <section class="comment">
@@ -47,7 +49,9 @@
 
 <nav class="action">
     <a class="btn btn-default" href="{{ readUri(post.getBoard()) }}">List</a>
+    {% if post.user.id == loggedAccountId %}
     <a class="btn btn-default" href="{{ updateUri(post) }}">Edit</a>
     <a class="btn btn-default" href="{{ deleteUri(post) }}">Delete</a>
+    {% endif %}
 </nav>
 {% endblock %}

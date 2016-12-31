@@ -2,9 +2,12 @@
 <div class="well">
     <p>
         <label>Author:</label> {{ comment.getAuthor() }} /
-        <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time> /
+        <time>{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time>
+        {% if comment.user.id == loggedAccountId %}
+        /
         <a href="{{ updateUri(comment) }}">Edit</a>
         <a href="{{ deleteUri(comment) }}">Delete</a>
+        {% endif %}
     </p>
     {{ comment.getContent() }}
 
