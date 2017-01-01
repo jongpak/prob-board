@@ -10,11 +10,7 @@
 </ul>
 
 <div class="content">
-{{
-    post.getContent
-    | escape
-    | nl2br
-}}
+{{ post.getContent() | raw }}
 </div>
 
 <div class="file">

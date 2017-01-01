@@ -19,5 +19,7 @@ return [
         'Comment.edit.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
         'Comment.showDeleteForm.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
         'Comment.delete.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
-    ]
+    ],
+
+    'ViewModelFilter' => 'App\\EventListener\\ViewModelFilter.filter',
 ];
