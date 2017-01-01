@@ -2,9 +2,12 @@
 
 namespace Core\ControllerDispatcher;
 
+use Core\Event\EventManager;
 use Core\ViewModel;
 use Core\View\ViewEngineInterface;
 use Core\View\ViewResolverInterface;
+use Prob\Handler\Parameter\Typed;
+use Prob\Handler\ParameterMap;
 
 class ViewRenderer
 {
@@ -35,6 +38,11 @@ class ViewRenderer
     public function renderView($controllerResult)
     {
         $view = $this->resolveView($controllerResult);
+
+        $parameterMap = new ParameterMap();
+        $parameterMap->bindBy(new Typed(ViewModel::class), $this->viewModel);
+
+        EventManager::trigger('ViewModelFilter', [$parameterMap]);
 
         foreach ($this->viewModel->getVariables() as $key => $value) {
             $view->set($key, $value);
