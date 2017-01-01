@@ -14,4 +14,5 @@ return [
     'parameter' => require 'parameter.php',
     'formValidation' => require 'formValidation.php',
     'dispatcher' => require 'dispatcher.php',
+    'viewModelFilter' => require __DIR__ . '/../app/ViewModelFilter/config.php',
 ];
