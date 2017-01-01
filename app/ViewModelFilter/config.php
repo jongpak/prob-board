@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'enables' => [ 'EscapeFilter',  ],
+    'enables' => [ 'MarkdownFilter',  ],
 
     'filters' => [
         'EscapeFilter' => [
