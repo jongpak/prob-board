@@ -2,7 +2,7 @@
   "name": "prob/board",
   "description": "A simple web board on prob-framework",
   "homepage": "https://github.com/jongpak/prob-board",
-  "keyworks": ["bbs", "board"],
+  "keywords": ["bbs", "board"],
   "type": "project",
   "license": "MIT",
 
