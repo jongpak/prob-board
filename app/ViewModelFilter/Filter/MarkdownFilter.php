@@ -18,7 +18,8 @@ class MarkdownFilter implements ViewModelFilterInterface
         }
     }
 
-    private function isContent($key) {
+    private function isContent($key)
+    {
         if(strpos(RequestMatcher::getControllerProc()->getName(), 'showEditForm') !== false) {
             return false;
         }
@@ -26,7 +27,8 @@ class MarkdownFilter implements ViewModelFilterInterface
         return $key === 'post' || $key === 'comment';
     }
 
-    private function markdown($str) {
+    private function markdown($str)
+    {
         $parsedown = new Parsedown();
         $parsedown->setMarkupEscaped(true);
 
