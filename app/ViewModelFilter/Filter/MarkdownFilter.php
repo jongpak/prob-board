@@ -13,9 +13,19 @@ class MarkdownFilter implements ViewModelFilterInterface
     {
         foreach ($viewModel->getVariables() as $key => $value) {
             if($this->isContent($key)) {
-                $value->setContent($this->markdown($value->getContent()));
+                $this->parseMarkdown($value);
+            }
+
+            if($this->isContentList($key)) {
+                foreach ($value as $item) {
+                    $this->parseMarkdown($item);
+                }
             }
         }
+    }
+
+    private function parseMarkdown($content) {
+        $content->setContent($this->markdown($content->getContent()));
     }
 
     private function isContent($key)
@@ -25,6 +35,11 @@ class MarkdownFilter implements ViewModelFilterInterface
         }
 
         return $key === 'post' || $key === 'comment';
+    }
+
+    private function isContentList($key)
+    {
+        return $key === 'posts' || $key === 'comments';
     }
 
     private function markdown($str)
