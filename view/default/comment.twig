@@ -10,7 +10,7 @@
         {% endif %}
     </p>
 
-    <div class="content">{{ comment.getContent() }}</div>
+    <div class="content">{{ comment.getContent() | raw }}</div>
 
     <div class="file">
     {% for file in comment.getAttachemntFile() %}
