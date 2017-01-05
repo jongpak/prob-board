@@ -30,6 +30,13 @@ return [
             },
             'deleteUri' => function ($entity, $parameters = []) {
                 return EntityUriFactory::getEntityUri($entity)->delete($parameters);
+            },
+            'readyEditor' => function($id) {
+                return '<script>' .
+                        'var simplemde = new SimpleMDE({' .
+                        'element: document.getElementById("' . $id . '"),' .
+                        'spellChecker: false' .
+                        ' });</script>';
             }
         ]
     ]

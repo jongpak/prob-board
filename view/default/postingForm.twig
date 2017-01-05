@@ -23,7 +23,8 @@
 
     <div class="form-group">
         <label>Content</label>
-        <textarea name="content" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
+        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
+        {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well">
         <label>Attachment</label>
