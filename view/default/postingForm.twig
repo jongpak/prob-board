@@ -6,23 +6,23 @@
 <form method="POST" enctype="multipart/form-data">
 <fieldset>
     <div class="form-group">
-        <label>Subject</label>
+        <label for="subject">Subject</label>
         <input type="text" name="subject" value="{{ post.getSubject() | escape }}" class="form-control" />
     </div>
 
     {% if loggedAccountId is empty %}
     <div class="form-group">
-        <label>Author</label>
+        <label for="author">Author</label>
         <input type="text" name="author" value="{{ post.getAuthor() | escape }}" class="form-control" />
     </div>
     <div class="form-group">
-        <label>Password</label>
+        <label for="password">Password</label>
         <input type="password" name="password" value="" class="form-control" />
     </div>
     {% endif %}
 
     <div class="form-group">
-        <label>Content</label>
+        <label for="content">Content</label>
         <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
