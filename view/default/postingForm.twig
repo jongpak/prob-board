@@ -7,22 +7,22 @@
 <fieldset>
     <div class="form-group">
         <label for="subject">Subject</label>
-        <input type="text" name="subject" value="{{ post.getSubject() | escape }}" class="form-control" />
+        <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" />
     </div>
 
     {% if loggedAccountId is empty %}
     <div class="form-group">
         <label for="author">Author</label>
-        <input type="text" name="author" value="{{ post.getAuthor() | escape }}" class="form-control" />
+        <input type="text" name="author" id="author" value="{{ post.getAuthor() | escape }}" class="form-control" />
     </div>
     <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" name="password" value="" class="form-control" />
+        <input type="password" name="password" id="password" value="" class="form-control" />
     </div>
     {% endif %}
 
     <div class="form-group">
-        <label for="content">Content</label>
+        <label for="posting-textarea">Content</label>
         <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
