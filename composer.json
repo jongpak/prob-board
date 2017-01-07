@@ -10,6 +10,7 @@
   "prefer-stable": true,
 
   "require": {
+    "erusev/parsedown": "*",
     "twig/twig": "*",
     "doctrine/orm": "*",
     "jbzoo/event": "*",

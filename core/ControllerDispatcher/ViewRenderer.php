@@ -45,7 +45,7 @@ class ViewRenderer
         EventManager::trigger('ViewModelFilter', [$parameterMap]);
 
         foreach ($this->viewModel->getVariables() as $key => $value) {
-            $view->set($key, $value);
+            $view->set($key, is_object($value) ? clone $value : $value);
         }
 
         return $view->render();
