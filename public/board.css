@@ -3,6 +3,10 @@ body {
     margin-bottom: 50px;
 }
 
+label {
+    cursor: pointer;
+}
+
 header {
     padding: 10px;
     background: rgb(50, 50, 50);

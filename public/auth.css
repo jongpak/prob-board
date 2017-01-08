@@ -3,6 +3,10 @@ body {
     font-size: 18pt;
 }
 
+label {
+    cursor: pointer;
+}
+
 #loginForm {
     margin: 100px;
 }
