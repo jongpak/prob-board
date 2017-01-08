@@ -6,7 +6,7 @@
 
 <ul class="postInfo well list-unstyled">
     <li><span>Author:</span> {{ post.getAuthor() }}</li>
-    <li><span>Time:</span> {{ post.getCreatedAt() | date('Y-M-d') }}</li>
+    <li><span>Time:</span> <time datetime="{{ post.getCreatedAt() | date('c') }}">{{ post.getCreatedAt() | date('Y-M-d') }}</time></li>
 </ul>
 
 <div class="content">
