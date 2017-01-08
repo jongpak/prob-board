@@ -7,24 +7,24 @@
 <fieldset>
     <legend>Register</legend>
 
-    <p><label>ID</label></p>
-    <p><input type="text" name="account_id" value="" placeholder="ID" required /></p>
+    <p><label for="account_id">ID</label></p>
+    <p><input type="text" name="account_id" value="account_id" placeholder="ID" required /></p>
 
     <hr />
 
-    <p><label>Password: </label></p>
-    <p><input type="password" name="password" value="" placeholder="PW" required /></p>
+    <p><label for="password">Password: </label></p>
+    <p><input type="password" name="password" id="password" value="" placeholder="PW" required /></p>
 
-    <p><label>Password(re-typing): </label></p>
-    <p><input type="password" name="password-confirm" value="" placeholder="PW (Re-typing)" required /></p>
+    <p><label for="password-confirm">Password(re-typing): </label></p>
+    <p><input type="password" name="password-confirm" id="password-confirm" value="" placeholder="PW (Re-typing)" required /></p>
 
     <hr />
 
-    <p><label>Nickname: </label></p>
-    <p><input type="text" name="nickname" value="" placeholder="Nickname" required /></p>
+    <p><label for="nickname">Nickname: </label></p>
+    <p><input type="text" name="nickname" id="nickname" value="" placeholder="Nickname" required /></p>
 
-    <p><label>Email: </label></p>
-    <p><input type="email" name="email" value="" placeholder="Email" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required /></p>
+    <p><label for="email">Email: </label></p>
+    <p><input type="email" name="email" id="email" value="" placeholder="Email" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" required /></p>
 
     <p><input type="submit" value="Register" /></p>
 </fieldset>
