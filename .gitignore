@@ -8,3 +8,5 @@
 /app/Auth/config/config.php
 /app/Auth/config/accounts.php
 composer.lock
+composer.phar
+startServer.bat
