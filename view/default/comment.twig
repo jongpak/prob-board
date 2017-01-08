@@ -3,7 +3,7 @@
     <p>
         <label>Author:</label> {{ comment.getAuthor() }} /
         <time datetime="{{ comment.getCreatedAt() | date('c') }}">{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time>
-        {% if comment.user.id == loggedAccountId %}
+        {% if comment.user.accountId == loggedAccountId %}
         /
         <a href="{{ updateUri(comment) }}">Edit</a>
         <a href="{{ deleteUri(comment) }}">Delete</a>
