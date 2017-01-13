@@ -9,47 +9,62 @@
 <form method="POST" action="{{ post ? createUri(post) : '' }}" enctype="multipart/form-data">
 <fieldset>
     {% if not comment.getId() %}
-    <legend>Writing comment</legend>
+    <legend><label for="comment-write-textarea" class="necessary-info">Writing comment<span class="sr-only">(necessary)</span></label></legend>
     {% endif %}
 
     <div class="form-group">
-        <label for="comment-write-textarea" class="necessary-info">Content <span class="sr-only">(necessary)</span></label>
         <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>
         {{ readyEditor('comment-write-textarea') | raw }}
     </div>
 
     <div class="form-group {{ comment ? 'well' : '' }}">
-        <label>Attachment</label>
-        <div class="{{ comment ? '' : 'panel panel-default panel-body' }}">
-        <ul>
+        {% if comment.getAttachemntFile()|length %}
+        <label><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Attachment present</label>
+        <ul class="list-group">
             {% for file in comment.getAttachemntFile() %}
-            <li><label class="btn btn-xs btn-danger"><input type="checkbox" name="delete-file[{{ file.getId() }}]" /> Delete: {{ file.getName() }}</label></li>
+                <li class="list-group-item clearfix">
+                    <label for="delete-file[{{ file.getId() }}]">{{ file.getName() }}</label> <input type="checkbox" id="delete-file[{{ file.getId() }}]" class="navbar-right" name="delete-file[{{ file.getId() }}]" />
+                </li>
             {% endfor %}
         </ul>
+        {% endif %}
 
-        <input type="file" name="file[]" />
-        <input type="file" name="file[]" />
-        </div>
+        <label><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment</label>
+        <ul class="list-group">
+            <li class="list-group-item"><input type="file" name="file[]" /></li>
+            <li class="list-group-item"><input type="file" name="file[]" /></li>
+        </ul>
     </div>
 
     {% if loggedAccountId is empty %}
-        <div class="form-group row">
-            <div class="form-group col-sm-6">
-                <label for="comment-input-author" class="necessary-info">Author <span class="sr-only">(necessary)</span></label>
-                <input type="text" name="author" id="comment-input-author" value="{{ comment.getAuthor() | escape }}" class="form-control" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Author Information</h3>
             </div>
-            <div class="form-group col-sm-6">
-                <label for="comment-input-password" class="necessary-info">Password <span class="sr-only">(necessary)</span></label>
-                <input type="password" name="password" id="comment-input-password" value="" class="form-control" />
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <label for="comment-input-author" class="input-group-addon necessary-info"><span>Author <span class="sr-only">(necessary)</span></span></label>
+                            <input type="text" name="author" id="comment-input-author" class="form-control" value="{{ comment.getAuthor() | escape }}" aria-describedby="sizing-addon2" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <label for="comment-input-password" class="input-group-addon necessary-info"><span>Password <span class="sr-only">(necessary)</span></span></label>
+                            <input type="password" name="password" id="comment-input-password" class="form-control" value="{{ comment.getAuthor() | escape }}" aria-describedby="sizing-addon2" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     {% endif %}
 
-    <div class="form-group">
-        <input type="submit" value="Submit" data-loading-text="Please Wait…" class="btn btn-primary" />
+    <div class="form-group pull-right">
         {% if comment %}
-            <a href="{{ readUri(comment.getPost()) }}" class="btn btn-danger">Cancel</a>
+            <a href="{{ readUri(comment.getPost()) }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
         {% endif %}
+        <button type="submit" data-loading-text="Please Wait…" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
     </div>
 </fieldset>
 </form>
