@@ -12,21 +12,8 @@
     <legend>Writing comment</legend>
     {% endif %}
 
-    {% if loggedAccountId is empty %}
-    <div class="row">
-    <div class="form-group col-sm-6">
-        <label for="comment-input-author">Author <span class="necessary-info">necessary</span></label>
-        <input type="text" name="author" id="comment-input-author" value="{{ comment.getAuthor() | escape }}" class="form-control" />
-    </div>
-    <div class="form-group col-sm-6">
-        <label for="comment-input-password">Password <span class="necessary-info">necessary</span></label>
-        <input type="password" name="password" id="comment-input-password" value="" class="form-control" />
-    </div>
-    </div>
-    {% endif %}
-
     <div class="form-group">
-        <label for="comment-write-textarea">Content <span class="necessary-info">necessary</span></label>
+        <label for="comment-write-textarea" class="necessary-info">Content <span class="sr-only">(necessary)</span></label>
         <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>
         {{ readyEditor('comment-write-textarea') | raw }}
     </div>
@@ -45,8 +32,21 @@
         </div>
     </div>
 
+    {% if loggedAccountId is empty %}
+        <div class="form-group row">
+            <div class="form-group col-sm-6">
+                <label for="comment-input-author" class="necessary-info">Author <span class="sr-only">(necessary)</span></label>
+                <input type="text" name="author" id="comment-input-author" value="{{ comment.getAuthor() | escape }}" class="form-control" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="comment-input-password" class="necessary-info">Password <span class="sr-only">(necessary)</span></label>
+                <input type="password" name="password" id="comment-input-password" value="" class="form-control" />
+            </div>
+        </div>
+    {% endif %}
+
     <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="submit" value="Submit" data-loading-text="Please Wait…" class="btn btn-primary" />
         {% if comment %}
             <a href="{{ readUri(comment.getPost()) }}" class="btn btn-danger">Cancel</a>
         {% endif %}

@@ -3,30 +3,82 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<form action="" method="post" id="loginForm">
-<fieldset>
-    <legend>Register</legend>
+<div class="register-wrap center-block">
+    <form action="" method="post" >
+    <fieldset>
+        <div class="form-group">
+        <legend>Register</legend>
 
-    <p><label for="register-input-id">ID <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="text" name="account_id" id="register-input-id" value="" placeholder="ID" /></p>
+            <div class="alerts">
+                <!--
+                <div class="alert alert-warning alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Warning!</strong> This is an existing email address.
+                </div>
+                -->
 
-    <hr />
+                <div class="alert alert-warning" role="alert">
+                    <p class="necessary-info">The '<span class="sr-only">(necessary)</span><span class="asterisk"></span>' is required.</p>
+                </div>
+            </div>
 
-    <p><label for="register-input-password">Password <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="password" name="password" id="register-input-password" value="" placeholder="PW" /></p>
+            <div class="form-group">
+                <div class="input-group">
+                    <label for="register-input-id" class="input-group-addon necessary-info"><span>ID <span class="sr-only">(necessary)</span></span></label>
+                    <input type="text" name="account_id" id="register-input-id" class="form-control" placeholder="ID" aria-describedby="sizing-addon2" />
+                    <!--
+                    <p id="input_check" class="input-group-addon exist"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> An ID that already exists.</p>
+                    <p id="input_check" class="input-group-addon available"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Available ID.</p>
+                    -->
+                </div>
+            </div>
 
-    <p><label for="register-input-re-password">Password(re-typing) <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="password" name="password-confirm" id="register-input-re-password" value="" placeholder="PW (Re-typing)" /></p>
+                <div class="input-group">
+                    <label for="register-input-password" class="input-group-addon necessary-info"><span>PW <span class="sr-only">(necessary)</span></span></label>
+                    <input type="password" name="password" id="register-input-password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2" />
+                </div>
 
-    <hr />
+                <div class="input-group">
+                    <label for="register-input-re-password" class="input-group-addon necessary-info"><span>PW (Re-typing) <span class="sr-only">(necessary)</span></span></label>
+                    <input type="password" name="password-confirm" id="register-input-re-password" class="form-control" placeholder="Password(re-typing)" aria-describedby="sizing-addon2" />
+                    <!--
+                    <p id="input_check" class="input-group-addon exist"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Passwords do not match.</p>
+                    <p id="input_check" class="input-group-addon available"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="sr-only">Password match</span></p>
+                    -->
+                </div>
+            </div>
 
-    <p><label for="register-input-nickname">Nickname <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="text" name="nickname" id="register-input-nickname" value="" placeholder="Nickname" /></p>
+            <hr />
 
-    <p><label for="register-input-email">Email <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="email" name="email" id="register-input-email" value="" placeholder="Email" /></p>
+            <div class="form-group">
 
-    <p><input type="submit" value="Register" /></p>
-</fieldset>
-</form>
+                <div class="input-group">
+                    <label for="register-input-nickname" class="input-group-addon necessary-info"><span>Nickname <span class="sr-only">(necessary)</span></span></label>
+                    <input type="text" name="nickname" id="register-input-nickname" class="form-control" placeholder="Nickname" aria-describedby="sizing-addon2" />
+                </div>
+
+                <div class="input-group">
+                    <label for="register-input-email" class="input-group-addon necessary-info"><span>Email <span class="sr-only">(necessary)</span></span></label>
+                    <input type="email" name="email" id="register-input-email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" />
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group clearfix">
+                <div class="pull-left">
+                    <p><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> I have verified all the entries.</p>
+                </div>
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Register</button>
+                </div>
+            </div>
+
+        </div>
+    </fieldset>
+    </form>
+</div>
 {% endblock %}
+
+
+

@@ -23,6 +23,18 @@ header .loginPanel p {
     margin: 0;
 }
 
+label {
+    cursor: pointer;
+}
+
+label.necessary-info:after {
+    content: '*';
+    text-indent: 0;
+    vertical-align: top;
+    color: rgba(255, 0, 0, 1);
+    font-weight: bold;
+}
+
 .table .no {
     width: 3em;
     text-align: center;

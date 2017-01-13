@@ -1,40 +1,45 @@
-body {
-    font-family: 'Arial';
-    font-size: 18pt;
+div.register-wrap {
+    max-width: 800px;
 }
 
-#loginForm {
-    margin: 100px;
+div.input-group, div.form-group > div.row {
+    margin-bottom: 5px;
 }
 
-#loginForm fieldset {
-    background: rgb(240, 240, 240);
-    border: 1px solid rgb(150, 150, 150);
-    border-radius: 20px;
+div.input-group:last-child, div.form-group > div.row:last-child {
+    margin-bottom: 0;
 }
 
-#loginForm label {
-    display: none;
+label > span {
+    width: 120px;
+    text-align: right;
+    display: inline-block;
 }
 
-#loginForm legend, #loginForm label {
+p.necessary-info span.asterisk:after, label.necessary-info:after {
+    content: '*';
+    text-indent: 0;
+    vertical-align: top;
+    color: rgba(255, 0, 0, 1);
     font-weight: bold;
 }
 
-#loginForm input {
-    width: 100%;
-    display: block;
-    padding: 0.5em 0;
-    font-size: 16pt;
-    text-align: center;
-    font-weight: bold;
-    border: 1px solid white;
-    border-radius: 20px;
+p#input_check > span {
+    margin-right: 5px;
 }
 
-#loginForm input[type="submit"] {
-    margin: 0 auto;
-    width: 15em;
-    background: rgb(15, 105, 190);
-    color: white;
+p#input_check.exist {
+    color: rgba(255, 0, 0, 1);
+}
+
+p#input_check.available {
+    color: rgba(0, 255, 0, 1);
+}
+
+div.alert {
+     margin-bottom: 5px;
+}
+
+div.alerts div:last-child {
+    margin-bottom: 15px;
 }
