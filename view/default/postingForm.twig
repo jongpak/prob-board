@@ -16,15 +16,18 @@
         {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well">
-        {% if comment.getAttachemntFile()|length %}
+        {% if post.getAttachemntFile()|length %}
         <label><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Attachment present</label>
-        <ul class="list-group">
-            {% for file in post.getAttachemntFile() %}
-                <li class="list-group-item clearfix">
-                    <label for="delete-file[{{ file.getId() }}]">{{ file.getName() }}</label> <input type="checkbox" id="delete-file[{{ file.getId() }}]" class="navbar-right" name="delete-file[{{ file.getId() }}]" />
-                </li>
-            {% endfor %}
-        </ul>
+            <ul class="list-group">
+                {% for file in post.getAttachemntFile() %}
+                    <li class="list-group-item">
+                        <label for="delete-file[{{ file.getId() }}]" class="checkbox-inline">
+                            <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
+                            <span>{{ file.getName() }}</span>
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
 
         <label><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment</label>

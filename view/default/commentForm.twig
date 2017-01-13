@@ -22,8 +22,11 @@
         <label><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Attachment present</label>
         <ul class="list-group">
             {% for file in comment.getAttachemntFile() %}
-                <li class="list-group-item clearfix">
-                    <label for="delete-file[{{ file.getId() }}]">{{ file.getName() }}</label> <input type="checkbox" id="delete-file[{{ file.getId() }}]" class="navbar-right" name="delete-file[{{ file.getId() }}]" />
+                <li class="list-group-item">
+                    <label for="delete-file[{{ file.getId() }}]" class="checkbox-inline">
+                        <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
+                        <span>{{ file.getName() }}</span>
+                    </label>
                 </li>
             {% endfor %}
         </ul>

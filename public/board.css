@@ -118,6 +118,11 @@ div.file {
     margin-top: 50px;
 }
 
+li.list-group-item input[type=checkbox]:checked + span {
+    text-decoration: line-through;
+    color: red;
+}
+
 article .content, section.comment .content {
     word-break: break-all;
 }

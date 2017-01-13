@@ -15,7 +15,7 @@
 
 <div class="file">
 {% for file in post.getAttachemntFile() %}
-    <a href="{{ readUri(file) }}" class="btn btn-default btn-sm">{{ file.getName() }}</a>
+    <a href="{{ readUri(file) }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> {{ file.getName() }}</a>
 {% endfor %}
 </div>
 
