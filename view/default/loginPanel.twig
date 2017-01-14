@@ -2,11 +2,11 @@
 <form method="POST" action="{{ url('/auth/login') }}" class="form-inline">
     <div class="form-group">
         <label for="login-input-id" class="sr-only">ID</label>
-        <input type="text" name="account_id" id="login-input-id" value="" placeholder="ID" class="form-control input-sm" />
+        <input type="text" name="account_id" id="login-input-id" value="" placeholder="ID" class="form-control input-sm" required />
     </div>
     <div class="form-group">
         <label for="login-input-password" class="sr-only">Password</label>
-        <input type="password" name="password" id="login-input-password" value="" placeholder="Password" class="form-control input-sm" />
+        <input type="password" name="password" id="login-input-password" value="" placeholder="Password" class="form-control input-sm" required />
     </div>
     <div class="form-group">
         <input type="submit" value="Login" class="btn btn-primary btn-sm" />

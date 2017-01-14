@@ -8,23 +8,23 @@
     <legend>Register</legend>
 
     <p><label for="register-input-id">ID <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="text" name="account_id" id="register-input-id" value="" placeholder="ID" /></p>
+    <p><input type="text" name="account_id" id="register-input-id" value="" placeholder="ID" required /></p>
 
     <hr />
 
     <p><label for="register-input-password">Password <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="password" name="password" id="register-input-password" value="" placeholder="PW" /></p>
+    <p><input type="password" name="password" id="register-input-password" value="" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters." placeholder="PW" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required /></p>
 
     <p><label for="register-input-re-password">Password(re-typing) <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="password" name="password-confirm" id="register-input-re-password" value="" placeholder="PW (Re-typing)" /></p>
+    <p><input type="password" name="password-confirm" id="register-input-re-password" value="" title="Please enter your password again." placeholder="PW (Re-typing)" required  /></p>
 
     <hr />
 
     <p><label for="register-input-nickname">Nickname <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="text" name="nickname" id="register-input-nickname" value="" placeholder="Nickname" /></p>
+    <p><input type="text" name="nickname" id="register-input-nickname" value="" placeholder="Nickname" required /></p>
 
     <p><label for="register-input-email">Email <span class="necessary-info">necessary</span>: </label></p>
-    <p><input type="email" name="email" id="register-input-email" value="" placeholder="Email" /></p>
+    <p><input type="email" name="email" id="register-input-email" value="" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required  /></p>
 
     <p><input type="submit" value="Register" /></p>
 </fieldset>
