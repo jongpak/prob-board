@@ -13,30 +13,50 @@
     {% endif %}
 
     <div class="form-group">
-        <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control" required>{{ comment.getContent() | escape }}</textarea>
+        <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>
         {{ readyEditor('comment-write-textarea') | raw }}
     </div>
 
     <div class="form-group {{ comment ? 'well' : '' }}">
         {% if comment.getAttachemntFile()|length %}
-        <label><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Attachment present</label>
-        <ul class="list-group">
-            {% for file in comment.getAttachemntFile() %}
-                <li class="list-group-item">
-                    <label for="delete-file[{{ file.getId() }}]" class="checkbox-inline">
-                        <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
-                        <span>{{ file.getName() }}</span>
-                    </label>
-                </li>
-            {% endfor %}
-        </ul>
+            <div>
+                <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ comment.getAttachemntFile() | length }}</span> <span class="caret"></span></label>
+                <ul class="list-group attachments" id="attached-file">
+                    {% for file in comment.getAttachemntFile() %}
+                        <li class="list-group-item">
+                            <label for="delete-file[{{ file.getId() }}]" class="block-input">
+                                <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
+                                <span>{{ file.getName() }}</span>
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
 
-        <label><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment</label>
-        <ul class="list-group">
-            <li class="list-group-item"><input type="file" name="file[]" /></li>
-            <li class="list-group-item"><input type="file" name="file[]" /></li>
-        </ul>
+        <div>
+            <label id="attach-input-label"><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment  <span class="caret"></span></label>
+            <ul class="list-group attachments" id="attach-input">
+                <li class="list-group-item"><input type="file" name="file[]" class="block-input" /></li>
+                <li class="list-group-item"><input type="file" name="file[]" class="block-input" /></li>
+            </ul>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#attached-file-label, #attach-input-label').on('click', function() {
+                    $(this).next().collapse('toggle');
+
+                    if($(this).hasClass('dropup')) {
+                        $(this).removeClass('dropup');
+                    } else {
+                        $(this).addClass('dropup');
+                    }
+                });
+            });
+
+            $('#attached-file, #attach-input').collapse('hide');
+        </script>
     </div>
 
     {% if loggedAccountId is empty %}
@@ -67,7 +87,12 @@
         {% if comment %}
             <a href="{{ readUri(comment.getPost()) }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</a>
         {% endif %}
-        <button type="submit" data-loading-text="Please Wait…" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
+        <button type="submit" data-loading-text="Please Wait…" autocomplete="off" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
+        <script type="text/javascript">
+            $('form').submit(function(event) {
+                $('button:last').button('loading');
+            });
+        </script>
     </div>
 </fieldset>
 </form>
