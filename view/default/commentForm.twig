@@ -15,18 +15,18 @@
     {% if loggedAccountId is empty %}
     <div class="row">
     <div class="form-group col-sm-6">
-        <label>Author</label>
-        <input type="text" name="author" value="{{ comment.getAuthor() | escape }}" class="form-control"  required />
+        <label for="comment-input-author">Author</label>
+        <input type="text" name="author" id="comment-input-author" value="{{ comment.getAuthor() | escape }}" class="form-control" required />
     </div>
     <div class="form-group col-sm-6">
-        <label>Password</label>
-        <input type="password" name="password" value="" class="form-control" required />
+        <label for="comment-input-password">Password</label>
+        <input type="password" name="password" id="comment-input-password" value="" class="form-control" required />
     </div>
     </div>
     {% endif %}
 
     <div class="form-group">
-        <label>Content</label>
+        <label for="comment-write-textarea">Content</label>
         <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control" required>{{ comment.getContent() | escape }}</textarea>
         {{ readyEditor('comment-write-textarea') | raw }}
     </div>
