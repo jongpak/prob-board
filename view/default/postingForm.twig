@@ -10,24 +10,13 @@
         <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" required />
     </div>
 
-    {% if loggedAccountId is empty %}
     <div class="form-group">
-        <label for="author">Author</label>
-        <input type="text" name="author" id="author" value="{{ post.getAuthor() | escape }}" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" value="" class="form-control" required />
-    </div>
-    {% endif %}
-
-    <div class="form-group">
-        <label for="posting-textarea">Content</label>
+        <label for="posting-textarea">Content <span class="necessary-info">necessary</span></label>
         <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control" required>{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well">
-        <label>Attachment</label>
+        <label>Attachment <span class="necessary-info">necessary</span></label>
         <ul>
             {% for file in post.getAttachemntFile() %}
             <li><label class="btn btn-xs btn-danger"><input type="checkbox" name="delete-file[{{ file.getId() }}]" /> Delete: {{ file.getName() }}</label></li>
@@ -37,6 +26,21 @@
         <input type="file" name="file[]" />
         <input type="file" name="file[]" />
     </div>
+
+    {% if loggedAccountId is empty %}
+        <hr />
+        <div class="form-group row">
+            <div class="form-group col-sm-6">
+                <label for="author">Author <span class="necessary-info">necessary</span></label>
+                <input type="text" name="author" id="author" value="{{ post.getAuthor() | escape }}" class="form-control" />
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="password">Password <span class="necessary-info">necessary</span></label>
+                <input type="password" name="password" id="password" value="" class="form-control" />
+            </div>
+        </div>
+    {% endif %}
+
     <div class="form-group">
         <input type="submit" value="Submit" class="btn btn-primary" />
         <a href="{{ readUri(post ?: board) }}" class="btn btn-danger">Cancel</a>
