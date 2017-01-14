@@ -1,4 +1,6 @@
 <?php
+use App\Entity\AttachmentFile;
+use App\Utils\AttachmentFileUtil;
 use App\Utils\Uri\EntityUriFactory;
 
 return [
@@ -37,7 +39,10 @@ return [
                         'element: document.getElementById("' . $id . '"),' .
                         'spellChecker: false' .
                         ' });</script>';
-            }
+            },
+            'fileSize' => function(AttachmentFile $attachmentFile) {
+                return AttachmentFileUtil::getSize($attachmentFile);
+            },
         ]
     ]
 ];
