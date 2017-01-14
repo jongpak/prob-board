@@ -13,7 +13,7 @@
     {% endif %}
 
     <div class="form-group">
-        <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control">{{ comment.getContent() | escape }}</textarea>
+        <textarea name="content" id="comment-write-textarea" rows="10" cols="80" class="form-control" required>{{ comment.getContent() | escape }}</textarea>
         {{ readyEditor('comment-write-textarea') | raw }}
     </div>
 

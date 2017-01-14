@@ -7,12 +7,12 @@
 <fieldset>
     <div class="form-group">
         <label for="subject" class="necessary-info">Subject <span class="sr-only">necessary</span></label>
-        <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" />
+        <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" required />
     </div>
 
     <div class="form-group">
         <label for="posting-textarea" class="necessary-info">Content <span class="sr-only">necessary</span></label>
-        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
+        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control" required>{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well">
@@ -63,7 +63,7 @@
 
     <div class="form-group pull-right">
         <a href="{{ readUri(post ?: board) }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>  Cancel</a>
-        <button type="submit" data-loading-text="Please Wait…" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
+        <button type="submit" data-loading-text="Please Wait??" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
     </div>
 
 </fieldset>
