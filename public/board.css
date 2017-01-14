@@ -35,6 +35,17 @@ label.necessary-info:after {
     font-weight: bold;
 }
 
+.table {
+    table-layout: fixed;
+}
+
+.table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
 .table thead {
     background: #f2f2f2;
 }
@@ -85,7 +96,7 @@ label.necessary-info:after {
 .table tbody .subject a {
     display: block;
     height: 50px;
-    line-height: 47px;
+    line-height: 50px;
     color: #2e3436;
 }
 
@@ -96,7 +107,7 @@ label.necessary-info:after {
 
 
 .table .author {
-    width: 8em;
+    width: 12.5em;
     text-align: center;
     vertical-align: middle;
 }
@@ -112,13 +123,34 @@ label.necessary-info:after {
     font-size: 11px;
 }
 
+article h2 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+article div.content {
+    line-height: 150%;
+}
+
+
 .pager li span, .pager li a {
     margin: 0 5px;
 }
 
 ul.postInfo {
+    width: 200px;
     padding: 10px 20px;
     float: right;
+    margin: 0 0 15px 20px;
+}
+
+ul.postInfo li {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal;
 }
 
 ul.postInfo li span {
@@ -154,6 +186,16 @@ section.comment .comment_info {
     padding: 0px 5px 5px 5px;
     margin-bottom: 10px;
     border-bottom: 1px solid #e3e3e3;
+}
+
+section.comment .comment_info span.author {
+    display: inline-block;
+    max-width: 300px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal;
+    vertical-align: middle;
 }
 
 section.comment div.content {

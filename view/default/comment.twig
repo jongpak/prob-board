@@ -1,7 +1,7 @@
 {% for comment in comments %}
 <div class="well clearfix">
     <div class="comment_info">
-        <label>Author:</label> {{ comment.getAuthor() }}
+        <label>Author:</label> <span class="author">{{ comment.getAuthor() }}</span>
         <ul class="breadcrumb pull-right">
             <li>
                 <time datetime="{{ comment.getCreatedAt() | date('c') }}">{{ comment.getCreatedAt() | date('Y-m-d H:i:s') }}</time>
