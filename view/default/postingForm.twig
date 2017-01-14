@@ -6,44 +6,64 @@
 <form method="POST" enctype="multipart/form-data">
 <fieldset>
     <div class="form-group">
-        <label for="subject">Subject</label>
+        <label for="subject" class="necessary-info">Subject <span class="sr-only">necessary</span></label>
         <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label for="posting-textarea">Content <span class="necessary-info">necessary</span></label>
+        <label for="posting-textarea" class="necessary-info">Content <span class="sr-only">necessary</span></label>
         <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control" required>{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well">
-        <label>Attachment <span class="necessary-info">necessary</span></label>
-        <ul>
-            {% for file in post.getAttachemntFile() %}
-            <li><label class="btn btn-xs btn-danger"><input type="checkbox" name="delete-file[{{ file.getId() }}]" /> Delete: {{ file.getName() }}</label></li>
-            {% endfor %}
-        </ul>
+        {% if post.getAttachemntFile()|length %}
+        <label><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Attachment present</label>
+            <ul class="list-group">
+                {% for file in post.getAttachemntFile() %}
+                    <li class="list-group-item">
+                        <label for="delete-file[{{ file.getId() }}]" class="checkbox-inline">
+                            <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
+                            <span>{{ file.getName() }}</span>
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-        <input type="file" name="file[]" />
-        <input type="file" name="file[]" />
+        <label><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment</label>
+        <ul class="list-group">
+            <li class="list-group-item"><input type="file" name="file[]" /></li>
+            <li class="list-group-item"><input type="file" name="file[]" /></li>
+        </ul>
     </div>
 
     {% if loggedAccountId is empty %}
-        <hr />
-        <div class="form-group row">
-            <div class="form-group col-sm-6">
-                <label for="author">Author <span class="necessary-info">necessary</span></label>
-                <input type="text" name="author" id="author" value="{{ post.getAuthor() | escape }}" class="form-control" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Author Information</h3>
             </div>
-            <div class="form-group col-sm-6">
-                <label for="password">Password <span class="necessary-info">necessary</span></label>
-                <input type="password" name="password" id="password" value="" class="form-control" />
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <label for="author" class="input-group-addon necessary-info"><span>Author <span class="sr-only">(necessary)</span></span></label>
+                            <input type="text" name="author" id="author" class="form-control" value="{{ post.getAuthor() | escape }}" aria-describedby="sizing-addon2" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <label for="password" class="input-group-addon necessary-info"><span>Password <span class="sr-only">(necessary)</span></span></label>
+                            <input type="password" name="password" id="password" class="form-control" value="" aria-describedby="sizing-addon2" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     {% endif %}
 
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary" />
-        <a href="{{ readUri(post ?: board) }}" class="btn btn-danger">Cancel</a>
+    <div class="form-group pull-right">
+        <a href="{{ readUri(post ?: board) }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>  Cancel</a>
+        <button type="submit" data-loading-text="Please Wait??" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
     </div>
 
 </fieldset>
