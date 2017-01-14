@@ -6,12 +6,12 @@
 <form method="POST" enctype="multipart/form-data">
 <fieldset>
     <div class="form-group">
-        <label for="subject" class="necessary-info">Subject <span class="sr-only">necessary</span></label>
+        <label for="subject" class="necessary-info">Subject <span class="sr-only">(necessary)</span></label>
         <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" required />
     </div>
 
     <div class="form-group">
-        <label for="posting-textarea" class="necessary-info">Content <span class="sr-only">necessary</span></label>
+        <label for="posting-textarea" class="necessary-info">Content <span class="sr-only">(necessary)</span></label>
         <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
@@ -22,7 +22,7 @@
             <ul class="list-group attachments" id="attached-file">
                 {% for file in post.getAttachemntFile() %}
                     <li class="list-group-item">
-                        <label for="delete-file[{{ file.getId() }}]" class="block-input">
+                        <label for="delete-file[{{ file.getId() }}]" title="When checked, this file will be deleted." class="block-input">
                             <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
                             <span>{{ file.getName() }}</span>
                         </label>

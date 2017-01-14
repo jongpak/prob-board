@@ -24,7 +24,7 @@
                 <ul class="list-group attachments" id="attached-file">
                     {% for file in comment.getAttachemntFile() %}
                         <li class="list-group-item">
-                            <label for="delete-file[{{ file.getId() }}]" class="block-input">
+                            <label for="delete-file[{{ file.getId() }}]" title="When checked, this file will be deleted." class="block-input">
                                 <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
                                 <span>{{ file.getName() }}</span>
                             </label>
