@@ -12,29 +12,49 @@
 
     <div class="form-group">
         <label for="posting-textarea" class="necessary-info">Content <span class="sr-only">necessary</span></label>
-        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control" required>{{ post.getContent() | escape }}</textarea>
+        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
-    <div class="form-group well">
-        {% if post.getAttachemntFile()|length %}
-        <label><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Attachment present</label>
-            <ul class="list-group">
+    <div class="form-group well attachment-well">
+        {% if post.getAttachemntFile() | length %}
+        <div>
+            <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ post.getAttachemntFile() | length }}</span> <span class="caret"></span></label>
+            <ul class="list-group attachments" id="attached-file">
                 {% for file in post.getAttachemntFile() %}
                     <li class="list-group-item">
-                        <label for="delete-file[{{ file.getId() }}]" class="checkbox-inline">
+                        <label for="delete-file[{{ file.getId() }}]" class="block-input">
                             <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />
                             <span>{{ file.getName() }}</span>
                         </label>
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
 
-        <label><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment</label>
-        <ul class="list-group">
-            <li class="list-group-item"><input type="file" name="file[]" /></li>
-            <li class="list-group-item"><input type="file" name="file[]" /></li>
+        <div>
+        <label id="attach-input-label"><span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Attachment  <span class="caret"></span></label>
+        <ul class="list-group attachments" id="attach-input">
+            <li class="list-group-item"><input type="file" name="file[]" class="block-input" /></li>
+            <li class="list-group-item"><input type="file" name="file[]" class="block-input" /></li>
         </ul>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#attached-file-label, #attach-input-label').on('click', function() {
+                    $(this).next().collapse('toggle');
+
+                    if($(this).hasClass('dropup')) {
+                        $(this).removeClass('dropup');
+                    } else {
+                        $(this).addClass('dropup');
+                    }
+                });
+            });
+
+            $('#attached-file, #attach-input').collapse('hide');
+        </script>
     </div>
 
     {% if loggedAccountId is empty %}
@@ -63,8 +83,14 @@
 
     <div class="form-group pull-right">
         <a href="{{ readUri(post ?: board) }}" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>  Cancel</a>
-        <button type="submit" data-loading-text="Please Wait??" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
+        <button type="submit" data-loading-text="Please Wait…" autocomplete="off" class="btn btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Submit</button>
     </div>
+
+    <script type="text/javascript">
+        $('form').submit(function(event) {
+            $('button:last').button('loading');
+        });
+    </script>
 
 </fieldset>
 </form>
