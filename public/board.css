@@ -195,7 +195,7 @@ section.comment .comment_info span.author {
     overflow: hidden;
     white-space: nowrap;
     word-wrap: normal;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 section.comment div.content {
