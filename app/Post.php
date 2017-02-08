@@ -10,6 +10,7 @@ use App\Entity\Post as PostModel;
 use App\Utils\FormUtility;
 use App\Utils\Uri\EntityUriFactory;
 use App\Auth\LoginManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Post
@@ -29,7 +30,7 @@ class Post
      */
     private $post;
 
-    public function __construct($id, ViewModel $viewModel)
+    public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->postService = new PostService();
         $this->commentService = new CommentService();
@@ -37,6 +38,7 @@ class Post
         $this->post = $this->postService->getPostEntity($id);
 
         $viewModel->set('post', $this->post);
+        $viewModel->set('page', $this->postService->getPageOfPost($this->post, $entityManager));
     }
 
     public function index(ViewModel $viewModel)
