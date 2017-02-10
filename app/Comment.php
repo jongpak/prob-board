@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Auth\HashManager;
+use App\EventListener\Auth\Exception\PermissionDenied;
 use App\Service\CommentService;
 use App\Utils\AttachmentFileUtil;
 use Core\ViewModel;
@@ -31,8 +33,28 @@ class Comment
         $viewModel->set('comment', $this->comment);
     }
 
-    public function showEditForm(ViewModel $viewModel)
+    public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
     {
+        $viewModel->set('afterAction', 'confirm');
+
+        if($this->comment->getUser() == null) {
+            return 'passwordConfirm';
+        }
+
+        if($this->comment->getUser()->getAccountId() != $loginManager->getLoggedAccountId()) {
+            new PermissionDenied('Permission denied for editing this post');
+        }
+
+        return 'commentForm';
+    }
+
+    public function editConfirm($parsedBody, ViewModel $viewModel) {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->comment->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $viewModel->set('action', 'edit');
+
         return 'commentForm';
     }
 
