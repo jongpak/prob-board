@@ -22,8 +22,9 @@ return [
     ],
 
     '/post/{id:int}' => 'Post.index',
-    '/post/{id:int}/confirm' => [
-        'POST' => 'Post.editConfirm'
+    '/post/{id:int}/edit/confirm' => [
+        'GET' => 'Post.showEditConfirm',
+        'POST' => 'Post.submitEditConfirm'
     ],
     '/post/{id:int}/edit' => [
         'GET' => 'Post.showEditForm',
@@ -37,8 +38,9 @@ return [
         'POST' => 'Post.writeComment'
     ],
 
-    '/comment/{id:int}/confirm' => [
-        'POST' => 'Comment.editConfirm'
+    '/comment/{id:int}/edit/confirm' => [
+        'GET' => 'Comment.showEditConfirm',
+        'POST' => 'Comment.submitEditConfirm'
     ],
     '/comment/{id:int}/edit' => [
         'GET' => 'Comment.showEditForm',

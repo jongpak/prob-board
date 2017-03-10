@@ -49,27 +49,41 @@ class Post
         return 'post';
     }
 
-    public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
+    public function showEditConfirm($parsedBody, ViewModel $viewModel)
     {
-        $viewModel->set('afterAction', 'confirm');
-
         if($this->post->getUser() == null) {
             return 'passwordConfirm';
+        }
+
+        if($this->post->getUser()->getAccountId() == $loginManager->getLoggedAccountId()) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
+        }
+    }
+
+    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $_SESSION['confirm'] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
+    }
+
+    public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
+    {
+        if(isset($_SESSION['confirm'])) {
+            unset($_SESSION['confirm']);
+            return 'postingForm';
+        }
+
+        if($this->post->getUser() == null) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update() . '/confirm';
         }
 
         if($this->post->getUser()->getAccountId() != $loginManager->getLoggedAccountId()) {
             new PermissionDenied('Permission denied for editing this post');
         }
-
-        return 'postingForm';
-    }
-
-    public function editConfirm($parsedBody, ViewModel $viewModel) {
-        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
-            throw new PermissionDenied('Password is not equal');
-        }
-
-        $viewModel->set('action', 'edit');
 
         return 'postingForm';
     }
