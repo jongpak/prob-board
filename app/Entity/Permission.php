@@ -7,7 +7,7 @@ use App\Entity\Traits\Identifiable;
 
 /**
  * @Entity
- * @Table(name="permisions")
+ * @Table(name="permissions")
  */
 class Permission
 {

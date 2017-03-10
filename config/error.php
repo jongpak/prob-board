@@ -3,6 +3,7 @@
 use App\Auth\Exception\AccountNotFound;
 use App\EventListener\Auth\Exception\PermissionDenied;
 use App\Exception\EntityNotFound;
+use Prob\Router\Exception\RoutePathNotFound;
 
 return [
     'displayErrors' => true,
@@ -26,6 +27,7 @@ return [
     ],
 
     'errorCodes' => [
+        RoutePathNotFound::class => 404,
         AccountNotFound::class => 403,
         PermissionDenied::class => 403,
         EntityNotFound::class => 404
