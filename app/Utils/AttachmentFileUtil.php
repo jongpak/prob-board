@@ -34,6 +34,20 @@ class AttachmentFileUtil
      */
     public static function deleteFiles($content, array $fileId)
     {
+        $attachments = $content->getAttachemntFiles();
+        $attachmentIds = [];
+
+        foreach($attachments as $attachment) {
+            $attachmentIds[] = $attachment->getId();
+        }
+
+        foreach($fileId as $id) {
+            $fileKey = array_search($id, $attachmentIds);
+            if($fileKey === false) {
+                unset($fileId[$fileKey]);
+            }
+        }
+
         $attachmentService = new AttachmentService();
         $attachmentService->deleteFile($fileId);
     }
