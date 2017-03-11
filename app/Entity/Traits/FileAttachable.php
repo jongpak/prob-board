@@ -18,7 +18,7 @@ trait FileAttachable
         $this->attachmentFiles[] = $file;
     }
 
-    public function getAttachemntFile()
+    public function getAttachemntFiles()
     {
         return $this->attachmentFiles;
     }

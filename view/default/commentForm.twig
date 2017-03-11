@@ -18,11 +18,11 @@
     </div>
 
     <div class="form-group {{ comment ? 'well' : '' }}">
-        {% if comment.getAttachemntFile()|length %}
+        {% if comment.getAttachemntFiles()|length %}
             <div>
-                <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ comment.getAttachemntFile() | length }}</span> <span class="caret"></span></label>
+                <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ comment.getAttachemntFiles() | length }}</span> <span class="caret"></span></label>
                 <ul class="list-group attachments" id="attached-file">
-                    {% for file in comment.getAttachemntFile() %}
+                    {% for file in comment.getAttachemntFiles() %}
                         <li class="list-group-item">
                             <label for="delete-file[{{ file.getId() }}]" title="When checked, this file will be deleted." class="block-input">
                                 <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />

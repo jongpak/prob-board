@@ -20,7 +20,7 @@
     <div class="content">{{ comment.getContent() | raw }}</div>
 
     <div class="file">
-    {% for file in comment.getAttachemntFile() %}
+    {% for file in comment.getAttachemntFiles() %}
         <a href="{{ readUri(file) }}" class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
             {{ file.getName() }} <small>({{ (fileSize(file) / 1024 / 1024) | number_format(2) }}MB)</small>
