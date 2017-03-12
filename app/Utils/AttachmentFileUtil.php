@@ -34,22 +34,15 @@ class AttachmentFileUtil
      */
     public static function deleteFiles($content, array $fileId)
     {
-        $attachments = $content->getAttachemntFiles();
-        $attachmentIds = [];
+        $attachments = iterator_to_array($content->getAttachemntFiles());
+        $attachmentIds = array_map(function($attachment) { return $attachment->getId(); }, $attachments);
 
-        foreach($attachments as $attachment) {
-            $attachmentIds[] = $attachment->getId();
-        }
-
-        foreach($fileId as $id) {
-            $fileKey = array_search($id, $attachmentIds);
-            if($fileKey === false) {
-                unset($fileId[$fileKey]);
-            }
-        }
+        $filteredFileId = array_filter($fileId, function($id) use ($attachmentIds) {
+            return array_search($id, $attachmentIds) !== false;
+        });
 
         $attachmentService = new AttachmentService();
-        $attachmentService->deleteFile($fileId);
+        $attachmentService->deleteFile($filteredFileId);
     }
 
     /**
