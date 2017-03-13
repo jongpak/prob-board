@@ -43,6 +43,7 @@ class BoardService
     private function getPostsByKeyword(Board $board, $page = 1, $searchKeyword)
     {
         $repository = DatabaseManager::getEntityManager()->getRepository(Post::class);
+
         $query = $repository->createQueryBuilder('p')
             ->where(
                 '(
@@ -60,8 +61,6 @@ class BoardService
             ->setFirstResult($board->getListPerPage() * ($page - 1))
             ->setMaxResults($board->getListPerPage())
             ->getQuery();
-
-            echo $query->getDql();
 
         return $query->getResult();
     }
