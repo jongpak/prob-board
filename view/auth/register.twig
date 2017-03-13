@@ -6,73 +6,66 @@
 <div class="register-wrap center-block">
     <form action="" method="post" >
     <fieldset>
-        <div class="form-group">
+    <div class="form-group">
         <legend>Register</legend>
 
-            <div class="alerts">
-                <!--
-                <div class="alert alert-warning alert-danger" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Warning!</strong> This is an existing email address.
-                </div>
-                -->
-
-                <div class="alert alert-warning" role="alert">
-                    <p class="necessary-info">The '<span class="sr-only">(necessary)</span><span class="asterisk"></span>' is required.</p>
-                </div>
+        <div class="alerts">
+            <!--
+            <div class="alert alert-warning alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Warning!</strong> This is an existing email address.
             </div>
+            -->
 
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="register-input-id" class="input-group-addon necessary-info"><span>ID <span class="sr-only">(necessary)</span></span></label>
-                    <input type="text" name="account_id" id="register-input-id" class="form-control" placeholder="ID" aria-describedby="sizing-addon2" required />
-                    <!--
-                    <p id="input_check" class="input-group-addon exist"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> An ID that already exists.</p>
-                    <p id="input_check" class="input-group-addon available"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Available ID.</p>
-                    -->
-                </div>
+            <div class="alert alert-warning" role="alert">
+                <p class="necessary-info">The '<span class="sr-only">(necessary)</span><span class="asterisk"></span>' is required.</p>
             </div>
-
-                <div class="input-group">
-                    <label for="register-input-password" class="input-group-addon necessary-info"><span>PW <span class="sr-only">(necessary)</span></span></label>
-                    <input type="password" name="password" id="register-input-password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2" required />
-                </div>
-
-                <div class="input-group">
-                    <label for="register-input-re-password" class="input-group-addon necessary-info"><span>PW (Re-typing) <span class="sr-only">(necessary)</span></span></label>
-                    <input type="password" name="password-confirm" id="register-input-re-password" class="form-control" placeholder="Password(re-typing)" aria-describedby="sizing-addon2" required />
-                    <!--
-                    <p id="input_check" class="input-group-addon exist"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Passwords do not match.</p>
-                    <p id="input_check" class="input-group-addon available"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="sr-only">Password match</span></p>
-                    -->
-                </div>
-
-            <hr />
-
-            <div class="form-group">
-                <div class="input-group">
-                    <label for="register-input-nickname" class="input-group-addon necessary-info"><span>Nickname <span class="sr-only">(necessary)</span></span></label>
-                    <input type="text" name="nickname" id="register-input-nickname" class="form-control" placeholder="Nickname" aria-describedby="sizing-addon2" required />
-                </div>
-
-                <div class="input-group">
-                    <label for="register-input-email" class="input-group-addon necessary-info"><span>Email <span class="sr-only">(necessary)</span></span></label>
-                    <input type="email" name="email" id="register-input-email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" required />
-                </div>
-            </div>
-
-            <hr />
-
-            <div class="form-group clearfix">
-                <div class="pull-left">
-                    <p><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> I have verified all the entries.</p>
-                </div>
-                <div class="pull-right">
-                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Register</button>
-                </div>
-            </div>
-
         </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <label for="register-input-id" class="input-group-addon necessary-info"><span>ID <span class="sr-only">(necessary)</span></span></label>
+                <input type="text" name="account_id" id="register-input-id" class="form-control" placeholder="ID" aria-describedby="sizing-addon2" required />
+                <!--
+                <p id="input_check" class="input-group-addon exist"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> An ID that already exists.</p>
+                <p id="input_check" class="input-group-addon available"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Available ID.</p>
+                -->
+            </div>
+        </div>
+            <div class="input-group">
+                <label for="register-input-password" class="input-group-addon necessary-info"><span>PW <span class="sr-only">(necessary)</span></span></label>
+                <input type="password" name="password" id="register-input-password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2" required />
+            </div>
+            <div class="input-group">
+                <label for="register-input-re-password" class="input-group-addon necessary-info"><span>PW (Re-typing) <span class="sr-only">(necessary)</span></span></label>
+                <input type="password" name="password-confirm" id="register-input-re-password" class="form-control" placeholder="Password(re-typing)" aria-describedby="sizing-addon2" required />
+                <!--
+                <p id="input_check" class="input-group-addon exist"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Passwords do not match.</p>
+                <p id="input_check" class="input-group-addon available"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <span class="sr-only">Password match</span></p>
+                -->
+            </div>
+        <hr />
+        <div class="form-group">
+            <div class="input-group">
+                <label for="register-input-nickname" class="input-group-addon necessary-info"><span>Nickname <span class="sr-only">(necessary)</span></span></label>
+                <input type="text" name="nickname" id="register-input-nickname" class="form-control" placeholder="Nickname" aria-describedby="sizing-addon2" required />
+            </div>
+            <div class="input-group">
+                <label for="register-input-email" class="input-group-addon necessary-info"><span>Email <span class="sr-only">(necessary)</span></span></label>
+                <input type="email" name="email" id="register-input-email" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" required />
+            </div>
+        </div>
+        <hr />
+        <div class="form-group clearfix">
+            <div class="pull-left">
+                <p><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> I have verified all the entries.</p>
+            </div>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Register</button>
+            </div>
+        </div>
+
+    </div>
     </fieldset>
     </form>
 </div>

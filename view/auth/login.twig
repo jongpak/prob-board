@@ -3,17 +3,42 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<form action="" method="post" id="loginForm">
-<fieldset>
-    <legend>Login</legend>
+<div class="register-wrap center-block">
+    <form action="" method="post">
+    <fieldset>
+    <div class="form-group">
+        <legend>Login</legend>
 
-    <p><label for="login-input-id">ID</label></p>
-    <p><input type="text" name="account_id" id="login-input-id" value="" placeholder="ID" /></p>
+        <div class="alerts">
+            <!--
+            <div class="alert alert-warning alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Warning!</strong> This is an existing email address.
+            </div>
+            -->
 
-    <p><label for="login-input-password">Password: </label></p>
-    <p><input type="password" name="password" id="login-input-password" value="" placeholder="PW" /></p>
+            <div class="alert alert-warning" role="alert">
+                <p class="necessary-info">The '<span class="sr-only">(necessary)</span><span class="asterisk"></span>' is required.</p>
+            </div>
+        </div>
 
-    <p><input type="submit" value="login" /></p>
-</fieldset>
-</form>
+        <div class="input-group">
+            <label for="login-input-id" class="input-group-addon necessary-info"><span>ID <span class="sr-only">(necessary)</span></span></label>
+            <input type="text" name="account_id" id="login-input-id" class="form-control" placeholder="ID" aria-describedby="sizing-addon2" required="required" />
+        </div>
+
+        <div class="input-group">
+            <label for="login-input-password" class="input-group-addon necessary-info"><span>Password <span class="sr-only">(necessary)</span></span></label>
+            <input type="password" name="password" id="login-input-id" class="form-control" placeholder="PW" aria-describedby="sizing-addon2" required="required" />
+        </div>
+
+        <div class="form-group clearfix">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon glyphicon-log-in" aria-hidden="true"></span> Login</button>
+            </div>
+        </div>
+    </div>
+    </fieldset>
+    </form>
+</div>
 {% endblock %}
