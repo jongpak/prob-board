@@ -313,3 +313,7 @@ div.attachment-well > div > label, div.form-group > div > label {
 div.attachment-well, div.form-group {
     padding-bottom: 5px;
 }
+
+div.file small {
+    color: #aaa;
+}

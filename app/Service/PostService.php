@@ -11,6 +11,7 @@ use Core\Utils\EntityUtils\EntityInsert;
 use Core\Utils\EntityUtils\EntitySelect;
 use Core\Utils\EntityUtils\EntityUpdate;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PostService
 {
@@ -52,5 +53,20 @@ class PostService
     {
         $post->setBoard(null);
         EntityUpdate::update($post);
+    }
+
+    public function getPageOfPost(Post $post, EntityManagerInterface $entityManager)
+    {
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        $count = $queryBuilder
+            ->select('count(p.id)')
+            ->from(Post::class, 'p')
+            ->where('p.id > :id')
+            ->setParameter('id', $post->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return ceil($count / $post->getBoard()->getListPerPage());
     }
 }

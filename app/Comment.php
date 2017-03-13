@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Auth\HashManager;
+use App\EventListener\Auth\Exception\PermissionDenied;
 use App\Service\CommentService;
 use App\Utils\AttachmentFileUtil;
 use Core\ViewModel;
@@ -31,8 +33,42 @@ class Comment
         $viewModel->set('comment', $this->comment);
     }
 
-    public function showEditForm(ViewModel $viewModel)
+    public function showEditConfirm($parsedBody, ViewModel $viewModel)
     {
+        if($this->comment->getUser() == null) {
+            return 'passwordConfirm';
+        }
+
+        if($this->comment->getUser()->getAccountId() == $loginManager->getLoggedAccountId()) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->comment)->update();
+        }
+    }
+
+    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->comment->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $_SESSION['confirm'] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->comment)->update();
+    }
+
+    public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
+    {
+        if(isset($_SESSION['confirm'])) {
+            unset($_SESSION['confirm']);
+            return 'commentForm';
+        }
+
+        if($this->comment->getUser() == null) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->comment)->update() . '/confirm';
+        }
+
+        if($this->comment->getUser()->getAccountId() != $loginManager->getLoggedAccountId()) {
+            new PermissionDenied('Permission denied for editing this comment');
+        }
+
         return 'commentForm';
     }
 

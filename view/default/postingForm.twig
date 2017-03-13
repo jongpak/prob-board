@@ -3,7 +3,7 @@
 {% block body %}
 <h2 class="page-header">{{ post ? 'Edit' : 'Write'}}</h2>
 
-<form method="POST" enctype="multipart/form-data">
+<form action="{{ action }}" method="POST" enctype="multipart/form-data">
 <fieldset>
     <div class="form-group">
         <label for="subject" class="necessary-info">Subject <span class="sr-only">(necessary)</span></label>
@@ -16,11 +16,11 @@
         {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well attachment-well">
-        {% if post.getAttachemntFile() | length %}
+        {% if post.getAttachemntFiles() | length %}
         <div>
-            <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ post.getAttachemntFile() | length }}</span> <span class="caret"></span></label>
+            <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ post.getAttachemntFiles() | length }}</span> <span class="caret"></span></label>
             <ul class="list-group attachments" id="attached-file">
-                {% for file in post.getAttachemntFile() %}
+                {% for file in post.getAttachemntFiles() %}
                     <li class="list-group-item">
                         <label for="delete-file[{{ file.getId() }}]" title="When checked, this file will be deleted." class="block-input">
                             <input type="checkbox" id="delete-file[{{ file.getId() }}]" name="delete-file[{{ file.getId() }}]" />

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Auth\HashManager;
+use App\EventListener\Auth\Exception\PermissionDenied;
 use App\Utils\AttachmentFileUtil;
 use Core\ViewModel;
 use App\Service\PostService;
@@ -10,6 +12,7 @@ use App\Entity\Post as PostModel;
 use App\Utils\FormUtility;
 use App\Utils\Uri\EntityUriFactory;
 use App\Auth\LoginManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Post
@@ -29,7 +32,7 @@ class Post
      */
     private $post;
 
-    public function __construct($id, ViewModel $viewModel)
+    public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
     {
         $this->postService = new PostService();
         $this->commentService = new CommentService();
@@ -37,6 +40,7 @@ class Post
         $this->post = $this->postService->getPostEntity($id);
 
         $viewModel->set('post', $this->post);
+        $viewModel->set('page', $this->postService->getPageOfPost($this->post, $entityManager));
     }
 
     public function index(ViewModel $viewModel)
@@ -45,8 +49,42 @@ class Post
         return 'post';
     }
 
-    public function showEditForm(ViewModel $viewModel)
+    public function showEditConfirm($parsedBody, ViewModel $viewModel)
     {
+        if($this->post->getUser() == null) {
+            return 'passwordConfirm';
+        }
+
+        if($this->post->getUser()->getAccountId() == $loginManager->getLoggedAccountId()) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
+        }
+    }
+
+    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $_SESSION['confirm'] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
+    }
+
+    public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
+    {
+        if(isset($_SESSION['confirm'])) {
+            unset($_SESSION['confirm']);
+            return 'postingForm';
+        }
+
+        if($this->post->getUser() == null) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update() . '/confirm';
+        }
+
+        if($this->post->getUser()->getAccountId() != $loginManager->getLoggedAccountId()) {
+            new PermissionDenied('Permission denied for editing this post');
+        }
+
         return 'postingForm';
     }
 
