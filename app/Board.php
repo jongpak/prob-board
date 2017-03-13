@@ -43,9 +43,11 @@ class Board
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
+        $searchKeyword = isset($req->getQueryParams()['q']) ? $req->getQueryParams()['q'] : '';
 
-        $viewModel->set('posts', $this->getPosts($page));
+        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword));
         $viewModel->set('pager', $this->getPager($page));
+        $viewModel->set('searchKeyword', $searchKeyword);
 
         return 'postList';
     }
@@ -61,19 +63,6 @@ class Board
         AttachmentFileUtil::uploadFiles($post, $req->getUploadedFiles()['file']);
 
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
-    }
-
-    /**
-     * @return array
-     */
-    private function getPosts($page)
-    {
-        return EntitySelect::select(PostModel::class)
-            ->criteria(['board' => $this->board->getId()])
-            ->orderBy(['id' => 'DESC'])
-            ->offsetStart($this->board->getListPerPage() * ($page - 1))
-            ->offsetLength($this->board->getListPerPage())
-            ->find();
     }
 
     private function getPager($page)
