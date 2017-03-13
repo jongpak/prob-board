@@ -43,9 +43,11 @@ class Board
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
+        $searchKeyword = isset($req->getQueryParams()['q']) ? $req->getQueryParams()['q'] : '';
 
-        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page));
+        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword));
         $viewModel->set('pager', $this->getPager($page));
+        $viewModel->set('searchKeyword', $searchKeyword);
 
         return 'postList';
     }
