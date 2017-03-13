@@ -63,19 +63,6 @@ class Board
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
 
-    /**
-     * @return array
-     */
-    private function getPosts($page)
-    {
-        return EntitySelect::select(PostModel::class)
-            ->criteria(['board' => $this->board->getId()])
-            ->orderBy(['id' => 'DESC'])
-            ->offsetStart($this->board->getListPerPage() * ($page - 1))
-            ->offsetLength($this->board->getListPerPage())
-            ->find();
-    }
-
     private function getPager($page)
     {
         return (new Pager())
