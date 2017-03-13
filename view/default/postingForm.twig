@@ -7,12 +7,12 @@
 <fieldset>
     <div class="form-group">
         <label for="subject" class="necessary-info">Subject <span class="sr-only">(necessary)</span></label>
-        <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" required />
+        <input type="text" name="subject" id="subject" value="{{ post.getSubject() | escape }}" class="form-control" required="required" />
     </div>
 
     <div class="form-group">
         <label for="posting-textarea" class="necessary-info">Content <span class="sr-only">(necessary)</span></label>
-        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control">{{ post.getContent() | escape }}</textarea>
+        <textarea name="content" id="posting-textarea" rows="10" cols="80" class="form-control" required="required">{{ post.getContent() | escape }}</textarea>
         {{ readyEditor('posting-textarea') | raw }}
     </div>
     <div class="form-group well attachment-well">
@@ -67,13 +67,13 @@
                     <div class="col-sm-6">
                         <div class="input-group">
                             <label for="author" class="input-group-addon necessary-info"><span>Author <span class="sr-only">(necessary)</span></span></label>
-                            <input type="text" name="author" id="author" class="form-control" value="{{ post.getAuthor() | escape }}" aria-describedby="sizing-addon2" />
+                            <input type="text" name="author" id="author" class="form-control" value="{{ post.getAuthor() | escape }}" aria-describedby="sizing-addon2" required="required" />
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="input-group">
                             <label for="password" class="input-group-addon necessary-info"><span>Password <span class="sr-only">(necessary)</span></span></label>
-                            <input type="password" name="password" id="password" class="form-control" value="" aria-describedby="sizing-addon2" />
+                            <input type="password" name="password" id="password" class="form-control" value="" aria-describedby="sizing-addon2" required="required" />
                         </div>
                     </div>
                 </div>
