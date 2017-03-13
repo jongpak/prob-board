@@ -19,10 +19,10 @@
         <td class="subject">
             <a href="{{ readUri(post) }}">
                 {{ post.getSubject() }}
-                {% if post.getComments|length %}
-                    <span class="badge" title="{{ post.getComments|length }} Comments"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.getComments|length }}</span>
+                {% if post.getComments | length %}
+                    <span class="badge" title="{{ post.getComments | length }} Comments"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.getComments|length }}</span>
                 {% endif %}
-                {% if post.getAttachemntFiles()|length %}
+                {% if post.getAttachemntFiles() | length %}
                     <span class="badge attachments" title="Attachments"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></span>
                 {% endif %}
             </a>
@@ -35,7 +35,7 @@
 </table>
 
 <div class="pager">
-    {{ pager|raw }}
+    {{ pager | raw }}
 </div>
 
 <div class="pull-right">
