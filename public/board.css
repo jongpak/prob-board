@@ -49,6 +49,15 @@ header h1 {
     float: left;
 }
 
+header h1 a {
+    color: inherit;
+}
+
+header h1 a:hover {
+    color: inherit;
+    text-decoration: inherit;
+}
+
 header .loginPanel {
     float: right;
 }
