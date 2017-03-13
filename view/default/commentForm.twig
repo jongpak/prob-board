@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group {{ comment ? 'well' : '' }}">
-        {% if comment.getAttachemntFiles()|length %}
+        {% if comment.getAttachemntFiles() | length %}
             <div>
                 <label id="attached-file-label"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Attached files <span class="badge">{{ comment.getAttachemntFiles() | length }}</span> <span class="caret"></span></label>
                 <ul class="list-group attachments" id="attached-file">
