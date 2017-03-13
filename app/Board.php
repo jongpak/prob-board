@@ -44,7 +44,7 @@ class Board
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
 
-        $viewModel->set('posts', $this->getPosts($page));
+        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page));
         $viewModel->set('pager', $this->getPager($page));
 
         return 'postList';
