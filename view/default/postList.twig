@@ -39,13 +39,19 @@
 </div>
 
 <div class="pull-left">
-<form class="form-inline">
-    <fieldset>
+<form class="form-inline" action="" method="GET">
+<fieldset>
     <div class="form-group">
-        <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchKeyword }}" />
+        <label><input type="checkbox" name="s" {{ subjectSearch ? 'checked="checked"' : '' }} /> Subject</label>
+        <label><input type="checkbox" name="c" {{ contentSearch ? 'checked="checked"' : '' }} /> Content</label>
+        <label><input type="checkbox" name="a" {{ authorSearch ? 'checked="checked"' : '' }} /> Author</label>
+    </div>
+
+    <div class="form-group">
+        <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchKeyword }}" required="required" />
         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
     </div>
-    </fieldset>
+</fieldset>
 </form>
 </div>
 

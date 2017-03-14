@@ -26,10 +26,10 @@ class BoardService
     /**
      * @return array
      */
-    public function getPosts(Board $board, $page = 1, $searchKeyword = null)
+    public function getPosts(Board $board, $page = 1, $searchKeyword = null, $searchType = [])
     {
-        if($searchKeyword != null) {
-            return $this->getPostsByKeyword($board, $page, $searchKeyword);
+        if($searchKeyword != null && count($searchType) > 0) {
+            return $this->getPostsByKeyword($board, $page, $searchKeyword, $searchType);
         }
 
         return EntitySelect::select(Post::class)
@@ -40,19 +40,18 @@ class BoardService
             ->find();
     }
 
-    private function getPostsByKeyword(Board $board, $page = 1, $searchKeyword)
+    private function getPostsByKeyword(Board $board, $page = 1, $searchKeyword, $searchType)
     {
         $repository = DatabaseManager::getEntityManager()->getRepository(Post::class);
+        $searchWhere = [];
+        foreach($searchType as $key => $value) {
+            if($value) {
+                $searchWhere[] = 'p.' . $key . ' LIKE :keyword';
+            }
+        }
+
         $query = $repository->createQueryBuilder('p')
-            ->where(
-                '(
-                    p.subject LIKE :keyword
-                    OR
-                    p.content LIKE :keyword
-                    OR
-                    p.author LIKE :keyword
-                )'
-            )
+            ->where(sprintf('(%s)', implode(' OR ', $searchWhere)))
             ->andWhere('p.board = :board')
             ->setParameter('keyword', '%' . $searchKeyword . '%')
             ->setParameter('board', $board)
@@ -60,8 +59,6 @@ class BoardService
             ->setFirstResult($board->getListPerPage() * ($page - 1))
             ->setMaxResults($board->getListPerPage())
             ->getQuery();
-
-            echo $query->getDql();
 
         return $query->getResult();
     }

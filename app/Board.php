@@ -44,10 +44,20 @@ class Board
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
         $searchKeyword = isset($req->getQueryParams()['q']) ? $req->getQueryParams()['q'] : '';
+        
+        $searchType = array_filter([
+            'subject' => isset($req->getQueryParams()['s']),
+            'content' => isset($req->getQueryParams()['c']),
+            'author' => isset($req->getQueryParams()['a'])
+        ]);
 
-        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword));
+        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword, $searchType));
         $viewModel->set('pager', $this->getPager($page));
         $viewModel->set('searchKeyword', $searchKeyword);
+
+        $viewModel->set('subjectSearch', isset($req->getQueryParams()['s']));
+        $viewModel->set('contentSearch', isset($req->getQueryParams()['c']));
+        $viewModel->set('authorSearch', isset($req->getQueryParams()['a']));
 
         return 'postList';
     }
