@@ -55,15 +55,23 @@ class PostService
         EntityUpdate::update($post);
     }
 
-    public function getPageOfPost(Post $post, EntityManagerInterface $entityManager)
+    public function getPageOfPost(Post $post, EntityManagerInterface $entityManager, $searchKeyword = null, array $searchType = [])
     {
         $queryBuilder = $entityManager->createQueryBuilder();
 
-        $count = $queryBuilder
+        $countQueryBuilder = $queryBuilder
             ->select('count(p.id)')
             ->from(Post::class, 'p')
             ->where('p.id > :id')
-            ->setParameter('id', $post->getId())
+            ->setParameter('id', $post->getId());
+
+        if($searchKeyword != null && count($searchType) > 0) {
+            $countQueryBuilder
+                ->andWhere('(' . implode(' OR ', (new BoardService())->getPostsWhereByKeywordType($searchType)) . ')')
+                ->setParameter('keyword', $searchKeyword);
+        }
+
+        $count = $countQueryBuilder
             ->getQuery()
             ->getSingleScalarResult();
 

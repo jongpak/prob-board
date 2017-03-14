@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Auth\HashManager;
 use App\EventListener\Auth\Exception\PermissionDenied;
 use App\Utils\AttachmentFileUtil;
+use App\Utils\SearchQueryUtil;
 use Core\ViewModel;
 use App\Service\PostService;
 use App\Service\CommentService;
@@ -32,7 +33,7 @@ class Post
      */
     private $post;
 
-    public function __construct($id, EntityManagerInterface $entityManager, ViewModel $viewModel)
+    public function __construct($id, ViewModel $viewModel)
     {
         $this->postService = new PostService();
         $this->commentService = new CommentService();
@@ -40,12 +41,19 @@ class Post
         $this->post = $this->postService->getPostEntity($id);
 
         $viewModel->set('post', $this->post);
-        $viewModel->set('page', $this->postService->getPageOfPost($this->post, $entityManager));
     }
 
-    public function index(ViewModel $viewModel)
+    public function index(ServerRequestInterface $req, ViewModel $viewModel, EntityManagerInterface $entityManager)
     {
+        $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
+        $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
+        
+        $page = $this->postService->getPageOfPost($this->post, $entityManager, $searchKeyword, $searchType);
+
         $viewModel->set('comments', $this->post->getComments());
+        $viewModel->set('page', $page);
+        $viewModel->set('searchQuery', SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType) + ($page > 1 ? ['page' => $page] : []));
+
         return 'post';
     }
 
