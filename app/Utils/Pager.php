@@ -31,13 +31,21 @@ class Pager
         return $this;
     }
 
-    public function getPageNavigation($entityModel)
+    public function getPageNavigationByEntityModel($entityModel)
     {
-        $pagerAdapter = new DoctrineORMAdapter(DatabaseManager::getEntityManager()->createQueryBuilder()
+        return $this->getPageNavigationByQueryBuilder(DatabaseManager::getEntityManager()->createQueryBuilder()
             ->select('e')
             ->from($entityModel, 'e')
         );
+    }
 
+    public function getPageNavigationByQueryBuilder($queryBuilder) {
+        $pagerAdapter = new DoctrineORMAdapter($queryBuilder);
+
+        return $this->render($pagerAdapter);
+    }
+
+    private function render($pagerAdapter) {
         $pager = new Pagerfanta($pagerAdapter);
         $pager->setMaxPerPage($this->listPerPage);
         $pager->setCurrentPage($this->currentPage);

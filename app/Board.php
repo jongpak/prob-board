@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\BoardService;
 use App\Service\PostService;
 use App\Utils\AttachmentFileUtil;
+use App\Utils\SearchQueryUtil;
 use Core\Utils\EntityUtils\EntitySelect;
 use Core\ViewModel;
 use App\Entity\Post as PostModel;
@@ -43,21 +44,12 @@ class Board
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
-        $searchKeyword = isset($req->getQueryParams()['q']) ? $req->getQueryParams()['q'] : '';
-        
-        $searchType = array_filter([
-            'subject' => isset($req->getQueryParams()['s']),
-            'content' => isset($req->getQueryParams()['c']),
-            'author' => isset($req->getQueryParams()['a'])
-        ]);
+        $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
+        $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
 
         $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword, $searchType));
-        $viewModel->set('pager', $this->getPager($page));
-        $viewModel->set('searchKeyword', $searchKeyword);
-
-        $viewModel->set('subjectSearch', isset($req->getQueryParams()['s']));
-        $viewModel->set('contentSearch', isset($req->getQueryParams()['c']));
-        $viewModel->set('authorSearch', isset($req->getQueryParams()['a']));
+        $viewModel->set('pager', $this->getPager($page, $searchKeyword, $searchType));
+        $viewModel->set('searchQuery', SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType));
 
         return 'postList';
     }
@@ -75,20 +67,29 @@ class Board
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
 
-    private function getPager($page)
+    private function getPager($page, $searchKeyword, $searchType)
     {
-        return (new Pager())
+        $pager = (new Pager())
             ->setCurrentPage($page)
             ->setListPerPage($this->board->getListPerPage())
-            ->setLinkFactoryFunction($this->getLinkFactory())
-            ->getPageNavigation(PostModel::class)
-        ;
+            ->setLinkFactoryFunction($this->getLinkFactory($searchKeyword, $searchType));
+
+        if($searchKeyword == null || count($searchType) == 0) {
+            return $pager->getPageNavigationByEntityModel(PostModel::class);
+        } else {
+            return $pager->getPageNavigationByQueryBuilder(
+                $this->boardService->getPostsQueryBuilderByKeyword($this->board, $page, $searchKeyword, $searchType)
+            );
+        }
     }
 
-    private function getLinkFactory()
+    private function getLinkFactory($searchKeyword, $searchType)
     {
-        return function ($page) {
-            return EntityUriFactory::getEntityUri($this->board)->read($page > 1 ? ['page' => $page] : []);
+        $keywordQuery = SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType);
+
+        return function ($page) use ($keywordQuery) {
+            return EntityUriFactory::getEntityUri($this->board)
+                ->read(($page > 1 ? ['page' => $page] : []) + $keywordQuery);
         };
     }
 }

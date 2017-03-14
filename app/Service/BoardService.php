@@ -42,24 +42,36 @@ class BoardService
 
     private function getPostsByKeyword(Board $board, $page = 1, $searchKeyword, $searchType)
     {
-        $repository = DatabaseManager::getEntityManager()->getRepository(Post::class);
-        $searchWhere = [];
-        foreach($searchType as $key => $value) {
-            if($value) {
-                $searchWhere[] = 'p.' . $key . ' LIKE :keyword';
-            }
-        }
+        $queryBuilder = $this->getPostsQueryBuilderByKeyword($board, $page, $searchKeyword, $searchType);
+        $query = $queryBuilder->getQuery();
 
-        $query = $repository->createQueryBuilder('p')
-            ->where(sprintf('(%s)', implode(' OR ', $searchWhere)))
+        return $query->getResult();
+    }
+
+    public function getPostsQueryBuilderByKeyword(Board $board, $page = 1, $searchKeyword, $searchType)
+    {
+        $repository = DatabaseManager::getEntityManager()->getRepository(Post::class);
+
+        return $repository->createQueryBuilder('p')
+            ->where(sprintf('(%s)', implode(' OR ', $this->getPostsWhereByKeywordType($searchType))))
             ->andWhere('p.board = :board')
             ->setParameter('keyword', '%' . $searchKeyword . '%')
             ->setParameter('board', $board)
             ->orderBy('p.id', 'DESC')
             ->setFirstResult($board->getListPerPage() * ($page - 1))
-            ->setMaxResults($board->getListPerPage())
-            ->getQuery();
+            ->setMaxResults($board->getListPerPage());
+    }
 
-        return $query->getResult();
+    public function getPostsWhereByKeywordType(array $searchType, $entityAlias = 'p', $keywordAlias = ':keyword')
+    {
+        $searchWhere = [];
+
+        foreach($searchType as $key => $value) {
+            if($value) {
+                $searchWhere[] = sprintf('%s.%s LIKE %s', $entityAlias, $key, $keywordAlias);
+            }
+        }
+
+        return $searchWhere;
     }
 }

@@ -17,7 +17,7 @@
     <tr>
         <td class="no">{{ post.getId() }}</td>
         <td class="subject">
-            <a href="{{ readUri(post) }}">
+            <a href="{{ readUri(post, searchQuery) }}">
                 {{ post.getSubject() }}
                 {% if post.getComments | length %}
                     <span class="badge" title="{{ post.getComments | length }} Comments"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.getComments|length }}</span>
@@ -42,13 +42,13 @@
 <form class="form-inline" action="" method="GET">
 <fieldset>
     <div class="form-group">
-        <label><input type="checkbox" name="s" {{ subjectSearch ? 'checked="checked"' : '' }} /> Subject</label>
-        <label><input type="checkbox" name="c" {{ contentSearch ? 'checked="checked"' : '' }} /> Content</label>
-        <label><input type="checkbox" name="a" {{ authorSearch ? 'checked="checked"' : '' }} /> Author</label>
+        <label><input type="checkbox" name="s" {{ searchQuery['s'] ? 'checked="checked"' : '' }} /> Subject</label>
+        <label><input type="checkbox" name="c" {{ searchQuery['c'] ? 'checked="checked"' : '' }} /> Content</label>
+        <label><input type="checkbox" name="a" {{ searchQuery['a'] ? 'checked="checked"' : '' }} /> Author</label>
     </div>
 
     <div class="form-group">
-        <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchKeyword }}" required="required" />
+        <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchQuery['q'] }}" required="required" />
         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
     </div>
 </fieldset>
