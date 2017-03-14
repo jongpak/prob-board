@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\BoardService;
 use App\Service\PostService;
 use App\Utils\AttachmentFileUtil;
+use App\Utils\SearchQueryUtil;
 use Core\Utils\EntityUtils\EntitySelect;
 use Core\ViewModel;
 use App\Entity\Post as PostModel;
@@ -43,21 +44,12 @@ class Board
     public function index(ServerRequestInterface $req, ViewModel $viewModel)
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
-        $searchKeyword = isset($req->getQueryParams()['q']) ? $req->getQueryParams()['q'] : '';
-        
-        $searchType = array_filter([
-            'subject' => isset($req->getQueryParams()['s']),
-            'content' => isset($req->getQueryParams()['c']),
-            'author' => isset($req->getQueryParams()['a'])
-        ]);
+        $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
+        $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
 
         $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword, $searchType));
         $viewModel->set('pager', $this->getPager($page, $searchKeyword, $searchType));
-        $viewModel->set('searchKeyword', $searchKeyword);
-
-        $viewModel->set('subjectSearch', isset($req->getQueryParams()['s']));
-        $viewModel->set('contentSearch', isset($req->getQueryParams()['c']));
-        $viewModel->set('authorSearch', isset($req->getQueryParams()['a']));
+        $viewModel->set('searchQuery', SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType));
 
         return 'postList';
     }
@@ -93,24 +85,9 @@ class Board
 
     private function getLinkFactory($searchKeyword, $searchType)
     {
-        $keywordQuery = [];
-        
-        if($searchKeyword) {
-            $keywordQuery['q'] = $searchKeyword;
-        }
-
-        if(isset($searchType['subject'])) {
-            $keywordQuery['s'] = true;
-        }
-        if(isset($searchType['content'])) {
-            $keywordQuery['c'] = true;
-        }
-        if(isset($searchType['author'])) {
-            $keywordQuery['a'] = true;
-        }
+        $keywordQuery = SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType);
 
         return function ($page) use ($keywordQuery) {
-
             return EntityUriFactory::getEntityUri($this->board)
                 ->read(($page > 1 ? ['page' => $page] : []) + $keywordQuery);
         };
