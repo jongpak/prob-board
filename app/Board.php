@@ -52,7 +52,7 @@ class Board
         ]);
 
         $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword, $searchType));
-        $viewModel->set('pager', $this->getPager($page));
+        $viewModel->set('pager', $this->getPager($page, $searchKeyword, $searchType));
         $viewModel->set('searchKeyword', $searchKeyword);
 
         $viewModel->set('subjectSearch', isset($req->getQueryParams()['s']));
@@ -75,20 +75,44 @@ class Board
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
 
-    private function getPager($page)
+    private function getPager($page, $searchKeyword, $searchType)
     {
-        return (new Pager())
+        $pager = (new Pager())
             ->setCurrentPage($page)
             ->setListPerPage($this->board->getListPerPage())
-            ->setLinkFactoryFunction($this->getLinkFactory())
-            ->getPageNavigation(PostModel::class)
-        ;
+            ->setLinkFactoryFunction($this->getLinkFactory($searchKeyword, $searchType));
+
+        if($searchKeyword == null || count($searchType) == 0) {
+            return $pager->getPageNavigationByEntityModel(PostModel::class);
+        } else {
+            return $pager->getPageNavigationByQueryBuilder(
+                $this->boardService->getPostsQueryBuilderByKeyword($this->board, $page, $searchKeyword, $searchType)
+            );
+        }
     }
 
-    private function getLinkFactory()
+    private function getLinkFactory($searchKeyword, $searchType)
     {
-        return function ($page) {
-            return EntityUriFactory::getEntityUri($this->board)->read($page > 1 ? ['page' => $page] : []);
+        $keywordQuery = [];
+        
+        if($searchKeyword) {
+            $keywordQuery['q'] = $searchKeyword;
+        }
+
+        if(isset($searchType['subject'])) {
+            $keywordQuery['s'] = true;
+        }
+        if(isset($searchType['content'])) {
+            $keywordQuery['c'] = true;
+        }
+        if(isset($searchType['author'])) {
+            $keywordQuery['a'] = true;
+        }
+
+        return function ($page) use ($keywordQuery) {
+
+            return EntityUriFactory::getEntityUri($this->board)
+                ->read(($page > 1 ? ['page' => $page] : []) + $keywordQuery);
         };
     }
 }

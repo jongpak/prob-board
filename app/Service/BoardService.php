@@ -42,6 +42,13 @@ class BoardService
 
     private function getPostsByKeyword(Board $board, $page = 1, $searchKeyword, $searchType)
     {
+        $queryBuilder = $this->getPostsQueryBuilderByKeyword($board, $page, $searchKeyword, $searchType);
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function getPostsQueryBuilderByKeyword(Board $board, $page = 1, $searchKeyword, $searchType) {
         $repository = DatabaseManager::getEntityManager()->getRepository(Post::class);
         $searchWhere = [];
         foreach($searchType as $key => $value) {
@@ -50,16 +57,13 @@ class BoardService
             }
         }
 
-        $query = $repository->createQueryBuilder('p')
+        return $repository->createQueryBuilder('p')
             ->where(sprintf('(%s)', implode(' OR ', $searchWhere)))
             ->andWhere('p.board = :board')
             ->setParameter('keyword', '%' . $searchKeyword . '%')
             ->setParameter('board', $board)
             ->orderBy('p.id', 'DESC')
             ->setFirstResult($board->getListPerPage() * ($page - 1))
-            ->setMaxResults($board->getListPerPage())
-            ->getQuery();
-
-        return $query->getResult();
+            ->setMaxResults($board->getListPerPage());
     }
 }
