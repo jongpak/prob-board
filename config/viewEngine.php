@@ -34,11 +34,17 @@ return [
                 return EntityUriFactory::getEntityUri($entity)->delete($parameters);
             },
             'readyEditor' => function($id) {
-                return '<script>' .
-                        'var simplemde = new SimpleMDE({' .
-                        'element: document.getElementById("' . $id . '"),' .
-                        'spellChecker: false' .
-                        ' });</script>';
+                return 
+                    '<script>
+                        (function() {
+                            var elem = document.getElementById("' . $id . '")
+                            var simplemde = new SimpleMDE({
+                                element: elem,
+                                spellChecker: false
+                            });
+                            elem.required = false;
+                        })();
+                    </script>';
             },
             'fileSize' => function(AttachmentFile $attachmentFile) {
                 return AttachmentFileUtil::getSize($attachmentFile);
