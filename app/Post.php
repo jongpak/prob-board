@@ -98,23 +98,6 @@ class Post
         return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->read();
     }
 
-    public function showEditConfirm($parsedBody, ViewModel $viewModel)
-    {
-        if($this->post->getUser() == null) {
-            return 'passwordConfirm';
-        }
-    }
-
-    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
-    {
-        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
-            throw new PermissionDenied('Password is not equal');
-        }
-
-        $_SESSION['confirm'] = true;
-        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
-    }
-
     public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
     {
         if(isset($_SESSION['confirm'])) {
@@ -131,6 +114,23 @@ class Post
         }
 
         return 'postingForm';
+    }
+
+    public function showEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if($this->post->getUser() == null) {
+            return 'passwordConfirm';
+        }
+    }
+
+    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $_SESSION['confirm'] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
     }
 
     public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)
