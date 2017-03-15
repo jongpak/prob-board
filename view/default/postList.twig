@@ -25,6 +25,11 @@
                 {% if post.getAttachemntFiles() | length %}
                     <span class="badge attachments" title="Attachments"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></span>
                 {% endif %}
+
+                {% if post.getIsSecret() %}
+                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                    <span class="hide">secret</span>
+                {% endif %}
             </a>
         </td>
         <td class="author">{{ post.getAuthor() }}</td>
