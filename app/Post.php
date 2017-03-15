@@ -7,6 +7,7 @@ use App\EventListener\Auth\Exception\PermissionDenied;
 use App\Utils\AttachmentFileUtil;
 use App\Utils\SearchQueryUtil;
 use Core\ViewModel;
+use Core\Utils\ResponseProxy;
 use App\Service\PostService;
 use App\Service\CommentService;
 use App\Entity\Post as PostModel;
@@ -15,6 +16,7 @@ use App\Utils\Uri\EntityUriFactory;
 use App\Auth\LoginManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\Response\EmptyResponse;
 
 class Post
 {
@@ -79,9 +81,10 @@ class Post
         return false;
     }
 
-    public function showReadConfirm($parsedBody, ViewModel $viewModel)
+    public function showReadConfirm($parsedBody, ViewModel $viewModel, ResponseProxy $response)
     {
         if($this->post->getUser() == null) {
+            $response->setResponse(new EmptyResponse(403));
             return 'passwordConfirm';
         }
 
@@ -116,9 +119,10 @@ class Post
         return 'postingForm';
     }
 
-    public function showEditConfirm($parsedBody, ViewModel $viewModel)
+    public function showEditConfirm($parsedBody, ViewModel $viewModel, ResponseProxy $response)
     {
         if($this->post->getUser() == null) {
+            $response->setResponse(new EmptyResponse(403));
             return 'passwordConfirm';
         }
     }
