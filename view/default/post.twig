@@ -2,7 +2,13 @@
 
 {% block body %}
 <article>
-<h2 class="page-header">{{ post.getSubject() }}</h2>
+<h2 class="page-header">
+    {{ post.getSubject() }}
+    
+    {% if post.getIsSecret() %}
+    <small><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></small>
+    {% endif %}
+</h2>
 
 <div class="postExtra pull-right">
     <ul class="postInfo well list-unstyled">

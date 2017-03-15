@@ -43,8 +43,13 @@ class Post
         $viewModel->set('post', $this->post);
     }
 
-    public function index(ServerRequestInterface $req, ViewModel $viewModel, EntityManagerInterface $entityManager)
+    public function index(ServerRequestInterface $req, ViewModel $viewModel, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
+        if($this->hasPermissionOfRead($loginManager) === false) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->read() . '/confirm';
+        }
+        unset($_SESSION['read-auth-' . $this->post->getId()]);
+
         $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
         $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
         
@@ -57,31 +62,46 @@ class Post
         return 'post';
     }
 
-    public function showEditConfirm($parsedBody, ViewModel $viewModel)
+    private function hasPermissionOfRead(LoginManagerInterface $loginManager)
+    {
+        if($this->post->getIsSecret() === false) {
+            return true;
+        }
+
+        if(isset($_SESSION['read-auth-' . $this->post->getId()]) === true) {
+            return true;
+        }
+
+        if($this->post->getUser() !== null) {
+            return $this->post->getUser()->getAccountId() === $loginManager->getLoggedAccountId();
+        }
+
+        return false;
+    }
+
+    public function showReadConfirm($parsedBody, ViewModel $viewModel)
     {
         if($this->post->getUser() == null) {
             return 'passwordConfirm';
         }
 
-        if($this->post->getUser()->getAccountId() == $loginManager->getLoggedAccountId()) {
-            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
-        }
+        throw new PermissionDenied('Permission denied for reading this post');
     }
 
-    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
+    public function submitReadConfirm($parsedBody, ViewModel $viewModel)
     {
         if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
             throw new PermissionDenied('Password is not equal');
         }
 
-        $_SESSION['confirm'] = true;
-        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
+        $_SESSION['read-auth-' . $this->post->getId()] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->read();
     }
 
     public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
     {
-        if(isset($_SESSION['confirm'])) {
-            unset($_SESSION['confirm']);
+        if(isset($_SESSION['edit-auth-' . $this->post->getId()])) {
+            unset($_SESSION['edit-auth-' . $this->post->getId()]);
             return 'postingForm';
         }
 
@@ -94,6 +114,23 @@ class Post
         }
 
         return 'postingForm';
+    }
+
+    public function showEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if($this->post->getUser() == null) {
+            return 'passwordConfirm';
+        }
+    }
+
+    public function submitEditConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $_SESSION['edit-auth-' . $this->post->getId()] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
     }
 
     public function edit($parsedBody, ServerRequestInterface $req, LoginManagerInterface $loginManager)

@@ -39,6 +39,11 @@ class Post
     protected $content;
 
     /**
+     * @Column(type="boolean", nullable=false, options={"default": false})
+     */
+    protected $is_secret;
+
+    /**
      * @var ArrayCollection
      * @OneToMany(targetEntity="Comment", mappedBy="post")
      */
@@ -82,6 +87,16 @@ class Post
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function setIsSecret($is_secret)
+    {
+        $this->is_secret = $is_secret;
+    }
+
+    public function getIsSecret()
+    {
+        return $this->is_secret;
     }
 
     public function getComments()

@@ -32,6 +32,7 @@ class PostService
         $post->setBoard($board);
         $post->setSubject($body['subject']);
         $post->setContent($body['content']);
+        $post->setIsSecret(isset($body['secret']));
         ContentUserInfoSetter::fillUserInfo($post, $body, $loginManager);
 
         EntityInsert::insert($post);
@@ -43,6 +44,7 @@ class PostService
     {
         $post->setSubject($body['subject']);
         $post->setContent($body['content']);
+        $post->setIsSecret(isset($body['secret']));
         $post->setUpdatedAt(new DateTime());
         ContentUserInfoSetter::fillUserInfo($post, $body, $loginManager);
 
