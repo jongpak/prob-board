@@ -100,8 +100,8 @@ class Post
 
     public function showEditForm(LoginManagerInterface $loginManager, ViewModel $viewModel)
     {
-        if(isset($_SESSION['confirm'])) {
-            unset($_SESSION['confirm']);
+        if(isset($_SESSION['edit-auth-' . $this->post->getId()])) {
+            unset($_SESSION['edit-auth-' . $this->post->getId()]);
             return 'postingForm';
         }
 
@@ -129,7 +129,7 @@ class Post
             throw new PermissionDenied('Password is not equal');
         }
 
-        $_SESSION['confirm'] = true;
+        $_SESSION['edit-auth-' . $this->post->getId()] = true;
         return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
     }
 
