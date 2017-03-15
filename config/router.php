@@ -22,6 +22,10 @@ return [
     ],
 
     '/post/{id:int}' => 'Post.index',
+    '/post/{id:int}/confirm' => [
+        'GET' => 'Post.showReadConfirm',
+        'POST' => 'Post.submitReadConfirm'
+    ],
     '/post/{id:int}/edit/confirm' => [
         'GET' => 'Post.showEditConfirm',
         'POST' => 'Post.submitEditConfirm'

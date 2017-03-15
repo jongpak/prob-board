@@ -43,8 +43,13 @@ class Post
         $viewModel->set('post', $this->post);
     }
 
-    public function index(ServerRequestInterface $req, ViewModel $viewModel, EntityManagerInterface $entityManager)
+    public function index(ServerRequestInterface $req, ViewModel $viewModel, EntityManagerInterface $entityManager, LoginManagerInterface $loginManager)
     {
+        if($this->hasPermissionOfRead($loginManager) === false) {
+            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->read() . '/confirm';
+        }
+        unset($_SESSION['read-auth-' . $this->post->getId()]);
+
         $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
         $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
         
@@ -55,6 +60,42 @@ class Post
         $viewModel->set('searchQuery', SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType) + ($page > 1 ? ['page' => $page] : []));
 
         return 'post';
+    }
+
+    private function hasPermissionOfRead(LoginManagerInterface $loginManager)
+    {
+        if($this->post->getIsSecret() === false) {
+            return true;
+        }
+
+        if(isset($_SESSION['read-auth-' . $this->post->getId()]) === true) {
+            return true;
+        }
+
+        if($this->post->getUser() !== null) {
+            return $this->post->getUser()->getAccountId() === $loginManager->getLoggedAccountId();
+        }
+
+        return false;
+    }
+
+    public function showReadConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if($this->post->getUser() == null) {
+            return 'passwordConfirm';
+        }
+
+        throw new PermissionDenied('Permission denied for reading this post');
+    }
+
+    public function submitReadConfirm($parsedBody, ViewModel $viewModel)
+    {
+        if(HashManager::getProvider()->isEqualValueAndHash($parsedBody['password'], $this->post->getPassword()) == false) {
+            throw new PermissionDenied('Password is not equal');
+        }
+
+        $_SESSION['read-auth-' . $this->post->getId()] = true;
+        return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->read();
     }
 
     public function showEditConfirm($parsedBody, ViewModel $viewModel)
