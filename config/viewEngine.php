@@ -49,6 +49,7 @@ return [
             'fileSize' => function(AttachmentFile $attachmentFile) {
                 return AttachmentFileUtil::getSize($attachmentFile);
             },
+            'urlencode' => 'urlencode',
         ]
     ]
 ];

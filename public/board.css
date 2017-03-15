@@ -198,11 +198,13 @@ article div.content {
     margin: 0 5px;
 }
 
+div.postExtra {
+    width: 230px;
+}
+
 ul.postInfo {
-    width: 200px;
     padding: 10px 20px;
-    float: right;
-    margin: 0 0 15px 20px;
+    margin: 0 0 0 20px;
 }
 
 ul.postInfo li {
@@ -214,6 +216,29 @@ ul.postInfo li {
 
 ul.postInfo li span {
     font-weight: bold;
+}
+
+ul.share-sns {
+    margin: 0;
+}
+
+ul.share-sns li {
+    list-style: none;
+    display: inline;
+    font-size: 24pt;
+}
+
+ul.share-sns li a {
+    color: #aaa;
+}
+
+ul.share-sns li a:hover {
+    text-decoration: none;
+    color: rgb(50, 125, 225);
+}
+
+ul.share-sns li span {
+    display: none;
 }
 
 div.file {
@@ -266,7 +291,7 @@ nav.action {
     margin-top: 25px;
 }
 
-div.content {
+article div.content {
     min-height: 120px;
 }
 
