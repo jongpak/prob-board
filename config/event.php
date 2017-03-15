@@ -10,15 +10,15 @@ return [
             ]
         ],
 
-        'Post.showEditForm.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
-        'Post.edit.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
-        'Post.showDeleteForm.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
-        'Post.delete.before' => 'App\\EventListener\\ControllerAuth.validatePostAuth',
+        'Post.showEditForm.before' => 'App\\EventListener\\UserContentAuth.validatePostAuth',
+        'Post.edit.before' => 'App\\EventListener\\UserContentAuth.validatePostAuth',
+        'Post.showDeleteForm.before' => 'App\\EventListener\\UserContentAuth.validatePostAuth',
+        'Post.delete.before' => 'App\\EventListener\\UserContentAuth.validatePostAuth',
 
-        'Comment.showEditForm.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
-        'Comment.edit.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
-        'Comment.showDeleteForm.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
-        'Comment.delete.before' => 'App\\EventListener\\ControllerAuth.validateCommentAuth',
+        'Comment.showEditForm.before' => 'App\\EventListener\\UserContentAuth.validateCommentAuth',
+        'Comment.edit.before' => 'App\\EventListener\\UserContentAuth.validateCommentAuth',
+        'Comment.showDeleteForm.before' => 'App\\EventListener\\UserContentAuth.validateCommentAuth',
+        'Comment.delete.before' => 'App\\EventListener\\UserContentAuth.validateCommentAuth',
     ],
 
     'ViewModelFilter' => 'App\\EventListener\\ViewModelFilter.filter',

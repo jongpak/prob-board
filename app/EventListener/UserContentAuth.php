@@ -13,7 +13,7 @@ use App\EventListener\Auth\Exception\PermissionDenied;
 use Core\Utils\EntityUtils\EntitySelect;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ControllerAuth
+class UserContentAuth
 {
     /**
      * @var User
