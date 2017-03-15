@@ -4,10 +4,17 @@
 <article>
 <h2 class="page-header">{{ post.getSubject() }}</h2>
 
-<ul class="postInfo well list-unstyled">
-    <li><span>Author:</span> {{ post.getAuthor() }}</li>
-    <li><span>Time:</span> <time datetime="{{ post.getCreatedAt() | date('c') }}">{{ post.getCreatedAt() | date('Y-M-d') }}</time></li>
-</ul>
+<div class="postExtra pull-right">
+    <ul class="postInfo well list-unstyled">
+        <li><span>Author:</span> {{ post.getAuthor() }}</li>
+        <li><span>Time:</span> <time datetime="{{ post.getCreatedAt() | date('c') }}">{{ post.getCreatedAt() | date('Y-M-d') }}</time></li>
+    </ul>
+
+    <ul class="share-sns pull-right">
+        <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(readUri(post)) }}" onclick="window.open(this.href, '', 'width=640,height=480'); return false;"><i class="fa fa-facebook-official" aria-hidden="true"></i> <span>Share to Facebook</span></a></li>
+        <li><a href="https://twitter.com/intent/tweet?text={{ urlencode(post.getSubject()) }}&amp;url={{ urlencode(readUri(post)) }}" onclick="window.open(this.href, '', 'width=640,height=480'); return false;"><i class="fa fa-twitter-square" aria-hidden="true"></i> <span>Share to Twitter</span></a></li>
+    </ul>
+</div>
 
 <div class="content">
 {{ post.getContent() | raw }}
@@ -24,7 +31,7 @@
 
 </article>
 
-    <hr />
+<hr />
 
 <nav class="action clearfix">
     <a class="btn btn-default" href="{{ readUri(post.getBoard(), searchQuery) }}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> List</a>
