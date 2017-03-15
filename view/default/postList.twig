@@ -19,11 +19,20 @@
         <td class="subject">
             <a href="{{ readUri(post, searchQuery) }}">
                 {{ post.getSubject() }}
+
                 {% if post.getComments | length %}
-                    <span class="badge" title="{{ post.getComments | length }} Comments"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> {{ post.getComments|length }}</span>
+                    <span class="badge" title="{{ post.getComments | length }} Comments">
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                        <span class="hide">comments</span>
+                        {{ post.getComments | length }}
+                    </span>
                 {% endif %}
+
                 {% if post.getAttachemntFiles() | length %}
-                    <span class="badge attachments" title="Attachments"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></span>
+                    <span class="badge attachments" title="Attachments">
+                        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                        <span class="hide">attachment</span>
+                    </span>
                 {% endif %}
 
                 {% if post.getIsSecret() %}
