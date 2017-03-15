@@ -62,10 +62,6 @@ class Post
         if($this->post->getUser() == null) {
             return 'passwordConfirm';
         }
-
-        if($this->post->getUser()->getAccountId() == $loginManager->getLoggedAccountId()) {
-            return 'redirect:' . EntityUriFactory::getEntityUri($this->post)->update();
-        }
     }
 
     public function submitEditConfirm($parsedBody, ViewModel $viewModel)
