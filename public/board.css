@@ -38,7 +38,7 @@ header {
 }
 
 header.affix {
-    box-shadow: 0px 1px 10px 0px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.1);
     transition: 0.3s;
 }
 
@@ -149,7 +149,7 @@ label.necessary-info:after {
 
 .table .subject .badge.attachments{
     padding: 3px 4px;
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .table tbody .subject a {
@@ -267,7 +267,7 @@ section.comment .breadcrumb {
 }
 
 section.comment .comment_info {
-    padding: 0px 5px 5px 5px;
+    padding: 0 5px 5px 5px;
     margin-bottom: 10px;
     border-bottom: 1px solid #e3e3e3;
 }
@@ -350,4 +350,9 @@ div.attachment-well, div.form-group {
 
 div.file small {
     color: #aaa;
+}
+
+button span.label {
+    top: -2px !important;
+    background: #9fa0a0;
 }
