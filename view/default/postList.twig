@@ -82,6 +82,9 @@
         <div class="input-group">
             <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchQuery['q'] }}" required="required" />
             <span class="input-group-btn"><button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button></span>
+            {% if searchQuery['q'] %}
+                <span class="input-group-btn"><a href="{{ readUri(board) }}" class="btn btn-default" type="button">Cancel</a></span>
+            {% endif %}
         </div>
         <script>
             $(document).ready(function() {
