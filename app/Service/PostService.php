@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Auth\LoginManagerInterface;
 use App\Entity\Board;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Exception\EntityNotFound;
 use App\Utils\ContentUserInfoSetter;
 use Core\Utils\EntityUtils\EntityInsert;
@@ -57,8 +58,9 @@ class PostService
         EntityUpdate::update($post);
     }
 
-    public function getPageOfPost(Post $post, EntityManagerInterface $entityManager, $searchKeyword = null, array $searchType = [])
+    public function getPageOfPost(Post $post, EntityManagerInterface $entityManager, $searchKeyword = null, array $searchType = [], $targetAccountId)
     {
+        $targetAccount = EntitySelect::select(User::class)->criteria(['accountId' => $targetAccountId])->findOne();
         $queryBuilder = $entityManager->createQueryBuilder();
 
         $countQueryBuilder = $queryBuilder
@@ -71,6 +73,10 @@ class PostService
             $countQueryBuilder
                 ->andWhere('(' . implode(' OR ', (new BoardService())->getPostsWhereClauseByKeywordType($searchType)) . ')')
                 ->setParameter('keyword', $searchKeyword);
+
+            if(array_key_exists('content', $searchType)) {
+                $countQueryBuilder->setParameter('user', $targetAccount);
+            }
         }
 
         $count = $countQueryBuilder

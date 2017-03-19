@@ -55,7 +55,7 @@ class Post
         $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
         $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
         
-        $page = $this->postService->getPageOfPost($this->post, $entityManager, $searchKeyword, $searchType);
+        $page = $this->postService->getPageOfPost($this->post, $entityManager, $searchKeyword, $searchType, $loginManager->getLoggedAccountId());
 
         $viewModel->set('comments', $this->post->getComments());
         $viewModel->set('page', $page);
