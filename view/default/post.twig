@@ -26,6 +26,15 @@
 {{ post.getContent() | raw }}
 </div>
 
+{% if searchQuery['q'] and searchQuery['c'] %}
+<script>
+    $(document).ready(function() {
+        var content = $('article .content')
+        content.html(searchHTML('{{ searchQuery['q'] }}', content.html()))
+    });
+</script>
+{% endif %}
+
 <div class="file">
 {% for file in post.getAttachemntFiles() %}
     <a href="{{ readUri(file) }}" class="btn btn-default btn-sm">

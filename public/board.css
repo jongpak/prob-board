@@ -372,3 +372,11 @@ td.no-post {
     text-align: center;
     padding: 50px 10px !important;
 }
+
+
+span.search-keyword {
+    background: rgb(255, 255, 125);
+    border: 1px solid orange;
+    font-weight: bold;
+    padding: 2px;
+}
