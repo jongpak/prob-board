@@ -53,7 +53,7 @@ class BoardService
         $repository = DatabaseManager::getEntityManager()->getRepository(Post::class);
 
         return $repository->createQueryBuilder('p')
-            ->where(sprintf('(%s)', implode(' OR ', $this->getPostsWhereByKeywordType($searchType))))
+            ->where(sprintf('(%s)', implode(' OR ', $this->getPostsWhereClauseByKeywordType($searchType))))
             ->andWhere('p.board = :board')
             ->setParameter('keyword', '%' . $searchKeyword . '%')
             ->setParameter('board', $board)
@@ -62,7 +62,7 @@ class BoardService
             ->setMaxResults($board->getListPerPage());
     }
 
-    public function getPostsWhereByKeywordType(array $searchType, $entityAlias = 'p', $keywordAlias = ':keyword')
+    public function getPostsWhereClauseByKeywordType(array $searchType, $entityAlias = 'p', $keywordAlias = ':keyword')
     {
         $searchWhere = [];
 
