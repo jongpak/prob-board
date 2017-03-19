@@ -75,7 +75,7 @@ class Board
             ->setLinkFactoryFunction($this->getLinkFactory($searchKeyword, $searchType));
 
         if($searchKeyword == null || count($searchType) == 0) {
-            return $pager->getPageNavigationByEntityModel(PostModel::class);
+            return $pager->getPageNavigationByEntityModel(PostModel::class, 'e.board = '.$this->board->getId());
         } else {
             return $pager->getPageNavigationByQueryBuilder(
                 $this->boardService->getPostsQueryBuilderByKeyword($this->board, $page, $searchKeyword, $searchType, $targetAccountId)

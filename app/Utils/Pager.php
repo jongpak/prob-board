@@ -6,6 +6,7 @@ use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrap3View;
 use Core\DatabaseManager;
+use Doctrine\Common\Collections\Criteria;
 
 class Pager
 {
@@ -31,12 +32,17 @@ class Pager
         return $this;
     }
 
-    public function getPageNavigationByEntityModel($entityModel)
+    public function getPageNavigationByEntityModel($entityModel, $where = '')
     {
-        return $this->getPageNavigationByQueryBuilder(DatabaseManager::getEntityManager()->createQueryBuilder()
+        $queryBuilder = DatabaseManager::getEntityManager()->createQueryBuilder()
             ->select('e')
-            ->from($entityModel, 'e')
-        );
+            ->from($entityModel, 'e');
+
+        if($where) {
+            $queryBuilder->where($where);
+        }
+
+        return $this->getPageNavigationByQueryBuilder($queryBuilder);
     }
 
     public function getPageNavigationByQueryBuilder($queryBuilder) {
