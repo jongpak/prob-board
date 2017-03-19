@@ -58,6 +58,10 @@
     {{ pager | raw }}
 </div>
 
+{% if searchQuery is empty %}
+    {% set searchQuery = { 's': true, 'c': true } %}
+{% endif %}
+
 <div id="search-bar">
     <form class="form-inline text-center" action="" method="GET">
     <div class="row">
@@ -74,27 +78,30 @@
                 <li><label><input type="checkbox" class="search-content" name="c" {{ searchQuery['c'] ? 'checked="checked"' : '' }} /> Content</label></li>
                 <li><label><input type="checkbox" class="search-author" name="a" {{ searchQuery['a'] ? 'checked="checked"' : '' }} /> Author</label></li>
             </ul>
-            <script>
-                $(document).ready(function() {
-                    $('#search-bar ul.dropdown-menu label').click(function(e) {
-                        e.stopPropagation();
-                    });
-
-                    $('#search-bar ul.dropdown-menu input[type=checkbox]').change(function() {
-                        $('#search-bar button.dropdown-toggle span.label').remove();
-
-                        $('#search-bar ul.dropdown-menu input[type=checkbox]:checked').closest('label').each(function(i, t) {
-                            $('#search-bar button.dropdown-toggle span.caret').before(
-                                $('<span class="label label-default online">' + $(t).text().trim() + '</span>'));
-                        });
-                    });
-                });
-            </script>
         </div>
         <div class="input-group">
             <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchQuery['q'] }}" required="required" />
             <span class="input-group-btn"><button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button></span>
         </div>
+        <script>
+            $(document).ready(function() {
+                $('#search-bar ul.dropdown-menu label').click(function(e) {
+                    e.stopPropagation();
+                });
+                $('#search-bar ul.dropdown-menu input[type=checkbox]').change(function() {
+                    if($('#search-bar ul.dropdown-menu input[type=checkbox]:checked').length == 0) {
+                        alert('Select search options');
+                        this.checked = true;
+                    }
+
+                    $('#search-bar button.dropdown-toggle span.label').remove();
+                    $('#search-bar ul.dropdown-menu input[type=checkbox]:checked').closest('label').each(function(i, t) {
+                        $('#search-bar button.dropdown-toggle span.caret').before(
+                            $('<span class="label label-default online">' + $(t).text().trim() + '</span>'));
+                    });
+                });
+            });
+        </script>
     </div>
     </form>
 </div>
