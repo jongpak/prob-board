@@ -352,7 +352,17 @@ div.file small {
     color: #aaa;
 }
 
+
+.dropdown-menu label {
+    display: block;
+    padding: 0 10px;
+}
+
 button span.label {
     top: -2px !important;
     background: #9fa0a0;
+}
+
+button span.label.online {
+    margin-right: 3px;
 }

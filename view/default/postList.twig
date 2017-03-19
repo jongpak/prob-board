@@ -52,22 +52,38 @@
     {{ pager | raw }}
 </div>
 
-<div id="searchingBar">
+<div id="search-bar">
     <form class="form-inline text-center" action="" method="GET">
     <div class="row">
         <div class="input-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-cog"></span>
-                    <span class="label label-default">Subject</span>
-                    <span class="label label-default">Content</span>
-                    <span class="label label-default">Author</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#" class="small" data-value="option1" tabIndex="-1"><input type="checkbox" name="s" {{ searchQuery['s'] ? 'checked="checked"' : '' }} />&nbsp;Subject</a></li>
-                    <li><a href="#" class="small" data-value="option2" tabIndex="-1"><input type="checkbox" name="c" {{ searchQuery['c'] ? 'checked="checked"' : '' }} />&nbsp;Content</a></li>
-                    <li><a href="#" class="small" data-value="option3" tabIndex="-1"><input type="checkbox" name="a" {{ searchQuery['a'] ? 'checked="checked"' : '' }} />&nbsp;Author</a></li>
-                </ul>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-cog"></span>
+                {{ searchQuery['s'] ? '<span class="label label-default">Subject</span>' : '' }}
+                {{ searchQuery['c'] ? '<span class="label label-default">Content</span>' : '' }}
+                {{ searchQuery['a'] ? '<span class="label label-default">Author</span>' : '' }}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><label><input type="checkbox" class="search-subject" name="s" {{ searchQuery['s'] ? 'checked="checked"' : '' }} /> Subject</label></li>
+                <li><label><input type="checkbox" class="search-content" name="c" {{ searchQuery['c'] ? 'checked="checked"' : '' }} /> Content</label></li>
+                <li><label><input type="checkbox" class="search-author" name="a" {{ searchQuery['a'] ? 'checked="checked"' : '' }} /> Author</label></li>
+            </ul>
+            <script>
+                $(document).ready(function() {
+                    $('#search-bar ul.dropdown-menu label').click(function(e) {
+                        e.stopPropagation();
+                    });
+
+                    $('#search-bar ul.dropdown-menu input[type=checkbox]').change(function() {
+                        $('#search-bar button.dropdown-toggle span.label').remove();
+
+                        $('#search-bar ul.dropdown-menu input[type=checkbox]:checked').closest('label').each(function(i, t) {
+                            $('#search-bar button.dropdown-toggle span.caret').before(
+                                $('<span class="label label-default online">' + $(t).text().trim() + '</span>'));
+                        });
+                    });
+                });
+            </script>
         </div>
         <div class="input-group">
             <input type="text" name="q" placeholder="keyword" size="30" class="form-control" value="{{ searchQuery['q'] }}" required="required" />
