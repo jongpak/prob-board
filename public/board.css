@@ -366,3 +366,9 @@ button span.label {
 button span.label.online {
     margin-right: 3px;
 }
+
+
+td.no-post {
+    text-align: center;
+    padding: 50px 10px !important;
+}
