@@ -69,7 +69,7 @@ class PostService
 
         if($searchKeyword != null && count($searchType) > 0) {
             $countQueryBuilder
-                ->andWhere('(' . implode(' OR ', (new BoardService())->getPostsWhereByKeywordType($searchType)) . ')')
+                ->andWhere('(' . implode(' OR ', (new BoardService())->getPostsWhereClauseByKeywordType($searchType)) . ')')
                 ->setParameter('keyword', $searchKeyword);
         }
 
