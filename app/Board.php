@@ -41,14 +41,14 @@ class Board
         $viewModel->set('board', $this->board);
     }
 
-    public function index(ServerRequestInterface $req, ViewModel $viewModel)
+    public function index(ServerRequestInterface $req, ViewModel $viewModel, LoginManagerInterface $loginManager)
     {
         $page = isset($req->getQueryParams()['page']) ? $req->getQueryParams()['page'] : 1;
         $searchKeyword = SearchQueryUtil::getSearchKeyword($req->getQueryParams());
         $searchType = SearchQueryUtil::getSearchType($req->getQueryParams());
 
-        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword, $searchType));
-        $viewModel->set('pager', $this->getPager($page, $searchKeyword, $searchType));
+        $viewModel->set('posts', $this->boardService->getPosts($this->board, $page, $searchKeyword, $searchType, $loginManager->getLoggedAccountId()));
+        $viewModel->set('pager', $this->getPager($page, $searchKeyword, $searchType, $loginManager->getLoggedAccountId()));
         $viewModel->set('searchQuery', SearchQueryUtil::getKeywordQuery($searchKeyword, $searchType));
 
         return 'postList';
@@ -67,7 +67,7 @@ class Board
         return 'redirect: ' . EntityUriFactory::getEntityUri($post)->read();
     }
 
-    private function getPager($page, $searchKeyword, $searchType)
+    private function getPager($page, $searchKeyword, $searchType, $targetAccountId)
     {
         $pager = (new Pager())
             ->setCurrentPage($page)
@@ -78,7 +78,7 @@ class Board
             return $pager->getPageNavigationByEntityModel(PostModel::class);
         } else {
             return $pager->getPageNavigationByQueryBuilder(
-                $this->boardService->getPostsQueryBuilderByKeyword($this->board, $page, $searchKeyword, $searchType)
+                $this->boardService->getPostsQueryBuilderByKeyword($this->board, $page, $searchKeyword, $searchType, $targetAccountId)
             );
         }
     }
